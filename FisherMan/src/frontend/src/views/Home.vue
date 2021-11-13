@@ -1,18 +1,53 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+     <nav  class="navbar navbar-fixed-top navbar-expand" style="background-color: #1d7ac9; list-style: none;">
+  <div class="container-fluid" style="background-color: #1d7ac9;">
+  <a class="navbar-brand">
+  <img src="../assets/logoF1.png" alt="" width="194" height="80" >
+</a>
+
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+<li class="nav-item">
+  <a style="color: white;" class="nav-link active" aria-current="page" href="http://localhost:8081/login">LOGIN</a>
+</li>
+<li class="nav-item">
+  <a style="color: white;" class="nav-link active" href="http://localhost:8081/signup">SIGN UP</a>
+</li>
+</ul>
+
+
+
+
   </div>
+
+</nav>
+
+
+
+  </div>
+
 </template>
 
-<script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
-export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  }
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
 }
-</script>
+
+#nav {
+  padding: 30px;
+}
+
+#nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+#nav a.router-link-exact-active {
+  color: #42b983;
+}
+</style>
