@@ -15,9 +15,12 @@ public class BoatOwner extends User {
         super(id, name, lastName, email, password, phoneNum, address);
     }
 
-    @Override
-    public String getRoleApp() {
+    public static String getRoleApp() {
         return roleApp;
+    }
+
+    public static void setRoleApp(String roleApp) {
+        BoatOwner.roleApp = roleApp;
     }
 
     @Override

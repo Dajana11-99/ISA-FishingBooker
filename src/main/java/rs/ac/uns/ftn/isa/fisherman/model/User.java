@@ -93,12 +93,12 @@ public abstract class User implements UserDetails {
         this.email = email;
     }
 
-    public String getRoleApp() {
+    public static String getRoleApp() {
         return roleApp;
     }
 
-    public void setRoleApp(String roleApp) {
-        this.roleApp = roleApp;
+    public static void setRoleApp(String roleApp) {
+        User.roleApp = roleApp;
     }
 
     public void setAuthorities(List<Authority> authorities) {

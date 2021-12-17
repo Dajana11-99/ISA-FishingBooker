@@ -28,9 +28,12 @@ public class CabinOwner extends User{
         this.registrationReason = registrationReason;
     }
 
-    @Override
-    public String getRoleApp() {
+    public static String getRoleApp() {
         return roleApp;
+    }
+
+    public static void setRoleApp(String roleApp) {
+        CabinOwner.roleApp = roleApp;
     }
 
     @Override

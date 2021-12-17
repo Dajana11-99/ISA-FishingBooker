@@ -17,11 +17,14 @@ public class Admin extends User {
 
     }
 
-    @Override
-    public String getRoleApp() {
+
+    public static String getRoleApp() {
         return roleApp;
     }
 
+    public static void setRoleApp(String roleApp) {
+        Admin.roleApp = roleApp;
+    }
 
     public Boolean getPredefined() {
         return isPredefined;
