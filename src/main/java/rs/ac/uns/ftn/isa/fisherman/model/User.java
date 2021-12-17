@@ -15,7 +15,7 @@ import java.util.List;
 @DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 public abstract class User implements UserDetails {
 
-    private transient String Role = "";
+    private transient String role_app = "";
     @Id
     @SequenceGenerator(name = "account_sequence_generator", sequenceName = "account_sequence", initialValue = 100)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_sequence_generator")
@@ -33,7 +33,7 @@ public abstract class User implements UserDetails {
     @Column(name="phoneNum")
     protected String phoneNum;
     @Embedded
-    private Address address;
+    private  Address address;
 
     @Column(name = "enabled")
     private boolean enabled;
@@ -49,8 +49,8 @@ public abstract class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
     private List<Authority> authorities;
-    public User(){}
-    public User(Long id, String name, String lastName, String email, String password, String phoneNum, Address address) {
+    protected User(){}
+    protected User(Long id, String name, String lastName, String email, String password, String phoneNum, Address address) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -93,12 +93,12 @@ public abstract class User implements UserDetails {
         this.email = email;
     }
 
-    public String getRole() {
-        return Role;
+    public String getRole_app() {
+        return role_app;
     }
 
-    public void setRole(String role) {
-        Role = role;
+    public void setRole_app(String role_app) {
+        this.role_app = role_app;
     }
 
     public void setAuthorities(List<Authority> authorities) {

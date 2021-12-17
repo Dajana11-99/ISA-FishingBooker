@@ -25,13 +25,11 @@ public class UserServiceImpl implements UserService {
 
 
     private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
     private MailService<String> mailService;
     private  AuthorityService authorityService;
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, MailService<String> mailService,AuthorityService authorityService){
+    public UserServiceImpl(UserRepository userRepository, MailService<String> mailService,AuthorityService authorityService){
         this.userRepository=userRepository;
-        this.passwordEncoder=passwordEncoder;
         this.mailService=mailService;
         this.authorityService=authorityService;
     }
@@ -43,21 +41,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByEmail(String email) throws UsernameNotFoundException {
-        User u = userRepository.findByEmail(email);
-        return u;
+      return userRepository.findByEmail(email);
+
     }
 
 
     public List<User> findAll() throws AccessDeniedException {
-        List<User> result = userRepository.findAll();
-        return result;
+        return userRepository.findAll();
+
     }
 
     @Override
     public CabinOwner registerCabinOwner(CabinOwner cabinOwner, String sourceURL) throws MessagingException {
-        List<Authority> auth = authorityService.findByname(cabinOwner.getRole());
+        List<Authority> auth = authorityService.findByname(cabinOwner.getRole_app());
         cabinOwner.setAuthorities(auth);
-       // cabinOwner.setPassword(passwordEncoder.encode(cabinOwner.getPassword()));
         String activationURL= RandomString.make(64);
         cabinOwner.setActivationURL(activationURL);
         cabinOwner=userRepository.save(cabinOwner);

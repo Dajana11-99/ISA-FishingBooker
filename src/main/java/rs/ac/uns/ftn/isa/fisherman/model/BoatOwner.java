@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("BOAT OWNER")
 public class BoatOwner extends User {
-    private transient final String Role = "ROLE_BOATOWNER";
+    private transient final String role_app = "ROLE_BOATOWNER";
 
     public BoatOwner() {
     }
@@ -16,8 +16,8 @@ public class BoatOwner extends User {
     }
 
     @Override
-    public String getRole() {
-        return Role;
+    public String getRole_app() {
+        return role_app;
     }
 
     @Override

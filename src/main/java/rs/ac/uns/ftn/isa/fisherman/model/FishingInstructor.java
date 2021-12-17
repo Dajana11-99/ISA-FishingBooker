@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 @DiscriminatorValue("FISHING INSTRUCTOR")
 public class FishingInstructor extends  User {
 
-    private transient final String Role = "ROLE_FISHING_INSTRUCTOR";
+    private transient final String role_app = "ROLE_FISHING_INSTRUCTOR";
 
     public FishingInstructor() {
     }
@@ -18,8 +18,8 @@ public class FishingInstructor extends  User {
     }
 
     @Override
-    public String getRole() {
-        return Role;
+    public String getRole_app() {
+        return role_app;
     }
 
     @Override
