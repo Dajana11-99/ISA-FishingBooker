@@ -1,19 +1,15 @@
 package rs.ac.uns.ftn.isa.fisherman.model;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import java.io.Serializable;
 
-@Embeddable
-public class Address {
-    @Column(name = "longitude")
+public class Address implements Serializable {
+    private static final long serialVersionUID = 2405172041950251807L;
     private double longitude;
-    @Column(name = "latitude")
     private double latitude;
-    @Column(name = "country")
     private String country;
-    @Column(name = "city")
+
     private String city;
-    @Column(name = "streetAndNum")
+
     private String streetAndNum;
     public Address(){}
     public Address(double longitude, double latitude, String country, String city, String streetAndNum) {

@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 @DiscriminatorValue("CABIN OWNER")
 public class CabinOwner extends User{
     private String registrationReason;
-    private transient static String roleApp = "ROLE_CABINOWNER";
+    private  static String roleApp = "ROLE_CABINOWNER";
     public CabinOwner(){}
 
 

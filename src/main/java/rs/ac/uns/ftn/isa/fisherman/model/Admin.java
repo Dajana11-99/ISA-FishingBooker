@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 @DiscriminatorValue("ADMIN")
 public class Admin extends User {
 
-    private transient static String roleApp = "ROLE_ADMIN";
+    private static String roleApp = "ROLE_ADMIN";
     private Boolean isPredefined;
 
     public Admin(){}

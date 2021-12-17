@@ -46,7 +46,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
                 // proveri da li je prosledjeni token validan
                 Boolean b= Objects.requireNonNull(tokenUtils.validateToken(authToken, userDetails));
-                if (b) {
+                if (Boolean.TRUE.equals(b)) {
                     // kreiraj autentifikaciju
                     TokenBasedAuthentication authentication = new TokenBasedAuthentication(userDetails);
                     authentication.setToken(authToken);
