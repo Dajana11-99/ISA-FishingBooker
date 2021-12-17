@@ -15,6 +15,7 @@ import java.util.List;
 @DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 public abstract class User implements UserDetails {
 
+    private static String roleApp = "";
     @Id
     @SequenceGenerator(name = "account_sequence_generator", sequenceName = "account_sequence", initialValue = 100)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_sequence_generator")
@@ -32,7 +33,7 @@ public abstract class User implements UserDetails {
     @Column(name="phoneNum")
     protected String phoneNum;
     @Embedded
-    private Address address;
+    private  Address address;
 
     @Column(name = "enabled")
     private boolean enabled;
@@ -48,8 +49,8 @@ public abstract class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
     private List<Authority> authorities;
-    public User(){}
-    public User(Long id, String name, String lastName, String email, String password, String phoneNum, Address address) {
+    protected User(){}
+    protected User(Long id, String name, String lastName, String email, String password, String phoneNum, Address address) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -92,7 +93,17 @@ public abstract class User implements UserDetails {
         this.email = email;
     }
 
+    public String getRoleApp() {
+        return roleApp;
+    }
 
+    public void setRoleApp(String roleApp) {
+        this.roleApp = roleApp;
+    }
+
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
+    }
 
     public void setPassword(String password) {
         Timestamp now = new Timestamp(new Date().getTime());
