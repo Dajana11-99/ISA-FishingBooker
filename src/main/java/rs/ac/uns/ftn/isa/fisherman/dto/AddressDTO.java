@@ -1,6 +1,5 @@
 package rs.ac.uns.ftn.isa.fisherman.dto;
 
-import javax.persistence.Column;
 
 public class AddressDTO {
     private double longitude;

@@ -1,7 +1,6 @@
 package rs.ac.uns.ftn.isa.fisherman.mail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -27,7 +26,7 @@ public class MailService<T> {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper mail = new MimeMessageHelper(message);
         mail.setTo(recipient);
-        mail.setFrom(this.env.getProperty("spring.mail.username"));
+        mail.setFrom(Objects.requireNonNull(this.env.getProperty("spring.mail.username")));
         mail.setSubject(mailFormatter.getSubject());
         mail.setText(mailFormatter.getText(params),true);
         javaMailSender.send(message);
