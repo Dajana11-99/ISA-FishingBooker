@@ -45,6 +45,8 @@ public class AuthenticationController {
     @Autowired
     private UserService userService;
 
+    private String success= "Success!";
+
     private CabinOwnerMapper cabinOwnerMapper = new CabinOwnerMapper();
 
     // Prvi endpoint koji pogadja korisnik kada se loguje.
@@ -87,9 +89,9 @@ public class AuthenticationController {
         String code = verificationDTO.getActivationCode();
 
         if(this.userService.activateAccount(email, code) != null){
-            return new ResponseEntity<>("Success.", HttpStatus.OK);
+            return new ResponseEntity<>(success, HttpStatus.OK);
         }
-        return new ResponseEntity<>("Success.", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(success, HttpStatus.BAD_REQUEST);
     }
 
 
@@ -113,8 +115,8 @@ public class AuthenticationController {
     }
 
 
-    ///OVA METODA JE BILA NA VEZBAMA ----> NE ZNAM DA LI RADI KOD NAS ALI JEDAN JE NACIN DA SAZNAMO :)
-    @RequestMapping(value = "/change-password", method = RequestMethod.POST)
+   /* ///OVA METODA JE BILA NA VEZBAMA ----> NE ZNAM DA LI RADI KOD NAS ALI JEDAN JE NACIN DA SAZNAMO :)
+    @PostMapping(value = "/change-password")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> changePassword(@RequestBody PasswordChanger passwordChanger) {
         userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
@@ -128,4 +130,6 @@ public class AuthenticationController {
         public String oldPassword;
         public String newPassword;
     }
+    */
+
 }

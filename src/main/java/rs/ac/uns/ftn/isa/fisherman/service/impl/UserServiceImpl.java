@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.isa.fisherman.mail.UserActivationLink;
+import rs.ac.uns.ftn.isa.fisherman.model.Authority;
 import rs.ac.uns.ftn.isa.fisherman.model.CabinOwner;
 import rs.ac.uns.ftn.isa.fisherman.model.User;
 import rs.ac.uns.ftn.isa.fisherman.repository.UserRepository;
@@ -26,11 +27,13 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private MailService<String> mailService;
+    private  AuthorityService authorityService;
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, MailService<String> mailService){
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, MailService<String> mailService,AuthorityService authorityService){
         this.userRepository=userRepository;
         this.passwordEncoder=passwordEncoder;
         this.mailService=mailService;
+        this.authorityService=authorityService;
     }
 
     @Override
@@ -52,6 +55,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CabinOwner registerCabinOwner(CabinOwner cabinOwner, String sourceURL) throws MessagingException {
+        List<Authority> auth = authorityService.findByname(cabinOwner.getRole());
+        cabinOwner.setAuthorities(auth);
        // cabinOwner.setPassword(passwordEncoder.encode(cabinOwner.getPassword()));
         String activationURL= RandomString.make(64);
         cabinOwner.setActivationURL(activationURL);
