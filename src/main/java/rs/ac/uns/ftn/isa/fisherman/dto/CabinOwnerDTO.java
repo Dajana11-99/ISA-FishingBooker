@@ -2,8 +2,6 @@ package rs.ac.uns.ftn.isa.fisherman.dto;
 
 import rs.ac.uns.ftn.isa.fisherman.model.Address;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
 
 public class CabinOwnerDTO {
     private Long id;

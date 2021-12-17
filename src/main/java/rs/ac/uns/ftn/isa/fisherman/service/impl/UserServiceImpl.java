@@ -6,7 +6,6 @@ import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.isa.fisherman.mail.UserActivationLink;
 import rs.ac.uns.ftn.isa.fisherman.model.Authority;
@@ -53,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CabinOwner registerCabinOwner(CabinOwner cabinOwner, String sourceURL) throws MessagingException {
-        List<Authority> auth = authorityService.findByname(cabinOwner.getRole_app());
+        List<Authority> auth = authorityService.findByname(cabinOwner.getRoleApp());
         cabinOwner.setAuthorities(auth);
         String activationURL= RandomString.make(64);
         cabinOwner.setActivationURL(activationURL);
