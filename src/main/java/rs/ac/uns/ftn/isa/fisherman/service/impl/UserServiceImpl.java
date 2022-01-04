@@ -6,6 +6,7 @@ import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.isa.fisherman.mail.UserActivationLink;
 import rs.ac.uns.ftn.isa.fisherman.model.Authority;
@@ -26,11 +27,13 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private MailService<String> mailService;
     private  AuthorityService authorityService;
+    private PasswordEncoder passwordEncoder;
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, MailService<String> mailService,AuthorityService authorityService){
+    public UserServiceImpl(UserRepository userRepository, MailService<String> mailService,AuthorityService authorityService,PasswordEncoder passwordEncoder){
         this.userRepository=userRepository;
         this.mailService=mailService;
         this.authorityService=authorityService;
+        this.passwordEncoder =passwordEncoder;
     }
 
     @Override
@@ -56,9 +59,11 @@ public class UserServiceImpl implements UserService {
         cabinOwner.setAuthorities(auth);
         String activationURL= RandomString.make(64);
         cabinOwner.setActivationURL(activationURL);
+        cabinOwner.setPassword(passwordEncoder.encode(cabinOwner.getPassword()));
         cabinOwner=userRepository.save(cabinOwner);
         sendActivationURL(cabinOwner,sourceURL);
         return cabinOwner;
+
     }
 
     @Override

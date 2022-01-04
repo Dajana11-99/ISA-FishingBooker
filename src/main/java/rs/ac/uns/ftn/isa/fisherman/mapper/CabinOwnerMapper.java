@@ -17,7 +17,11 @@ public class CabinOwnerMapper {
 
     public CabinOwner userRequestDTOToCabinOwner(UserRequestDTO userRequest) {
         AddressMapper addressMapper=new AddressMapper();
-        return  new CabinOwner(userRequest.getId(),userRequest.getFirstname(),userRequest.getLastname(),userRequest.getEmail(),
+
+
+       CabinOwner cabinOwner = new CabinOwner(userRequest.getId(),userRequest.getFirstname(),userRequest.getLastname(),userRequest.getEmail(),
                 userRequest.getPassword(),userRequest.getPhoneNum(),addressMapper.dtotoaddress(userRequest.getAddress()),userRequest.getRegistrationReason());
+        System.out.println("AAAAAAAAAAAAAAAAAAAAA"+  cabinOwner.getPassword());
+        return cabinOwner;
     }
 }

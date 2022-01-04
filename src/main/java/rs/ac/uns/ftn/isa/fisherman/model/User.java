@@ -145,6 +145,11 @@ public abstract class User implements UserDetails {
         return true;
     }
 
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
     @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {

@@ -22,10 +22,7 @@ public class FishingInstructor extends  User {
         return roleApp;
     }
 
-    @Override
-    public String getPassword() {
-        return null;
-    }
+
 
     @Override
     public String getUsername() {

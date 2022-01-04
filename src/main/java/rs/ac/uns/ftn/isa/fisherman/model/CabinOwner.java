@@ -28,15 +28,13 @@ public class CabinOwner extends User{
         this.registrationReason = registrationReason;
     }
 
+
+
     @Override
     public String getRoleApp() {
         return roleApp;
     }
 
-    @Override
-    public String getPassword() {
-        return null;
-    }
 
     @Override
     public String getUsername() {

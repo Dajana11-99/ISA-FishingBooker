@@ -32,11 +32,6 @@ public class Admin extends User {
     }
 
     @Override
-    public String getPassword() {
-        return null;
-    }
-
-    @Override
     public String getUsername() {
         return null;
     }

@@ -13,13 +13,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import rs.ac.uns.ftn.isa.fisherman.dto.LogInDto;
 import rs.ac.uns.ftn.isa.fisherman.dto.VerificationDTO;
 import rs.ac.uns.ftn.isa.fisherman.mapper.CabinOwnerMapper;
 import rs.ac.uns.ftn.isa.fisherman.model.User;
 import rs.ac.uns.ftn.isa.fisherman.dto.UserRequestDTO;
 import rs.ac.uns.ftn.isa.fisherman.dto.UserTokenStateDTO;
+import rs.ac.uns.ftn.isa.fisherman.model.UserTokenState;
 import rs.ac.uns.ftn.isa.fisherman.security.TokenUtils;
 import rs.ac.uns.ftn.isa.fisherman.security.auth.JwtAuthenticationRequest;
+import rs.ac.uns.ftn.isa.fisherman.service.LoginService;
 import rs.ac.uns.ftn.isa.fisherman.service.UserService;
 import rs.ac.uns.ftn.isa.fisherman.service.impl.CustomUserDetailsService;
 
@@ -40,54 +43,26 @@ public class AuthenticationController {
     @Autowired
     private UserService userService;
 
-    private String success= "Success!";
+    private LoginService loginService;
 
+  @Autowired
+  public  AuthenticationController(LoginService logInService){
+      this.loginService = logInService;
+  }
+
+    private String success= "Success!";
     private CabinOwnerMapper cabinOwnerMapper = new CabinOwnerMapper();
 
     // Prvi endpoint koji pogadja korisnik kada se loguje.
     // Tada zna samo svoje korisnicko ime i lozinku i to prosledjuje na backend.
     @PostMapping("/login")
-    public ResponseEntity<UserTokenStateDTO> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
-                                                                       HttpServletResponse response) {
+    public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody LogInDto userRequest) {
+        UserTokenState userTokenState = loginService.LogIn(userRequest);
+        return ResponseEntity.ok(userTokenState);
 
-        //
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
-                        authenticationRequest.getPassword()));
 
-        // Ubaci korisnika u trenutni security kontekst
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        // Kreiraj token za tog korisnika
-        User user = (User) authentication.getPrincipal();
-        String jwt = tokenUtils.generateToken(user.getEmail());
-        int expiresIn = tokenUtils.getExpiredIn();
-
-        // Vrati token kao odgovor na uspesnu autentifikaciju
-        return ResponseEntity.ok(new UserTokenStateDTO(jwt, expiresIn));
     }
 
-    // Endpoint za registraciju novog korisnika
-    @PostMapping("/signUpCabinOwner")
-    public ResponseEntity<String> registerCabinOwner(HttpServletRequest httpServletRequest, @RequestBody UserRequestDTO userRequest) throws MessagingException {
-        User existUser = this.userService.findByEmail(userRequest.getEmail());
-        if (existUser != null) {
-            return new ResponseEntity<>("Email already in use.", HttpStatus.BAD_REQUEST);
-        }
-        this.userService.registerCabinOwner(cabinOwnerMapper.userRequestDTOToCabinOwner(userRequest),httpServletRequest.getHeader("origin"));
-        return new ResponseEntity<>("Success.", HttpStatus.CREATED);
-    }
-
-    @PostMapping("/activate")
-    public ResponseEntity<String> activate(@RequestBody VerificationDTO verificationDTO) {
-        String email = verificationDTO.getEmail();
-        String code = verificationDTO.getActivationCode();
-
-        if(this.userService.activateAccount(email, code) != null){
-            return new ResponseEntity<>(success, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(success, HttpStatus.BAD_REQUEST);
-    }
 
 
     // U slucaju isteka vazenja JWT tokena, endpoint koji se poziva da se token osvezi
@@ -107,6 +82,30 @@ public class AuthenticationController {
             UserTokenStateDTO userTokenState = new UserTokenStateDTO();
             return ResponseEntity.badRequest().body(userTokenState);
         }
+    }
+
+
+    // Endpoint za registraciju novog korisnika
+    @PostMapping("/signUpCabinOwner")
+    public ResponseEntity<String> registerCabinOwner(HttpServletRequest httpServletRequest, @RequestBody UserRequestDTO userRequest) throws MessagingException {
+        User existUser = this.userService.findByEmail(userRequest.getEmail());
+        if (existUser != null) {
+            return new ResponseEntity<>("Email already in use.", HttpStatus.BAD_REQUEST);
+        }
+        System.out.println("STIGAO SAMMMM " + userRequest.getPassword());
+        this.userService.registerCabinOwner(cabinOwnerMapper.userRequestDTOToCabinOwner(userRequest),httpServletRequest.getHeader("origin"));
+        return new ResponseEntity<>("Success.", HttpStatus.CREATED);
+    }
+
+    @PostMapping("/activate")
+    public ResponseEntity<String> activate(@RequestBody VerificationDTO verificationDTO) {
+        String email = verificationDTO.getEmail();
+        String code = verificationDTO.getActivationCode();
+
+        if(this.userService.activateAccount(email, code) != null){
+            return new ResponseEntity<>(success, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(success, HttpStatus.BAD_REQUEST);
     }
 
 
