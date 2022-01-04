@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.isa.fisherman.security.auth;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -44,7 +45,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
                 // proveri da li je prosledjeni token validan
-                if (tokenUtils.validateToken(authToken, userDetails)) {
+                Boolean b= Objects.requireNonNull(tokenUtils.validateToken(authToken, userDetails));
+                if (Boolean.TRUE.equals(b)) {
                     // kreiraj autentifikaciju
                     TokenBasedAuthentication authentication = new TokenBasedAuthentication(userDetails);
                     authentication.setToken(authToken);

@@ -15,7 +15,9 @@ import java.util.List;
 @DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 public abstract class User implements UserDetails {
 
-    private transient String role_app = "";
+
+    private static String roleApp = "";
+
     @Id
     @SequenceGenerator(name = "account_sequence_generator", sequenceName = "account_sequence", initialValue = 100)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_sequence_generator")
@@ -93,12 +95,14 @@ public abstract class User implements UserDetails {
         this.email = email;
     }
 
-    public String getRole_app() {
-        return role_app;
+
+    public String getRoleApp() {
+        return roleApp;
     }
 
-    public void setRole_app(String role_app) {
-        this.role_app = role_app;
+    public void setRoleApp(String roleApp) {
+        this.roleApp = roleApp;
+
     }
 
     public void setAuthorities(List<Authority> authorities) {
