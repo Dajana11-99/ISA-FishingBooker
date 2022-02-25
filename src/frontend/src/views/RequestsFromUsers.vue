@@ -141,7 +141,12 @@ import axios from "axios";
        this.pomUserRequestDTO.username=this.email
           this.loadData();
             axios
-               .post("http://localhost:8081/account/isPredefined",this.pomUserRequestDTO)
+               .post("http://localhost:8081/account/isPredefined",this.pomUserRequestDTO,{ 
+                headers: {
+                "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+                "Authorization": "Bearer " + localStorage.jwt ,
+                }
+                 })
                .then((response) => {
                   this.isPredefined=response.data;
 
@@ -153,7 +158,12 @@ import axios from "axios";
       },
      methods: {
        loadData: function(){
-             axios.get("http://localhost:8081/account/getNewUsers")
+             axios.get("http://localhost:8081/account/getNewUsers",{ 
+                headers: {
+                "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+                "Authorization": "Bearer " + localStorage.jwt ,
+                }
+                 })
             .then(response => {this.userRequestDTO = response.data
               
               })
@@ -163,7 +173,12 @@ import axios from "axios";
            });
        },
        accept: function(user){
-                  axios.post("http://localhost:8081/account/acceptAccount",user)
+                  axios.post("http://localhost:8081/account/acceptAccount",user,{ 
+                    headers: {
+                    "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+                    "Authorization": "Bearer " + localStorage.jwt ,
+                    }
+                    })
                   .then(response => {this.userRequestDTO = response.data
                         this.loadData();
 
@@ -175,7 +190,12 @@ import axios from "axios";
        },
        deny: function(user){
                   this.denyClick=true;
-                  axios.post("http://localhost:8081/account/denyAccount/"+this.reason,user)
+                  axios.post("http://localhost:8081/account/denyAccount/"+this.reason,user,{ 
+                  headers: {
+                  "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+                  "Authorization": "Bearer " + localStorage.jwt ,
+                  }
+                  })
                   .then(response => {this.userRequestDTO = response.data
                         this.loadData();
                    })

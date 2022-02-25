@@ -261,7 +261,12 @@
        },
        getCabin: function(){
              this.cabinDto.name=this.cabinName
-             axios.post("http://localhost:8081/cabins/findByName",this.cabinDto)
+             axios.post("http://localhost:8081/cabins/findByName",this.cabinDto,{
+            headers: {
+            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+            "Authorization": "Bearer " + localStorage.jwt ,
+            }
+             })
                .then(response => {
                         this.cabinDto=response.data
                         this.cabinLoaded=true;

@@ -140,7 +140,12 @@ import axios from "axios";
 
        this.email = this.$route.params.email
     this.pomUserRequestDTO.username=this.email
-         axios.get("http://localhost:8081/account/getAllUsers")
+         axios.get("http://localhost:8081/account/getAllUsers",{
+            headers: {
+            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+            "Authorization": "Bearer " + localStorage.jwt ,
+            }
+             })
             .then(response => {this.userRequestDTO = response.data
               
               })
@@ -150,7 +155,12 @@ import axios from "axios";
            });
 
           axios
-               .post("http://localhost:8081/account/isPredefined",this.pomUserRequestDTO)
+               .post("http://localhost:8081/account/isPredefined",this.pomUserRequestDTO,{
+              headers: {
+              "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+              "Authorization": "Bearer " + localStorage.jwt ,
+              }
+             })
                .then((response) => {
                   this.isPredefined=response.data;
 

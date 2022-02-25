@@ -97,7 +97,12 @@ import axios from "axios";
            console.log(this.role);
            console.log(this.email);
            this.userRequestDto.username=this.email
-                 axios.post("http://localhost:8081/auth/findByEmail/",this.userRequestDto)
+                 axios.post("http://localhost:8081/auth/findByEmail/",this.userRequestDto,{
+                  headers: {
+                  "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+                  "Authorization": "Bearer " + localStorage.jwt ,
+                  }
+                  })
                  .then(response => {
                         this.userRequestDto = response.data
                         this.userRequestDto.role=this.role
@@ -106,7 +111,12 @@ import axios from "axios";
 
        },
        editData: function(){
-            axios.post("http://localhost:8081/auth/editUser/",this.userRequestDto)
+            axios.post("http://localhost:8081/auth/editUser/",this.userRequestDto,{
+            headers: {
+            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+            "Authorization": "Bearer " + localStorage.jwt ,
+            }
+             })
                  .then(response => {
                         return response;
                    })

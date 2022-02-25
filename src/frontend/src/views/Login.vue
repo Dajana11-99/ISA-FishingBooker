@@ -73,7 +73,6 @@
 <script>
 
 import axios from "axios";
-import config from "../configuration/config";
    export default{
      data(){
        return{
@@ -89,29 +88,20 @@ import config from "../configuration/config";
        }
      },
      methods: {
-
-      storageLoginData: function(response) {
-      if (response.data) {
-        localStorage.logedIn = true;
-        localStorage.jwtToken = response.data.accessToken;
-        localStorage.roles = response.data.userType;
-        config.requestHeader.headers = {
-          Authorization: "Bearer "+ localStorage.jwtToken,
-         
-        };
-
-         }
-      },
-      logIn: function(){
+     logIn: function(){
         if(this.email != '' && this.password != ''){
-                axios
-               .post("http://localhost:8081/auth/login",this.LogInDto)
-               .then((response) => {
+               axios
+               .post("http://localhost:8081/auth/login",this.LogInDto,
+               {
+          headers: {
+            'Access-Control-Allow-Origin': 'http://localhost:8080'
+          }
+      }).then((response) => {
                  this.user.username=this.LogInDto.username
-                  this.storageLoginData(response);
-                  this.getPasswordStatus();
+                  localStorage.setItem("jwt", response.data.accessToken);
+            
                   if(response.data.userType==='ADMIN'){
-                    
+                            this.getPasswordStatus();
                         if(this.passwordC==true){
 
                             this.$router.push('/profileAdmin/'+this.LogInDto.username);
@@ -137,13 +127,20 @@ import config from "../configuration/config";
       goToSignUp: function() {
            this.$router.push('/signup');
       },
-      getPasswordStatus: function(){
+       getPasswordStatus: function(){
 
-           axios.post("http://localhost:8081/account/passwordStatus",this.user)
+          console.log("TOKENN KOD PASSWORDA"+localStorage.jwt)
+           axios.post("http://localhost:8081/account/passwordStatus",this.user,{
+            headers: {
+            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+            "Authorization": "Bearer " + localStorage.jwt ,
+            }
+           }
+        )
                             .then(response => {
                               this.passwordC=response.data
                  
-                     
+                   
                     
                    })
       

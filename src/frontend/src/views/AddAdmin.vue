@@ -250,7 +250,12 @@ import axios from "axios";
         register: function(event) {
             event.preventDefault();
                  axios
-               .post("http://localhost:8081/account/signUpAdmin",this.user)
+               .post("http://localhost:8081/account/signUpAdmin",this.user,{
+                  headers: {
+                  "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+                  "Authorization": "Bearer " + localStorage.jwt ,
+                  }
+             })
                .then((response) => {
 
                     this.$router.go();
@@ -260,7 +265,12 @@ import axios from "axios";
         
         },
        redirectDeny: function(user){
-         this.$router.push('/reasonForDenying/'+this.email+"/"+user.email);
+         this.$router.push('/reasonForDenying/'+this.email+"/"+user.email,{
+            headers: {
+            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+            "Authorization": "Bearer " + localStorage.jwt ,
+            }
+             });
                   
        },
        users: function(){
@@ -280,7 +290,12 @@ import axios from "axios";
        },
        loadData: function(){
                axios
-               .get("http://localhost:8081/account/getAllAdmins")
+               .get("http://localhost:8081/account/getAllAdmins",{
+                  headers: {
+                  "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+                  "Authorization": "Bearer " + localStorage.jwt ,
+                  }
+             })
                .then((response) => {
 
                      this.userRequestDTO=response.data
