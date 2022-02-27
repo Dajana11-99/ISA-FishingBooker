@@ -159,7 +159,8 @@ export default {
          registrationReason: ''
         
 
-       }
+       },
+       loader: null
     };
   },
   mounted() {

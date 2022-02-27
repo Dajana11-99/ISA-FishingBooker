@@ -302,6 +302,7 @@
            imagesSelected: false,
            imagesSelectedEvent: null,
            additionalServicesAdded: false,
+           loader: null
        
        }
      },
@@ -387,8 +388,14 @@
         addNewAdventure: function(event){
                event.preventDefault();
                if(this.additionalServicesAdded==false)
-
                   this.adventureDto.additionalServices=null   
+                 this.loader = this.$loading.show({
+                    // Optional parameters
+                    container: this.fullPage ? null : this.$refs.formContainer,
+                    canCancel: true,
+                    onCancel: this.onCancel,
+                });
+                
 
                axios.post("http://localhost:8081/adventures/save",this.adventureDto,{
             headers: {
@@ -400,6 +407,10 @@
                         
                         if(this.imagesSelected==true)
                         this.saveImages()
+                        else{
+                        this.loader.hide();
+                        this.$router.push('/fishingInstructorHome/'+ this.email);
+                        }
                         return response;   
               })
         },
@@ -416,6 +427,7 @@
                         }
              })
                     .then(response => {
+                    this.loader.hide();
                        this.$router.push('/fishingInstructorHome/'+ this.email);
                       return response;
                     })

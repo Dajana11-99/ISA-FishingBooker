@@ -283,6 +283,7 @@
            imagesSelected: false,
            imagesSelectedEvent: null,
            additionalServicesAdded: false,
+           loader: null
        
        }
      },
@@ -372,6 +373,13 @@
                event.preventDefault();
                if(this.additionalServicesAdded==false)
                   this.cabinDto.additionalServices=null   
+
+                   this.loader = this.$loading.show({
+                    // Optional parameters
+                    container: this.fullPage ? null : this.$refs.formContainer,
+                    canCancel: true,
+                    onCancel: this.onCancel,
+                });
                axios.post("http://localhost:8081/cabins/save",this.cabinDto,{
             headers: {
             "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
@@ -382,6 +390,10 @@
                         
                         if(this.imagesSelected==true)
                         this.saveImages()
+                        else{
+                        this.loader.hide();
+                        this.$router.push('/cabinOwnerHome/'+ this.email);
+                        }
                         return response;   
               })
         },
@@ -398,6 +410,8 @@
                         }
              })
                     .then(response => {
+                       this.loader.hide();
+                       this.loader=null
                        this.$router.push('/cabinOwnerHome/'+ this.email);
                       return response;
                     })

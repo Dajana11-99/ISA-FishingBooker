@@ -213,9 +213,11 @@
           </table>
          
         <div class="row">
-        <div id="ConfirmButton" style=" text-align: left; " class="col"><br>
-              <button @click="deleteCabin()" style="width: 80%;" class="btn btn-lg btn-danger"> Delete cabin forever  </button>
-        </div>   
+        <div id="ConfirmButton"  class="col"><br>
+        <button type="button" style="width: 80%; " class="btn btn-lg btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                   Delete cabin forever
+        </button>
+        </div>
         <div id="ConfirmButton"  class="col"><br>
               <button type="submit" style="width: 80%;"  class="btn btn-lg btn-success"> Confirm changes</button>
         </div>   
@@ -231,8 +233,26 @@
       </div> 
       </div>
 
-      
 
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete cabin?</p>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button @click="deleteCabin()" type="button" data-bs-dismiss="modal" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -368,6 +388,13 @@
               }
              })
                .then(response => {
+                       this.$swal.fire({
+                       position: 'top-end',
+                       icon: 'success',
+                       title: 'Changes saved',
+                       showConfirmButton: false,
+                       timer: 1500
+                       })
                     if(this.imagesSelected==true)
                         this.saveImages()
                     else

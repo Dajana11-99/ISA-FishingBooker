@@ -6,10 +6,18 @@ import { getDatabase } from "firebase/database";
 import {getAuth} from "firebase/auth"
 import axios from "axios"
 import config from "./configuration/config"
+//mape
 import OpenLayersMap from 'vue3-openlayers'
 import 'vue3-openlayers/dist/vue3-openlayers.css'
-
+//bootstrap
 import "bootstrap/dist/css/bootstrap.min.css";
+import 'bootstrap';
+//alertovi
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css'; // If you don't need the styles, do not connect
+//loading
+import VueLoading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 const firebaseConfig = {
     apiKey: "AIzaSyAwNdI28zKlIT2GG3pRLpH9aMmcbUftl04",
@@ -26,7 +34,7 @@ const app = initializeApp(firebaseConfig);
 axios.defaults.headers['Authorization']=config.requestHeader.headers.Authorization
 getDatabase(app);
 getAuth();
-createApp(App).use(router).use(OpenLayersMap).mount('#app')
+createApp(App).use(router).use(VueSweetalert2).use(VueLoading).use(OpenLayersMap).mount('#app')
 
 
 
