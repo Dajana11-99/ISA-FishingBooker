@@ -76,7 +76,6 @@ import axios from "axios";
    export default{
      data(){
        return{
-         passwordC: null,
          LogInDto:{
            username: '',
            password:''
@@ -101,16 +100,19 @@ import axios from "axios";
                   localStorage.setItem("jwt", response.data.accessToken);
             
                   if(response.data.userType==='ADMIN'){
-                            this.getPasswordStatus();
-                        if(this.passwordC==true){
-
+                        axios.post("http://localhost:8081/account/passwordStatus",this.user,{
+                          headers: {
+                          "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+                          "Authorization": "Bearer " + localStorage.jwt ,
+                          }
+                        }).then(response => {
+                            if(response.data==true){
                             this.$router.push('/profileAdmin/'+this.LogInDto.username);
                         }
-                        else if(this.passwordC==false) {
-                           
+                        else if(response.data==false) {
                             this.$router.push('/changedPasswordInfo/'+this.LogInDto.username);
                         }
-                        
+                   })   
                   }
                   else if(response.data.userType==='BOAT OWNER')
                      this.$router.push('/boatOwnerHome/'+this.LogInDto.username);
@@ -127,26 +129,6 @@ import axios from "axios";
       goToSignUp: function() {
            this.$router.push('/signup');
       },
-       getPasswordStatus: function(){
-
-          console.log("TOKENN KOD PASSWORDA"+localStorage.jwt)
-           axios.post("http://localhost:8081/account/passwordStatus",this.user,{
-            headers: {
-            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-            "Authorization": "Bearer " + localStorage.jwt ,
-            }
-           }
-        )
-                            .then(response => {
-                              this.passwordC=response.data
-                 
-                   
-                    
-                   })
-      
-      }
-      
-      
     }
   }
 

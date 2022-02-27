@@ -428,6 +428,7 @@
              })
                     .then(response => {
                     this.loader.hide();
+
                        this.$router.push('/fishingInstructorHome/'+ this.email);
                       return response;
                     })
