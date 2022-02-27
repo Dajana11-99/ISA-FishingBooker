@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     User findByUsername(String username );
 
 
-    @Query(value = "SELECT username,name,last_name,role,registration_reason FROM users WHERE role != 'ADMIN'  AND enabled=false AND accepted=false",nativeQuery = true)
+    @Query(value = "SELECT * FROM users WHERE role != 'ADMIN'  AND enabled=false AND accepted=false",nativeQuery = true)
     List<User> getNewUsers();
 
     @Query(value = "SELECT role FROM users WHERE id=:id",nativeQuery = true)

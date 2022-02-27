@@ -20,6 +20,8 @@
     "vue3-openlayers": "^0.1.61"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.5",
+    "@babel/preset-env": "^7.16.11",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-router": "^4.5.15",

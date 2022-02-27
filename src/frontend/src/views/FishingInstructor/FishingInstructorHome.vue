@@ -196,6 +196,7 @@
        }
      },
      mounted() {
+     
        this.email = this.$route.params.email
 
        this.fishingInstructorDto.username=this.email;
