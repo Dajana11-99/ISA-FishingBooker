@@ -25,7 +25,7 @@
       <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
     </svg> USERS</a>
       </li>
-      <li class="nav-item">
+      <li v-if="isPredefined == true"  class="nav-item">
       <a style="color: white;" @click="addAdmin()" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
   <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
   <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
@@ -242,6 +242,18 @@ import axios from "axios";
           this.email = this.$route.params.email
 
           this.loadData();
+               axios
+               .post("http://localhost:8081/admins/isPredefined",this.pomUserRequestDTO,{ 
+                headers: {
+                "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+                "Authorization": "Bearer " + localStorage.jwt ,
+                }
+                 })
+               .then((response) => {
+                  this.isPredefined=response.data;
+
+                   return response; 
+               });
    
           
       
@@ -258,7 +270,7 @@ import axios from "axios";
                 });
 
                  axios
-               .post("http://localhost:8081/account/signUpAdmin",this.user,{
+               .post("http://localhost:8081/admins/signUpAdmin",this.user,{
                   headers: {
                   "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
                   "Authorization": "Bearer " + localStorage.jwt ,
@@ -298,7 +310,7 @@ import axios from "axios";
        },
        loadData: function(){
                axios
-               .get("http://localhost:8081/account/getAllAdmins",{
+               .get("http://localhost:8081/admins/getAllAdmins",{
                   headers: {
                   "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
                   "Authorization": "Bearer " + localStorage.jwt ,
