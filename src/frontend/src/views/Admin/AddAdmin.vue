@@ -308,6 +308,9 @@ import axios from "axios";
         addAdmin: function(){
           this.$router.push('/addAdmin/'+ this.email);
        },
+        deleteAccount: function(){
+            this.$router.push('/deletingAccountRequests/'+ this.email);
+       },
        loadData: function(){
                axios
                .get("http://localhost:8081/admins/getAllAdmins",{

@@ -8,13 +8,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.isa.fisherman.dto.UserRequestDTO;
-import rs.ac.uns.ftn.isa.fisherman.mail.AccountAcceptedInfo;
-import rs.ac.uns.ftn.isa.fisherman.mail.AccountDeniedInfo;
+import rs.ac.uns.ftn.isa.fisherman.mail.*;
 import rs.ac.uns.ftn.isa.fisherman.model.*;
 import rs.ac.uns.ftn.isa.fisherman.repository.UserRepository;
 import rs.ac.uns.ftn.isa.fisherman.service.AuthorityService;
 import rs.ac.uns.ftn.isa.fisherman.service.UserService;
-import rs.ac.uns.ftn.isa.fisherman.mail.MailService;
+
 import javax.mail.MessagingException;
 
 @Service
@@ -139,6 +138,26 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUsername(username);
         user.setReasonForDeleting(reasonForDeleting);
         userRepository.save(user);
+    }
+
+    @Override
+    public List<User> getAllRequestsForDeletingAccount() {
+        return userRepository.getReguestsForDeletingAccount();
+    }
+
+    @Override
+    public void sendDenyReason(String response, String recipient) throws MessagingException {
+        mailService.sendMail(recipient,response,new AccountDeletingDenied());
+        User user=userRepository.findByUsername(recipient);
+        user.setReasonForDeleting("");
+        userRepository.save(user);
+    }
+
+    @Override
+    public void sendAcceptReason(String response, String recipient) throws MessagingException {
+        mailService.sendMail(recipient,response,new AccountDeletingAccepted());
+        User user=userRepository.findByUsername(recipient);
+        userRepository.delete(user);
     }
 
 }

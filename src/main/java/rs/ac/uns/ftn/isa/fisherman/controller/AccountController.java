@@ -6,12 +6,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import rs.ac.uns.ftn.isa.fisherman.dto.MailDto;
 import rs.ac.uns.ftn.isa.fisherman.dto.UserRequestDTO;
 import rs.ac.uns.ftn.isa.fisherman.dto.VerificationDTO;
-import rs.ac.uns.ftn.isa.fisherman.mapper.AdminMapper;
-import rs.ac.uns.ftn.isa.fisherman.mapper.BoatOwnerMapper;
-import rs.ac.uns.ftn.isa.fisherman.mapper.CabinOwnerMapper;
-import rs.ac.uns.ftn.isa.fisherman.mapper.FishingInstructorMapper;
+import rs.ac.uns.ftn.isa.fisherman.mapper.*;
 import rs.ac.uns.ftn.isa.fisherman.model.*;
 import rs.ac.uns.ftn.isa.fisherman.service.*;
 
@@ -36,6 +34,7 @@ public class AccountController {
     public  AccountController(){}
     private String success= "Success!";
     private AdminMapper adminMapper = new AdminMapper();
+
 
 
     @PostMapping("/acceptAccount")
@@ -73,6 +72,29 @@ public class AccountController {
 
 
 
+
+    @GetMapping("/getAllRequests")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<UserRequestDTO>> getAllRequestsForDeletingAccount() {
+        List<UserRequestDTO> users= new ArrayList<>();
+       for(User user : userService.getAllRequestsForDeletingAccount())
+            users.add(userMapper.userToDeleteUserRequestDTO(user));
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @PostMapping("/sendDenyReasonForDeletingAccount")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> sendDenyReasonForDeletingAccount(@RequestBody MailDto mailDto) throws MessagingException {
+        userService.sendDenyReason(mailDto.getResponse(),mailDto.getRecipient());
+        return new ResponseEntity<>(success, HttpStatus.OK);
+    }
+
+    @PostMapping("/sendAcceptReasonForDeletingAccount")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> sendAcceptReasonForDeletingAccount(@RequestBody MailDto mailDto) throws MessagingException {
+        userService.sendAcceptReason(mailDto.getResponse(),mailDto.getRecipient());
+        return new ResponseEntity<>(success, HttpStatus.OK);
+    }
 
 
 

@@ -6,8 +6,8 @@
       <img src="../../assets/logoF1.png" alt="" width="194" height="80" >
       </a>
     
-    
-    
+      
+        
       </div>
     
     </nav>
@@ -21,19 +21,23 @@
     </svg> HOME</a>
       </li>
       <li class="nav-item">
-      <a style="color: white;" @click="users()" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+      <a @click="allUsers()" style="color: white;" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
       <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
     </svg> USERS</a>
       </li>
       <li v-if="isPredefined == true" class="nav-item">
+
       <a style="color: white;" @click="addAdmin()" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
+
   <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
   <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
 </svg>
     ADD ADMIN</a>
       </li>
       <li class="nav-item">
+
       <a style="color: white;" @click="reviews()" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+
       <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
     </svg> REVIEWS</a>
       </li>
@@ -49,15 +53,18 @@
   <path fill-rule="evenodd" d="M11 7.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z"/>
 </svg> DELETING ACCOUNT REQUESTS</a>
       </li>
-       <li class="nav-item">
+      <li class="nav-item">
       <a @click="redirectMyAccount()" style="color: white;" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
   <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
 </svg> MY ACCOUNT</a>
       </li>
        
      </ul>
-    &nbsp;  &nbsp;
-<h1>USER REQUESTS </h1>
+
+
+
+    <br>
+<h1>ALL REQUESTS </h1>
 &nbsp;  
 <h2 v-if="!userRequestDTO.length"> No requests.</h2>
 <table v-else class="table">
@@ -67,8 +74,8 @@
       <th scope="col">Role</th>
       <th scope="col">First name</th>
       <th scope="col">Last name</th>
-      <th scope="col">Email</th>
-      <th scope="col">Registration reason</th>
+      <th scope="col">Username</th>
+      <th scope="col">Reason for deleting account</th>
        <th>&nbsp;</th>
       
 
@@ -82,11 +89,15 @@
       <td>{{user.firstname}}</td>
       <td>{{user.lastname}}</td>
       <td>{{user.username}}</td>
-       <td>{{user.registrationReason}}</td>
+       <td>{{user.reasonForDeleting}}</td>
       <td>
         <tr>
-        <button @click="accept(user)"  type="button" class="btn btn-outline-success" >ACCEPT</button>
-        <button @click="redirectDeny(user)"   type="button" class="btn btn-outline-danger" >DENY</button>
+         <div class="row">
+            <div class="col "><button @click="redirectAccept(user)" 
+               type="button" class="btn btn-outline-success"  data-bs-toggle="modal" data-bs-target="#staticBackdrop2" >ACCEPT</button></div>
+          <div class="col">   <button @click="redirectDeny(user)" data-bs-toggle="modal" data-bs-target="#staticBackdrop"  type="button" class="btn btn-outline-danger" >DENY</button></div>
+     
+        </div>
        
         </tr>          
                           
@@ -101,15 +112,71 @@
     </tr>
   </tbody>
 </table>
-    
-    
 
-  
+
+
+
+<!-- Modal for deny -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+     <div  style="text-align: left;" class="form-group">
+            <label>Reason for denying request:</label>
+                <textarea v-model="reasonDeny" class="form-control" id="exampleFormControlTextarea1" rows="3" ></textarea>
+               <label v-if="reasonDeny===''" style="color: red;">Please enter reason for denying request.</label>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button @click="denyDelete()" type="button" data-bs-dismiss="modal" class="btn btn-success">Send email</button>
+      </div>
+    </div>
   </div>
+</div>
 
+
+
+
+
+
+<!-- Modal for accept -->
+<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+     <div  style="text-align: left;" class="form-group">
+            <label>Reason for accept request:</label>
+                <textarea v-model="reasonAccept" class="form-control" id="exampleFormControlTextarea1" rows="3" ></textarea>
+               <label v-if="reasonAccept===''" style="color: red;">Please enter reason for accept request.</label>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button @click="acceptDelete()" type="button" data-bs-dismiss="modal" class="btn btn-success">Send email</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+  </div>
+ 
 
 </template>
-
+ 
 <script>
 
 
@@ -117,117 +184,136 @@ import axios from "axios";
    export default{
      data(){
        return{
-           email: '',
-           denyClick: false,
-           isPredefined: false,
-           userRequestDTO:[
+         email: '',
+         isPredefined: false,
+          userRequestPom:
+            {username: '',},
+             userRequestDTO:[
             {
                
                username: '',
                firstname: '',
                lastname: '',
-               registrationReason: '',
                role: '',
+               reasonForDeleting: ''
            }],
-              pomUserRequestDTO:
-            {username: '',}
+               userRequest:
+            {
+               
+               username: '',
+               firstname: '',
+               lastname: '',
+               role: '',
+               reasonForDeleting: ''
+           },
+           reasonDeny: '',
+           reasonAccept: '',
+           mailDto: {
+               response: '',
+               recipient: ''
+           }
        
        }
      },
      mounted() {
-  // GET request using axios with error handling
-          
-          this.email = this.$route.params.email
-       this.pomUserRequestDTO.username=this.email
-          this.loadData();
-            axios
-               .post("http://localhost:8081/admins/isPredefined",this.pomUserRequestDTO,{ 
-                headers: {
-                "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-                "Authorization": "Bearer " + localStorage.jwt ,
-                }
-                 })
-               .then((response) => {
-                  this.isPredefined=response.data;
-
-                   return response; 
-               });
-   
-      
-
-      },
+       this.email = this.$route.params.email
+       this.userRequestPom.username=this.email
+       this.predefinedAdmin();
+       this.getAllRequests();
+     },
      methods: {
-       loadData: function(){
-             axios.get("http://localhost:8081/userc/getNewUsers",{ 
-                headers: {
-                "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-                "Authorization": "Bearer " + localStorage.jwt ,
-                }
-                 })
-            .then(response => {this.userRequestDTO = response.data
-              
-              })
-             .catch(error => {
-                 this.errorMessage = error.message;
-                 console.error("There was an error!", error);
-           });
-       },
-       accept: function(user){
-                  axios.post("http://localhost:8081/account/acceptAccount",user,{ 
-                    headers: {
-                    "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-                    "Authorization": "Bearer " + localStorage.jwt ,
-                    }
-                    })
-                  .then(response => {this.userRequestDTO = response.data
-                        this.loadData();
-
-                   })
-                 .catch(error => {
-                  this.errorMessage = error.message;
-                   console.error("There was an error!", error);
-                  });
-       },
-       deny: function(user){
-                  this.denyClick=true;
-                  axios.post("http://localhost:8081/account/denyAccount/"+this.reason,user,{ 
-                  headers: {
-                  "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-                  "Authorization": "Bearer " + localStorage.jwt ,
-                  }
-                  })
-                  .then(response => {this.userRequestDTO = response.data
-                        this.loadData();
-                   })
-                 .catch(error => {
-                  this.errorMessage = error.message;
-                   console.error("There was an error!", error);
-                  });
-       },
-       redirectDeny: function(user){
-         this.$router.push('/reasonForDenying/'+this.email+"/"+user.username);
-                  
-       },
-       users: function(){
-           this.$router.push('/allUsers/'+this.email);
-       },
        requests: function(){
-            this.$router.push('/requests/'+this.email);
+         this.$router.push('/requests/'+ this.email);
+       },
+       allUsers: function(){
+          this.$router.push('/allUsers/'+ this.email);
        },
        redirectMyAccount: function(){
-           this.$router.push('/editProfile/'+'ADMIN/'+this.email);
+          this.$router.push('/editProfile/'+'admin/'+ this.email);
        },
        home: function(){
-           this.$router.push('/profileAdmin/'+this.email);
+          this.$router.push('/profileAdmin/'+ this.email);
        },
-        addAdmin: function(){
+       addAdmin: function(){
           this.$router.push('/addAdmin/'+ this.email);
        },
-        deleteAccount: function(){
-            this.$router.push('/deletingAccountRequests/'+ this.email);
+       deleteAccount: function(){
+           this.$router.go();
+       },
+       predefinedAdmin: function(){
+              axios.post("http://localhost:8081/account/isPredefined",this.userRequestPom,{ 
+                headers: {
+                "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+                "Authorization": "Bearer " + localStorage.jwt ,
+                }
+                 })
+                  .then(response => {
+                      this.isPredefined=response.data
+                      return response;
+                   })
+       },
+       getAllRequests: function(){
+              axios.get("http://localhost:8081/account/getAllRequests",{ 
+                headers: {
+                "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+                "Authorization": "Bearer " + localStorage.jwt ,
+                }
+                 })
+                  .then(response => {
+                      this.userRequestDTO=response.data
+                     
+                   })
+       },
+       denyDelete: function(){
+
+           this.mailDto.response= this.reasonDeny;
+           this.mailDto.recipient= this.userRequest.username;
+             axios.post("http://localhost:8081/account/sendDenyReasonForDeletingAccount",this.mailDto,{ 
+                headers: {
+                "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+                "Authorization": "Bearer " + localStorage.jwt ,
+                }
+                 })
+                  .then(response => {
+                    this.$router.go();
+                    return response;
+                     
+                   })
+
+
+       },
+       redirectDeny: function(user){
+           this.userRequest=user
+       },
+       redirectAccept: function(user){
+             this.userRequest=user
+       },
+       acceptDelete: function(){
+           
+           this.mailDto.response= this.reasonAccept;
+           this.mailDto.recipient= this.userRequest.username;
+            axios.post("http://localhost:8081/account/sendAcceptReasonForDeletingAccount",this.mailDto,{ 
+                headers: {
+                "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+                "Authorization": "Bearer " + localStorage.jwt ,
+                }
+                 })
+                  .then(response => {
+                        this.$swal('User has been deleted');
+                         this.$swal.fire(
+                            'Delete account!',
+                            'User has been deleted!',
+                            'success'
+                         )
+                        this.$router.go();
+
+                        return response
+                     
+                   })
+
+
        }
 
-       
       
     }
   }

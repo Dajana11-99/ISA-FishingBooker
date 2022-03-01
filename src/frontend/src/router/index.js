@@ -25,6 +25,8 @@ import EditAdventure from '../views/FishingInstructor/EditAdventure'
 import AddNewBoat from '../views/BoatOwner/AddNewBoat'
 import BoatProfile from '../views/BoatOwner/BoatProfile'
 import EditBoatProfile from '../views/BoatOwner/EditBoatProfile'
+import DeletingAccountRequests from '../views/Admin/DeletingAccountRequests'
+
 const routes = [
   {
     path: '/',
@@ -155,6 +157,11 @@ const routes = [
     path: '/editBoatProfile/:email/:boatName',
     name: 'EditBoatProfile',
     component: EditBoatProfile
+  },
+  {
+    path: '/deletingAccountRequests/:email',
+    name: 'DeletingAccountRequests',
+    component: DeletingAccountRequests
   },
 
 ]

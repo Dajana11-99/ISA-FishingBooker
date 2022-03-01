@@ -31,4 +31,10 @@ public interface UserService {
     void deleteUser(User user);
 
     void saveDeleteAccountRequest(String username, String reasonForDeleting);
+
+    List<User> getAllRequestsForDeletingAccount();
+
+    void sendDenyReason(String response, String recipient) throws MessagingException;
+
+    void sendAcceptReason(String response, String recipient) throws MessagingException;
 }

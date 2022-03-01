@@ -111,6 +111,9 @@ import axios from "axios";
        },
        addAdmin: function(){
           this.$router.push('/addAdmin/'+ this.email);
+       },
+        deleteAccount: function(){
+            this.$router.push('/deletingAccountRequests/'+ this.email);
        }
       
     }

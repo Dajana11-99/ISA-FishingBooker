@@ -20,4 +20,8 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     String findRoleById(@Param("id")Long id);
 
 
+    @Query(value = "SELECT * FROM users WHERE role != 'ADMIN' AND reason_for_deleting!=''",nativeQuery = true)
+    List<User> getReguestsForDeletingAccount();
+
+
 }
