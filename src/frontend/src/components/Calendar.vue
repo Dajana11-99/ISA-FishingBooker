@@ -1,10 +1,10 @@
 <template>
   <div class="card bg-dark text-white" style="margin: 5%">
     <div class="content">
-      <FullCalendar :options="calendarOptions"  class="calendar" />
-      <div class="info">
+      <FullCalendar :options="calendarOptions"   class="calendar" :style="[role =='instructor' ? {'width': '100%'} : {'width': '70%'}]" />
+      <div v-if="role !='instructor'" class="info">
         <h2>Availability</h2>
-        <div style="margin: 2rem 0">
+        <div   style="margin: 6rem 0">
           <div class="element">
             <h4 >Select </h4>
             <select  id="selectEl" :disabled="selectDisabled">
@@ -103,7 +103,7 @@ import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-//import dayjs from 'dayjs';
+
 
 import axios from "axios";
 
@@ -155,15 +155,6 @@ export default {
     };
   },
   mounted() {
-
-     // this.newData.title="AAAAAAAAAAAAAAAAAAAAAA";
-     // this.newData.startDate =new Date(year, month, 1);
-      //  console.log("AAAAAAAAAAAAAAAAAAA"+ year)
-          //     console.log("AAAAAAAAAAAAAAAAAAA"+ month)
-  //console.log("AAAAAAAAAAAAAAAAAAA22222"+ this.$props.role)
- //  console.log("Userrrrnameee iz propsaaaaa"+ this.$props.username)
-   
-     // this.calendarOptions.events.push( this.newData);
     
      if(this.$props.role ==='instructor'){
              axios.get("http://localhost:8081/userc/getUsername",{
@@ -183,26 +174,11 @@ export default {
                         })
                         .then(response => {
                             for( let newData of response.data ){
-                                newData.startDate.toString()
-                               
-                           //  const date = dayjs(newData.startDate);
-                           //  console.log("daaaatu"+date.format('DD,MM,YYYY'));
-        
-                                //console.log("DATUMMMM"+newData.startDate)
-                                    //newData.startDate.toString().format('MM/DD/YYYY hh:mm')
-                                   // console.log("DATUUUM"+  newData.startDate.toString().format('MM/DD/YYYY hh:mm'))
-                                 //  const date = dayjs(newData.startDate);
-                // Then specify how you want your dates to be formatted
-               var date= new Date()
-             
-                          var splits =newData.startDate.toString().split(",")
-                            date.setDate( splits[1],splits[2], splits[0])
-                            console.log("0-"+splits[0])
-                              console.log("1-"+splits[1])
-                                console.log("2-"+splits[2])
-                                
-                             console.log("AAAAAAAAAAAAA"+date.setDate( parseInt(splits[1], 10), parseInt(splits[2], 10), parseInt(splits[0], 10)))
-                            this.calendarOptions.events.push({title: 'Available', start: newData.startDate , end: newData.endDate})
+                                var start=newData.startDate
+                                var end=newData.endDate
+                                newData.startDate=this.setDate(start)
+                                newData.endDate=this.setDate(end)
+                              this.calendarOptions.events.push({title: 'Available', start: newData.startDate , end: newData.endDate})
                             }
                                 
                         
@@ -375,6 +351,22 @@ export default {
       */
   },
   methods: {
+
+    setDate: function(newDate){
+      
+      var date= new Date()
+      console.log("VREDNOSTII"+newDate.toString())
+          var splits =newDate.toString().split(",")
+          date.setDate( splits[1],splits[2], splits[0])
+          console.log("0-"+splits[0])
+          console.log("1-"+splits[1])
+          console.log("2-"+splits[2])
+          console.log("3-"+splits[3])
+          console.log("4-"+splits[4])
+    return new Date( parseInt(splits[0]), parseInt(splits[1])-1, parseInt(splits[2]),parseInt(splits[3]),parseInt(splits[4]))
+
+    },
+
 
   /*  clearAll: function () {
       this.selectDisabled = false;
