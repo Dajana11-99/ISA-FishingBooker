@@ -1,108 +1,80 @@
 <template>
-  <div class="card bg-dark text-white" style="margin: 5%">
+  <div class="card bg-light text-light" style="margin: 5%">
     <div class="content">
-      <FullCalendar :options="calendarOptions"   class="calendar" :style="[role =='instructor' ? {'width': '100%'} : {'width': '70%'}]" />
-      <div v-if="role !='instructor'" class="info">
-        <h2>Availability</h2>
-        <div   style="margin: 6rem 0">
-          <div class="element">
-            <h4 >Select </h4>
-            <select  id="selectEl" :disabled="selectDisabled">
-              <option value=""></option>
-              <option
-               
-              >
-               
-              </option>
-            </select>
+      <FullCalendar :options="calendarOptions"   class="calendar"  />
+      <div class="info">
+        <h2>Timetable</h2>
+
+        <br>
+        <br>
+        <h5 style=" text-align: left;">SET AVAILABLE PERIOD</h5>
+        <br>
+        <div class="row">
+          <div class="col" style="padding-top: 2%; text-align: left;" >
+            <h5>From</h5>
           </div>
-          <div class="element">
-            <h4>Available from:</h4>
-            <Datepicker
-              class="datePricker"
-              dark
-              id="startPicker"
-            
-              placeholder="Select date"
-              :enableTimePicker="true"
-              minutesIncrement="15"
-              :minDate="new Date()"
-            ></Datepicker>
-            <Datepicker
-              class="datePricker"
-              dark
-              id="disabledStartPicker"
+          <div class="col-sm-9" style="padding: 1%;" >
+             <Datepicker   
            
-              placeholder="Select date"
-              :enableTimePicker="true"
-              minutesIncrement="15"
-              :minDate="new Date()"
-           
-              disabled
-            ></Datepicker>
-          </div>
-          <div class="element">
-            <h4>Available to:</h4>
-            <Datepicker
-              class="datePricker"
-              dark
-              id="endPicker"
-         
-              placeholder="Select date"
-              :enableTimePicker="true"
-              minutesIncrement="15"
-              :minDate="new Date()"
-            ></Datepicker>
-            <Datepicker
-              class="datePricker"
-              dark
-              id="disabledEndPicker"
-      
-              placeholder="Select date"
-              :enableTimePicker="true"
-              minutesIncrement="15"
-              :minDate="new Date()"
-              disabled
-            
-            ></Datepicker>
-          </div>
-          <div
-            style="
-              margin-top: 4rem;
-              display: flex;
-              justify-content: space-evenly;
-            "
-          >
-            <button
-              class="btn btn-outline-primary save"
-              v-on:click="saveDate"
-              id="saveBtn"
-            >
-              Save
-            </button>
-            <button
-              class="btn btn-outline-primary delete-btn"
-              v-on:click="deleteDate"
-              id="deleteBtn"
-            >
-              Delete
-            </button>
-            <button class="btn btn-outline-primary" v-on:click="clearAll">
-              Clear all
-            </button>
+           v-model="start" 
+          :disabledDates="proba1"           
+         >
+          </Datepicker>
           </div>
         </div>
+        <div class="row">
+          <div class="col" style="padding-top: 2%; text-align: left;">
+            <h5>To</h5>
+          </div>
+          <div class="col-sm-9" style="padding: 1%;">
+             <Datepicker v-model="end"></Datepicker>
+          </div>
+        </div>
+           &nbsp;
+           <div class="col" style="text-align: right; width: 100%; padding-top: 1%;">
+           <button type="button" @click="setPeriod()" class="btn btn-light">Save</button>
+          </div>
+        <br>
+        <br>
+        <h5 style=" text-align: left;">SET UNAVAILABLE PERIOD</h5>
+        <br>
+        <div class="row">
+          <div class="col" style="padding-top: 2%; text-align: left;" >
+            <h5>From</h5>
+          </div>
+          <div class="col-sm-9" style="padding: 1%;" >
+             <Datepicker></Datepicker>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col" style="padding-top: 2%; text-align: left;">
+            <h5>To</h5>
+          </div>
+          <div class="col-sm-9" style="padding: 1%;">
+             <Datepicker></Datepicker>
+          </div>
+        </div>
+           &nbsp;
+           <div class="col" style="text-align: right; width: 100%; padding-top: 1%;">
+           <button type="button" class="btn btn-light">Save</button>
+          </div>
+
+
+      
       </div>
     </div>
   </div>
 </template>
 <script>
-import { ref } from "vue";
+import { ref,computed} from "vue";
 import "@fullcalendar/core/vdom"; // solves problem with Vite
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import Datepicker from 'vue3-date-time-picker';
+import 'vue3-date-time-picker/dist/main.css';
+import dayjs from 'dayjs';
 
 
 import axios from "axios";
@@ -114,14 +86,32 @@ export default {
    },
   components: {
     FullCalendar, // make the <FullCalendar> tag available
+    Datepicker,
+  
   },
   setup() {
     const startDate = ref();
     const endDate = ref();
+      
+        const proba1 = computed(() => {
+            const today = new Date();
+            
+            const tomorrow = new Date(today)
+            tomorrow.setDate(tomorrow.getDate() + 1)
+            
+            const afterTomorrow = new Date(tomorrow);
+            afterTomorrow.setDate(tomorrow.getDate() + 1);
+            
+            return [tomorrow, afterTomorrow]
+        })
+     
+ 
+           
      
     return {
       startDate,
       endDate,
+      proba1
     };
   },
   data() {
@@ -138,7 +128,7 @@ export default {
         headerToolbar: {
           left: "prev,next today",
           center: "title",
-          right: "dayGridMonth,timeGridWeek,timeGridDay",
+          right: "dayGridMonth,timeGridWeek,timeGridDay"
         },
         selectable: true,
         eventClick: this.event,
@@ -150,12 +140,48 @@ export default {
         userRequestDto: {
             username: ''
         },
+        start: null,
+        end: null,
+         fishingInstructorDtos: {
+               id: null,
+              username: '',
+              password: '',
+              firstname: '',
+             lastname: '',
+              phoneNum: '',
+             address: {
+                longitude: 0,
+                latitude: 0,
+                country: '',
+                city: '',
+                streetAndNum: ''
+             },
+             registrationReason: '',
+             role: '',
+             rating: '',
+            availableInstructorPeriodDtoSet: [{
+                 id: null,
+                startDate: null,
+                endDate: null,
+                instructorUsername: ''
+            }]
+
+          },
+           availableInstructorPeriod: [{
+                 id: null,
+                startDate: null,
+                endDate: null,
+                instructorUsername: ''
+            }],
+            state: [],
+         
+           
       
      
     };
   },
+ 
   mounted() {
-    
      if(this.$props.role ==='instructor'){
              axios.get("http://localhost:8081/userc/getUsername",{
             headers: {
@@ -165,6 +191,7 @@ export default {
              })
                .then(response => {
                        this.userRequestDto.username= response.data
+                       this.fishingInstructorDtos.username=response.data
                        axios.post("http://localhost:8081/instructorsPeriod/getAvailablePeriod",this.userRequestDto,{
                         headers: {
                         "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
@@ -173,12 +200,16 @@ export default {
                     
                         })
                         .then(response => {
+                          this.availableInstructorPeriod=response.data
+                          this.proba= [this.availableInstructorPeriod[0].startDate,this.availableInstructorPeriod[0].endDate]
+                        
                             for( let newData of response.data ){
                                 var start=newData.startDate
                                 var end=newData.endDate
                                 newData.startDate=this.setDate(start)
                                 newData.endDate=this.setDate(end)
                               this.calendarOptions.events.push({title: 'Available', start: newData.startDate , end: newData.endDate})
+                              this.state.push( newData.startDate)
                             }
                                 
                         
@@ -351,6 +382,46 @@ export default {
       */
   },
   methods: {
+
+     formatDate(formatDate) {
+            console.log("preeformat"+formatDate)
+            const date = dayjs(formatDate);
+           return date.format('YYYY-MM-DDTHH:mm:ss');
+        },setPeriod: function(){
+          console.log("starttt"+this.start)
+           console.log("endd"+this.end)
+         
+            this.fishingInstructorDtos.availableInstructorPeriodDtoSet[0]=({
+              startDate:  this.formatDate(this.start),
+              endDate:  this.formatDate(this.end),
+              instructorUsername: this.fishingInstructorDtos.username})
+              this.start='',
+              this.end=''
+    
+          
+          axios.post("http://localhost:8081/instructorsPeriod/setAvailableInstructorPeriod",this.fishingInstructorDtos,{
+            headers: {
+            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
+            "Authorization": "Bearer " + localStorage.jwt ,
+            }
+             })
+               .then(response => {
+                       this.$swal.fire({
+                 position: 'top-end',
+                  icon: 'success',
+                 title: 'Your work has been saved',
+               showConfirmButton: false,
+               timer: 1500
+                })
+                this.$router.go()
+                 return response;
+                      
+              })
+
+
+        },
+     
+        
 
     setDate: function(newDate){
       
@@ -595,27 +666,13 @@ export default {
       }
     },*/
   },
+
+  
 };
 </script>
 <style scoped>
 .element {
   margin-bottom: 2rem;
-}
-.save {
-  background-color: #1a252f;
-}
-.save:hover {
-  background-color: #2c3e50 !important;
-  color: white !important;
-  border: 1px solid white !important;
-}
-.delete-btn {
-  background-color: #2f1a1a !important;
-}
-.delete-btn:hover {
-  background-color: #502c2c !important;
-  color: white !important;
-  border: 1px solid white !important;
 }
 .content {
   display: flex;
@@ -623,29 +680,15 @@ export default {
 }
 .calendar {
   width: 70%;
+  color: #1a252f;
+  
+  
 }
 .info {
-  background: #212529;
+  background: #1a252f;
   width: 28%;
   border-radius: 5px;
   border: 1px solid white;
   padding: 1rem;
-}
-select {
-  background: transparent;
-  color: white;
-  border: 0;
-  border-bottom: 1px solid white;
-  width: 100%;
-}
-option {
-  background: #212529;
-}
-.datePricker {
-  margin-top: 2%;
-  border: 1px solid white;
-  border-radius: 5px;
-  width: 100%;
-  box-shadow: none !important;
 }
 </style>

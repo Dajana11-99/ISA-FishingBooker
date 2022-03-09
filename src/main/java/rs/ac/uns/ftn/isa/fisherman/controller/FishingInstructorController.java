@@ -7,10 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import rs.ac.uns.ftn.isa.fisherman.dto.AdventureDto;
-import rs.ac.uns.ftn.isa.fisherman.dto.CabinDto;
-import rs.ac.uns.ftn.isa.fisherman.dto.FishingInstructorDto;
-import rs.ac.uns.ftn.isa.fisherman.dto.UserRequestDTO;
+import rs.ac.uns.ftn.isa.fisherman.dto.*;
 import rs.ac.uns.ftn.isa.fisherman.mapper.AdventureMapper;
 import rs.ac.uns.ftn.isa.fisherman.mapper.AvailableInstructorPeriodMapper;
 import rs.ac.uns.ftn.isa.fisherman.mapper.FishingInstructorMapper;
@@ -53,16 +50,6 @@ public class FishingInstructorController {
        return new ResponseEntity<>(fishingInstructorDto, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('FISHING_INSTRUCTOR')")
-    @PostMapping("/setAvailableInstructorPeriod")
-    public ResponseEntity<String> setAvailableInstructorPeriod(@RequestBody FishingInstructorDto instructor){
-        FishingInstructor fishingInstructor= fishingInstructorService.findByUsername(instructor.getUsername());
-        Set<AvailableInstructorPeriod> availableInstructorPeriod= availableInstructorPeriodMapper
-                .availableInstructorDtosToInstructorPeriods(instructor.getAvailableInstructorPeriodDtoSet(),fishingInstructor);
-        fishingInstructorService.setAvailableInstructorPeriod(instructor.getId(),availableInstructorPeriod);
-
-        return new ResponseEntity<>("Success", HttpStatus.OK);
-    }
 
 
 

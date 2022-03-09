@@ -8,6 +8,9 @@ import rs.ac.uns.ftn.isa.fisherman.repository.AvailableInstructorPeriodRepositor
 import rs.ac.uns.ftn.isa.fisherman.service.AvailableInstructorPeriodService;
 import rs.ac.uns.ftn.isa.fisherman.service.FishingInstructorService;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -24,4 +27,14 @@ public class AvailableInstructorPeriodServiceImpl implements AvailableInstructor
         Long instructorId= fishingInstructorService.findByUsername(username).getId();
         return  availableInstructorPeriodRepository.findByInstructorId(instructorId);
     }
+
+    @Override
+    public void setAvailableInstructorPeriod(Long id, Set<AvailableInstructorPeriod> availableInstructorPeriod) {
+        FishingInstructor fishingInstructor = fishingInstructorService.findByID(id);
+        fishingInstructor.setAvailableInstructorPeriods(availableInstructorPeriod);
+        fishingInstructorService.save(fishingInstructor);
+    }
+
+
+
 }

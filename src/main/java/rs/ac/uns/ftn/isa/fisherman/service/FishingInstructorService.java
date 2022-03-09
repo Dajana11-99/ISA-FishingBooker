@@ -13,7 +13,8 @@ public interface FishingInstructorService {
 
     FishingInstructor findByUsername(String fishingInstructorUsername);
 
-    void setAvailableInstructorPeriod(Long id, Set<AvailableInstructorPeriod> availableInstructorPeriodDtoSet);
 
+    FishingInstructor findByID(Long id);
 
+    void save(FishingInstructor fishingInstructor);
 }

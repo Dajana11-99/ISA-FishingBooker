@@ -51,11 +51,6 @@
        
      </ul>
     
-    <Datepicker   v-model="startDate"></Datepicker>
-
-    <Datepicker   v-model="endDate"></Datepicker>
-    <button @click="setPeriod()">SETTTT</button>
-    
     
     <VCalendar :role="'instructor'"></VCalendar>
 
@@ -66,16 +61,14 @@
 
 <script>
  import axios from "axios";
-  import Datepicker from 'vue3-date-time-picker';
-    import 'vue3-date-time-picker/dist/main.css';
 import VCalendar from "@/components/Calendar.vue";
-import dayjs from 'dayjs';
+
 
 
 
    export default{
        props: ['role'],
-        components: { Datepicker, VCalendar },
+        components: { VCalendar },
      data(){
        return{
          email: '',
@@ -149,40 +142,11 @@ import dayjs from 'dayjs';
        },editProfile: function(){
             this.$router.push('/editAdventure/'+ this.email+'/'+this.adventureDto.name);
        },
-       formatDate(formatDate) {
-            const date = dayjs(formatDate);
-           return date.format('YYYY-MM-DDTHH:mm:ss');
-        },setPeriod: function(){
-          console.log("starttt"+this.startDate)
-           console.log("endd"+this.endDate)
-         
-            this.fishingInstructorDtos.availableInstructorPeriodDtoSet.push({
-              startDate:  this.formatDate(this.startDate),
-              endDate:  this.formatDate(this.endDate),
-              instructorUsername: this.email})
-              this.startDate='',
-              this.endDate=''
-    
-          
-          axios.post("http://localhost:8081/instructors/setAvailableInstructorPeriod",this.fishingInstructorDtos,{
-            headers: {
-            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-            "Authorization": "Bearer " + localStorage.jwt ,
-            }
-             })
-               .then(response => {
-                        console.log(response.data)
-                      
-              })
-
-
-        }
-
-
 
        
       
-    }
+    },
+    
   }
 
 </script> 

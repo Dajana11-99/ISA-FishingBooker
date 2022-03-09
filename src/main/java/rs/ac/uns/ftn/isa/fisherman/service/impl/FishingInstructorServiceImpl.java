@@ -30,9 +30,12 @@ public class FishingInstructorServiceImpl implements FishingInstructorService {
     }
 
     @Override
-    public void setAvailableInstructorPeriod(Long id, Set<AvailableInstructorPeriod> availableInstructorPeriodDtoSet) {
-        FishingInstructor fishingInstructor= fishingInstructorRepository.findByID(id);
-        fishingInstructor.setAvailableInstructorPeriods(availableInstructorPeriodDtoSet);
+    public FishingInstructor findByID(Long id) {
+        return  fishingInstructorRepository.findByID(id);
+    }
+
+    @Override
+    public void save(FishingInstructor fishingInstructor) {
         fishingInstructorRepository.save(fishingInstructor);
     }
 
