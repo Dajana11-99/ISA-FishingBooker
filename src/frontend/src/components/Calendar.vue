@@ -1,7 +1,7 @@
 <template>
   <div class="card bg-light text-light" style="margin: 5%">
     <div class="content">
-      <FullCalendar :options="calendarOptions"   class="calendar"  />
+      <FullCalendar :options="calendarOptions"    @select="handleSelect" class="calendar"  />
       <div class="info">
         <h2>Timetable</h2>
 
@@ -17,7 +17,7 @@
              <Datepicker   
            
            v-model="start" 
-          :disabledDates="proba1"           
+                
          >
           </Datepicker>
           </div>
@@ -63,10 +63,63 @@
       
       </div>
     </div>
+    
+<!--<shapla-modal :active="modalActive" title="" content-size="medium" @close="closeModal">
+    <h2 style="color: blue;">Define new available period</h2>
+    <div class="row">
+        <div class="col">
+           <button type="button" class="btn btn-secondary" @click="modalActive=false">Close</button>
+        </div>
+        <div class="col">
+           <button type="button" class="btn btn-primary" @click="modalActive=false">Save</button>
+        </div>
+    </div>
+</shapla-modal>-->
+
+<vue-modality ref="myRef" title="Edit available period" hide-footer centered>
+
+   <br>
+        <div class="row">
+          <div class="col" style="padding-top: 2%; text-align: left;" >
+            <h6>From</h6>
+          </div>
+          <div class="col-sm-9" style="padding: 1%;" >
+             <Datepicker   
+           :minDate="start"
+           :maxDate="end"
+           v-model="start" 
+                
+         >
+          </Datepicker>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col" style="padding-top: 2%; text-align: left;">
+            <h6>To</h6>
+          </div>
+          <div class="col-sm-9" style="padding: 1%;">
+             <Datepicker   :minDate="start" :maxDate="end" v-model="end"></Datepicker>
+          </div>
+        </div>
+
+  <br>
+   <div class="row">
+        <div class="col">
+           <button type="button" class="btn btn-secondary">Close</button>
+        </div>
+        <div class="col">
+           <button type="button" class="btn btn-danger">Delete</button>
+        </div>
+        <div class="col">
+           <button type="button" class="btn btn-primary" >Save</button>
+        </div>
+    </div>
+</vue-modality>
+
   </div>
 </template>
 <script>
-import { ref,computed} from "vue";
+import { ref} from "vue";
 import "@fullcalendar/core/vdom"; // solves problem with Vite
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -75,7 +128,9 @@ import interactionPlugin from "@fullcalendar/interaction";
 import Datepicker from 'vue3-date-time-picker';
 import 'vue3-date-time-picker/dist/main.css';
 import dayjs from 'dayjs';
-
+//import ShaplaModal from '@shapla/vue-modal';
+import '@shapla/vue-modal/dist/style.css';
+import VueModality from 'vue-modality-v3'
 
 import axios from "axios";
 
@@ -87,36 +142,32 @@ export default {
   components: {
     FullCalendar, // make the <FullCalendar> tag available
     Datepicker,
+    //ShaplaModal,
+    VueModality
+
   
   },
   setup() {
     const startDate = ref();
     const endDate = ref();
-      
-        const proba1 = computed(() => {
-            const today = new Date();
-            
-            const tomorrow = new Date(today)
-            tomorrow.setDate(tomorrow.getDate() + 1)
-            
-            const afterTomorrow = new Date(tomorrow);
-            afterTomorrow.setDate(tomorrow.getDate() + 1);
-            
-            return [tomorrow, afterTomorrow]
-        })
-     
- 
-           
-     
+    
+
+   const myRef = ref(null)
+    const openMyModal = () => { myRef.value.open() }
+   
     return {
+      myRef,
+      openMyModal,
       startDate,
       endDate,
-      proba1
+     
+    
     };
   },
   data() {
       
     return {
+      closeModal: false,
       disabledPickers: false,
       selectDisabled: false,
       currentEvent: "",
@@ -131,7 +182,18 @@ export default {
           right: "dayGridMonth,timeGridWeek,timeGridDay"
         },
         selectable: true,
-        eventClick: this.event,
+        eventClick: (arg)=>{
+         // this.modalActive=true
+         this.$refs.myRef.open()
+         
+// or close it by calling:
+        //  this.$refs.myRef.hide()
+          this.start=arg.event.start
+          this.end=arg.event.end
+          console.log("JAAAAAAS"+arg.event.title)
+           console.log("JAAAAAAS"+arg.event.id)
+          console.log("JAAAAAAS"+arg.event.start)
+        },
         selectMirror: true,
         dayMaxEvents: true,
         initialView: "dayGridMonth",
@@ -174,6 +236,7 @@ export default {
                 instructorUsername: ''
             }],
             state: [],
+            modalActive: false
          
            
       
@@ -182,6 +245,9 @@ export default {
   },
  
   mounted() {
+
+
+               
      if(this.$props.role ==='instructor'){
              axios.get("http://localhost:8081/userc/getUsername",{
             headers: {
@@ -201,14 +267,13 @@ export default {
                         })
                         .then(response => {
                           this.availableInstructorPeriod=response.data
-                          this.proba= [this.availableInstructorPeriod[0].startDate,this.availableInstructorPeriod[0].endDate]
                         
                             for( let newData of response.data ){
                                 var start=newData.startDate
                                 var end=newData.endDate
                                 newData.startDate=this.setDate(start)
                                 newData.endDate=this.setDate(end)
-                              this.calendarOptions.events.push({title: 'Available', start: newData.startDate , end: newData.endDate})
+                              this.calendarOptions.events.push({id: newData.id ,title: 'Available', start: newData.startDate , end: newData.endDate })
                               this.state.push( newData.startDate)
                             }
                                 
@@ -382,7 +447,9 @@ export default {
       */
   },
   methods: {
-
+     handleSelect(e){
+      console.log("AAAAAAAAAAAAAAAAAAA"+e);
+    },
      formatDate(formatDate) {
             console.log("preeformat"+formatDate)
             const date = dayjs(formatDate);
