@@ -110,18 +110,8 @@
 </div>
 </div>
 </div>
-
-
-
-
-      
-  </div>
-    
-  
-
-
+</div>
 </template>
-
 <script>
 
 
@@ -177,9 +167,7 @@ import axios from "axios";
 
        },
        editData: function(event){
-      
             event.preventDefault();
-            console.log("USAOOOOOOO")
             axios.post("http://localhost:8081/auth/editUser/",this.userRequestDto,{
                   headers: {
                   "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
