@@ -308,16 +308,8 @@ import FishingInstructorNavbar from './FishingInstructorNav.vue'
              if(this.imagesSelected==true)
                 this.adventureDto.images=null
 
-           axios.post("http://localhost:8081/adventures/edit",this.adventureDto,{
-              headers: {
-              "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-              "Authorization": "Bearer " + localStorage.jwt ,
-              }
-             
-             })
+           axios.post("http://localhost:8081/adventures/edit",this.adventureDto)
                .then(response => {
-              
-                 console.log("USAOO SAMMM")
                     if(this.imagesSelected==true){
                         this.saveImages()
                     }else{
@@ -341,12 +333,8 @@ import FishingInstructorNavbar from './FishingInstructorNav.vue'
       
         getAdventure: function(){
                 
-             axios.post("http://localhost:8081/adventures/findByName",this.adventureDto,{
-            headers: {
-            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-            "Authorization": "Bearer " + localStorage.jwt ,
-            }
-             }).then(response => {
+             axios.post("http://localhost:8081/adventures/findByName",this.adventureDto)
+             .then(response => {
               this.tableHidden=false;
               this.adventureDto=response.data
                 this.idx=this.adventureDto.additionalServices.length
@@ -370,13 +358,7 @@ import FishingInstructorNavbar from './FishingInstructorNav.vue'
                     let formData = new FormData();
                     let file =  this.imagesSelectedEvent.target.files[i];
                     formData.append('file', file);
-                       axios.post("http://localhost:8081/firebase/uploadAdventureImage/"+this.adventureDto.name,formData,{
-                      headers: {
-                      "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-                      "Authorization": "Bearer " + localStorage.jwt ,
-                      }
-             }
-                    )
+                       axios.post("http://localhost:8081/firebase/uploadAdventureImage/"+this.adventureDto.name,formData)
                     .then(response => {
                        this.$swal.fire({
                        position: 'top-end',
@@ -393,12 +375,8 @@ import FishingInstructorNavbar from './FishingInstructorNav.vue'
         },
         deleteAdventure: function(){
                      
-             axios.post("http://localhost:8081/adventures/deleteAdventure",this.adventureDto,{
-            headers: {
-            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-            "Authorization": "Bearer " + localStorage.jwt ,
-            }
-             }).then(response => {
+             axios.post("http://localhost:8081/adventures/deleteAdventure",this.adventureDto)
+             .then(response => {
                this.$router.push('/fishingInstructorHome/'+ this.email);
               return response   
 

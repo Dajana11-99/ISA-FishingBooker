@@ -182,12 +182,7 @@
      methods: {
        getBoats: function(){
           this.user.username=this.email
-             axios.get("http://localhost:8081/boats/getAll",{
-            headers: {
-            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-            "Authorization": "Bearer " + localStorage.jwt ,
-            }
-             })
+             axios.get("http://localhost:8081/boats/getAll")
                .then(response => {
                         this.boatDtos=response.data
                         this.boatsLoaded=true

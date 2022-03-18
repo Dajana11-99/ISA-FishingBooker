@@ -43,7 +43,7 @@
                   
                     <div class="row">
                       <div class="col-3">
-                        <button @click="logIn()" type="button" class="btn btn-outline-primary  active">Login</button>
+                        <button @click="sub()" type="button" class="btn btn-outline-primary  active">Login</button>
                       </div>
                      
                     </div>
@@ -90,25 +90,17 @@ import axios from "axios";
        }
      },
      methods: {
-     logIn: function(){
+      
+      async sub(){
         if(this.email != '' && this.password != ''){
-               axios
-               .post("http://localhost:8081/auth/login",this.LogInDto,
-               {
-          headers: {
-            'Access-Control-Allow-Origin': 'http://localhost:8080'
-          }
-      }).then((response) => {
-                 this.user.username=this.LogInDto.username
-                  localStorage.setItem("jwt", response.data.accessToken);
-                
+
+      this.$store.dispatch('logIn', this.LogInDto).then((response)=>{
+          console.log("VRATIOOSASASASAS"+response.data.userType)
+           this.user.username=this.LogInDto.username
                   if(response.data.userType==='ADMIN'){
-                        axios.post("http://localhost:8081/account/passwordStatus",this.user,{
-                          headers: {
-                          "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-                          "Authorization": "Bearer " + localStorage.jwt ,
-                          }
-                        }).then(response => {
+                       console.log("TOKEEEEEEEEEEEEEEEEEEEEEEEEEEN"+ localStorage.token )
+                        axios.post("http://localhost:8081/account/passwordStatus",this.user)
+                        .then(response => {
                             if(response.data==true){
                             this.$router.push('/profileAdmin/'+this.LogInDto.username);
                         }
@@ -127,7 +119,8 @@ import axios from "axios";
                      this.$router.push('/clientHome/'+this.LogInDto.username);
 
                    return response; 
-               }) .catch((error) => {
+
+      }) .catch((error) => {
                     if (error.response) {
                      
                         console.log(error.response.data);
@@ -135,7 +128,7 @@ import axios from "axios";
                             this.error=error.response.data;
                         }
                     }
-                });
+                })
         }
 
       },

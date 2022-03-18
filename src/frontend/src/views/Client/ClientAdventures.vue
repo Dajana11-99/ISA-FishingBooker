@@ -176,12 +176,7 @@
      },
      methods: {
         getAdventures: function(){
-             axios.get("http://localhost:8081/adventures/getAll",{
-            headers: {
-            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-            "Authorization": "Bearer " + localStorage.jwt ,
-            }
-             })
+             axios.get("http://localhost:8081/adventures/getAll")
                .then(response => {
                         this.adventureDtos=response.data
                         this.adventureLoaded=true

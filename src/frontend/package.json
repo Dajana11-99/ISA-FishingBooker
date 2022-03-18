@@ -44,7 +44,8 @@
     "vue-sweetalert2": "^5.0.2",
     "vue3-date-time-picker": "^2.7.0",
     "vue3-datepicker": "^0.3.2",
-    "vue3-openlayers": "^0.1.61"
+    "vue3-openlayers": "^0.1.61",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",

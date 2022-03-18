@@ -28,12 +28,7 @@ import axios from "axios";
        this.email = this.$route.params.email
          
       this.userRequestDTO.username=this.email
-                 axios.post("http://localhost:8081/admins/isPredefined",this.userRequestDTO,{ 
-                headers: {
-                "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-                "Authorization": "Bearer " + localStorage.jwt ,
-                }
-                 })
+                 axios.post("http://localhost:8081/admins/isPredefined",this.userRequestDTO)
                   .then(response => {
                       this.isPredefined=response.data
                       return response;

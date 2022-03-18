@@ -207,14 +207,7 @@ export default {
       this.user.username = this.email;
       axios
         .get(
-          "http://localhost:8081/cabins/getAll",
-          {
-            headers: {
-              "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-              Authorization: "Bearer " + localStorage.jwt,
-            },
-          }
-        )
+          "http://localhost:8081/cabins/getAll")
         .then((response) => {
           this.cabinDtos = response.data; 
           this.cabinsLoaded = true;

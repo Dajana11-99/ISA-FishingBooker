@@ -253,13 +253,8 @@ import axios from "axios";
 
      },
      methods: {
-       getCabinsAvailablePeriod: function(){
-               axios.post("http://localhost:8081/cabinsPeriod/getAvailablePeriod",this.cabinDto,{
-            headers: {
-            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-            "Authorization": "Bearer " + localStorage.jwt ,
-            }
-             })
+         getCabinsAvailablePeriod: function(){
+               axios.post("http://localhost:8081/cabinsPeriod/getAvailablePeriod",this.cabinDto)
                .then(response => {
                   this.availableCabinPeriod=response.data
                      for( let newData of response.data ){
@@ -278,12 +273,7 @@ import axios from "axios";
        getCabin: function(){
              this.cabinDto.name=this.cabinName
             
-             axios.post("http://localhost:8081/cabins/findByName",this.cabinDto,{
-            headers: {
-            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-            "Authorization": "Bearer " + localStorage.jwt ,
-            }
-             })
+             axios.post("http://localhost:8081/cabins/findByName",this.cabinDto)
                .then(response => {
                         this.cabinDto=response.data
                          this.cabinId=this.cabinDto.id
@@ -312,12 +302,7 @@ import axios from "axios";
               this.start='',
               this.end=''
     
-          axios.post("http://localhost:8081/cabinsPeriod/setAvailableCabinsPeriod",this.availableCabinPeriod,{
-            headers: {
-            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-            "Authorization": "Bearer " + localStorage.jwt ,
-            }
-             })
+          axios.post("http://localhost:8081/cabinsPeriod/setAvailableCabinsPeriod",this.availableCabinPeriod)
                .then(response => {
                        this.$swal.fire({
                  position: 'top-end',
@@ -339,14 +324,8 @@ import axios from "axios";
     setDate: function(newDate){
       
       var date= new Date()
-      console.log("VREDNOSTII"+newDate.toString())
           var splits =newDate.toString().split(",")
           date.setDate( splits[1],splits[2], splits[0])
-          console.log("0-"+splits[0])
-          console.log("1-"+splits[1])
-          console.log("2-"+splits[2])
-          console.log("3-"+splits[3])
-          console.log("4-"+splits[4])
     return new Date( parseInt(splits[0]), parseInt(splits[1])-1, parseInt(splits[2]),parseInt(splits[3]),parseInt(splits[4]))
 
     },

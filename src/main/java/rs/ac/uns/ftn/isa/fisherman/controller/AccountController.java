@@ -61,7 +61,7 @@ public class AccountController {
         if(this.userService.activateAccount(email, code) != null){
             return new ResponseEntity<>(success, HttpStatus.OK);
         }
-        return new ResponseEntity<>(success, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("bad request", HttpStatus.BAD_REQUEST);
     }
     @PostMapping("/passwordStatus")
     @PreAuthorize("hasRole('ADMIN')")

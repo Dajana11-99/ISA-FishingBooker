@@ -179,7 +179,6 @@ export default {
                .then((response) => {
                  console.log("RESPONSEE"+response.data)
                  if(response.data =='Email already in use.'){
-                   console.log("USAOOOOOOOOOOOOOOO")
                    this.flag= true
                  }else {
                       this.$router.push('/accountAlert/'+this.user.username);

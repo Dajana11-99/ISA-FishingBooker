@@ -210,19 +210,12 @@ export default{
      methods: {
        getAdventure: function(){
 
-             axios.post("http://localhost:8081/adventures/findByName",this.adventureDto,{
-            headers: {
-            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-            "Authorization": "Bearer " + localStorage.jwt ,
-            }
-             })
+             axios.post("http://localhost:8081/adventures/findByName",this.adventureDto)
                .then(response => {
                         this.adventureDto=response.data
                         this.adventureLoaded=true;
                         this.currentImageUrl=this.adventureDto.images[0].url
                         this.maxImageIndex=this.adventureDto.images.length-1
-                        console.log("image url "+this.currentImageUrl)
-                        console.log("max index"+ this.adventureDto.images.length)
               })
 
        },
@@ -230,28 +223,21 @@ export default{
              if(this.imageIndex>0){
                  this.imageIndex--
                  this.currentImageUrl=this.adventureDto.images[this.imageIndex].url
-                 console.log("image url "+this.currentImageUrl)
+            
              }
 
 
        },
        nextImage: function(){
-             console.log("indexxxx "+ this.imageIndex)
              if(this.imageIndex<this.maxImageIndex){
-                  console.log("usaoooo  "+ this.imageIndex)
                  this.imageIndex++
                  this.currentImageUrl=this.adventureDto.images[this.imageIndex].url
-                  console.log("povecao "+ this.imageIndex)
+                
              }
 
        },
           getInstructorRating: function(){
-            axios.post("http://localhost:8081/instructors/findInstructorRatingByUsername",this.fishingInstructorDto,{
-            headers: {
-            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-            "Authorization": "Bearer " + localStorage.jwt ,
-            }
-             })
+            axios.post("http://localhost:8081/instructors/findInstructorRatingByUsername",this.fishingInstructorDto)
                .then(response => {
                         this.fishingInstructorDto.rating=response.data
               })

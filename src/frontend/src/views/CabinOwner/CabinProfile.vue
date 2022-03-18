@@ -200,19 +200,12 @@
        },
        getCabin: function(){
              this.cabinDto.name=this.cabinName
-             axios.post("http://localhost:8081/cabins/findByName",this.cabinDto,{
-            headers: {
-            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-            "Authorization": "Bearer " + localStorage.jwt ,
-            }
-             })
+             axios.post("http://localhost:8081/cabins/findByName",this.cabinDto)
                .then(response => {
                         this.cabinDto=response.data
                         this.cabinLoaded=true;
                         this.currentImageUrl=this.cabinDto.images[0].url
                         this.maxImageIndex=this.cabinDto.images.length-1
-                        console.log("image url "+this.currentImageUrl)
-                        console.log("max index"+ this.cabinDto.images.length)
               })
 
        },
@@ -226,12 +219,9 @@
 
        },
        nextImage: function(){
-             console.log("indexxxx "+ this.imageIndex)
              if(this.imageIndex<this.maxImageIndex){
-                  console.log("usaoooo  "+ this.imageIndex)
                  this.imageIndex++
                  this.currentImageUrl=this.cabinDto.images[this.imageIndex].url
-                  console.log("povecao "+ this.imageIndex)
              }
 
        },

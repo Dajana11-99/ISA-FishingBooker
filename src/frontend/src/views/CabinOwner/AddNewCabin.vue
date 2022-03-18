@@ -330,12 +330,7 @@
                     canCancel: true,
                     onCancel: this.onCancel,
                 });
-               axios.post("http://localhost:8081/cabins/save",this.cabinDto,{
-            headers: {
-            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-            "Authorization": "Bearer " + localStorage.jwt ,
-            }
-             })
+               axios.post("http://localhost:8081/cabins/save",this.cabinDto)
                .then(response => {
                         
                         if(this.imagesSelected==true)
@@ -353,12 +348,7 @@
                     let formData = new FormData();
                     let file =  this.imagesSelectedEvent.target.files[i];
                     formData.append('file', file);
-                    axios.post("http://localhost:8081/firebase/uploadCabinImage/"+this.cabinDto.name,formData,{
-                        headers: {
-                        "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-                        "Authorization": "Bearer " + localStorage.jwt ,
-                        }
-                    })
+                    axios.post("http://localhost:8081/firebase/uploadCabinImage/"+this.cabinDto.name,formData)
                     .then(response => {
                        this.loader.hide();
                        this.loader=null

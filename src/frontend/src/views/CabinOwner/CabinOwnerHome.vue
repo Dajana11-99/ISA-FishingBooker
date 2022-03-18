@@ -268,15 +268,7 @@ export default {
       this.user.username = this.email;
       axios
         .post(
-          "http://localhost:8081/cabins/findCabinsByOwnersUsername",
-          this.user,
-          {
-            headers: {
-              "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-              Authorization: "Bearer " + localStorage.jwt,
-            },
-          }
-        )
+          "http://localhost:8081/cabins/findCabinsByOwnersUsername",this.user)
         .then((response) => {
           this.cabinDtos = response.data;
           this.cabinsLoaded = true;

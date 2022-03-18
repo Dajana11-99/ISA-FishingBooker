@@ -4,8 +4,6 @@ import router from './router'
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 import {getAuth} from "firebase/auth"
-import axios from "axios"
-import config from "./configuration/config"
 //mape
 import OpenLayersMap from 'vue3-openlayers'
 import 'vue3-openlayers/dist/vue3-openlayers.css'
@@ -23,6 +21,8 @@ import Datepicker from 'vue3-date-time-picker';
 import 'vue3-date-time-picker/dist/main.css';
 import VCalendar from 'v-calendar';
 
+import store from '../src/store/index'
+
 const firebaseConfig = {
     apiKey: "AIzaSyAwNdI28zKlIT2GG3pRLpH9aMmcbUftl04",
     authDomain: "isa15-d7c5c.firebaseapp.com",
@@ -34,11 +34,11 @@ const firebaseConfig = {
   };
   
   // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-axios.defaults.headers['Authorization']=config.requestHeader.headers.Authorization
+const app = initializeApp(firebaseConfig)
+
 getDatabase(app);
 getAuth();
-createApp(App).use(router).use(VueSweetalert2).use(VCalendar).use(VueLoading).use(Datepicker).use(OpenLayersMap).mount('#app');
+createApp(App).use(router).use(VueSweetalert2).use(VCalendar).use(VueLoading).use(Datepicker).use(store).use(OpenLayersMap).mount('#app');
 
 
 

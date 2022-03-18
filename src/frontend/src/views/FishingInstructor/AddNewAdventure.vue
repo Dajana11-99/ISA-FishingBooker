@@ -343,12 +343,7 @@
                 });
                 
 
-               axios.post("http://localhost:8081/adventures/save",this.adventureDto,{
-            headers: {
-            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-            "Authorization": "Bearer " + localStorage.jwt ,
-            }
-             })
+               axios.post("http://localhost:8081/adventures/save",this.adventureDto)
                .then(response => {
                         
                         if(this.imagesSelected==true)
@@ -366,12 +361,7 @@
                     let formData = new FormData();
                     let file =  this.imagesSelectedEvent.target.files[i];
                     formData.append('file', file);
-                       axios.post("http://localhost:8081/firebase/uploadAdventureImage/"+this.adventureDto.name,formData,{
-                        headers: {
-                        "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-                        "Authorization": "Bearer " + localStorage.jwt ,
-                        }
-             })
+                       axios.post("http://localhost:8081/firebase/uploadAdventureImage/"+this.adventureDto.name,formData)
                     .then(response => {
                     this.loader.hide();
 

@@ -118,12 +118,7 @@ export default {
          
                       if(this.confirmPassword===this.changePasswordDto.newPassword){
                          axios
-                         .post("http://localhost:8081/auth/changePassword",this.changePasswordDto,{
-                          headers: {
-                          "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-                          "Authorization": "Bearer " + localStorage.jwt ,
-                          }
-                          })
+                         .post("http://localhost:8081/auth/changePassword",this.changePasswordDto)
                          .then((response) => {
                                this.$swal.fire(
                                'Password changed!',

@@ -255,12 +255,7 @@ export default{
      methods: {
       getInstructorsAdventures: function(){
              this.fishingInstructorDto.username=this.email
-             axios.post("http://localhost:8081/adventures/findAdventuresByInstructorUsername",this.fishingInstructorDto,{
-            headers: {
-            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-            "Authorization": "Bearer " + localStorage.jwt ,
-            }
-             })
+             axios.post("http://localhost:8081/adventures/findAdventuresByInstructorUsername",this.fishingInstructorDto)
                .then(response => {
                         this.adventureDtos=response.data
                         this.adventureLoaded=true
@@ -268,12 +263,7 @@ export default{
 
        },
       getInstructorRating: function(){
-            axios.post("http://localhost:8081/instructors/findInstructorRatingByUsername",this.fishingInstructorDto,{
-            headers: {
-            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-            "Authorization": "Bearer " + localStorage.jwt ,
-            }
-             })
+            axios.post("http://localhost:8081/instructors/findInstructorRatingByUsername",this.fishingInstructorDto)
                .then(response => {
                         this.fishingInstructorDto.rating=response.data
               })

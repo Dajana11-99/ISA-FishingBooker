@@ -64,12 +64,7 @@ import FishingInstructorNavbar from './FishingInstructorNav.vue'
        this.email = this.$route.params.email;
        
        this.fishingInstructorDtos.username= this.email
-            axios.post("http://localhost:8081/instructors/findByUsername",this.fishingInstructorDtos,{
-            headers: {
-            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-            "Authorization": "Bearer " + localStorage.jwt ,
-            }
-             })
+            axios.post("http://localhost:8081/instructors/findByUsername",this.fishingInstructorDtos)
                .then(response => {
                         this.fishingInstructorDtos=response.data
                         console.log("userrrnameee iz "+this.fishingInstructorDtos.username)

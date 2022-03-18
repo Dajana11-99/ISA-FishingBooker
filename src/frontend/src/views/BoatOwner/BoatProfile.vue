@@ -218,12 +218,7 @@
        getBoat: function(){
                   this.boatDto.name=this.boatName
                   this.boatDto.ownersUsername=this.email
-            axios.post("http://localhost:8081/boats/findByName",this.boatDto,{
-                  headers: {
-                  "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-                  "Authorization": "Bearer " + localStorage.jwt ,
-                  }
-                  })
+            axios.post("http://localhost:8081/boats/findByName",this.boatDto)
                   .then(response => {
                         this.boatDto=response.data
                         this.boatLoaded=true;
@@ -245,12 +240,10 @@
 
        },
        nextImage: function(){
-             console.log("indexxxx "+ this.imageIndex)
              if(this.imageIndex<this.maxImageIndex){
-                  console.log("usaoooo  "+ this.imageIndex)
                  this.imageIndex++
                  this.currentImageUrl=this.boatDto.images[this.imageIndex].url
-                  console.log("povecao "+ this.imageIndex)
+               
              }
 
        },

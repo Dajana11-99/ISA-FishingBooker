@@ -111,12 +111,7 @@ import axios from "axios";
             if(this.userRequestDto.reasonForDeleting===""){
                 this.showLabel=true;
             }else{
-            axios.post("http://localhost:8081/auth/saveDeleteAccountRequest",this.userRequestDto,{
-            headers: {
-            "Access-Control-Allow-Origin": process.env.VUE_APP_URL,
-            "Authorization": "Bearer " + localStorage.jwt ,
-            }
-            })
+            axios.post("http://localhost:8081/auth/saveDeleteAccountRequest",this.userRequestDto)
             .then(response => {
                         this.$swal.fire(
                           'Request sent!',
