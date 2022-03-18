@@ -187,6 +187,7 @@ const routes = [
     name: 'BoatCalendar',
     component: BoatCalendar
   },
+  
 
 ]
 

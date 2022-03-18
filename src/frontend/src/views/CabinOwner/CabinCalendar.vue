@@ -56,7 +56,7 @@
      </ul>
     
 
-         <div class="card bg-light text-light" style="margin: 5%">
+    <div class="card bg-light text-light" style=" margin: 5%; margin-top: 2%">
     <div class="content">
       <FullCalendar :options="calendarOptions"    @select="handleSelect" class="calendar"  />
       <div class="info">
@@ -93,29 +93,7 @@
           </div>
         <br>
         <br>
-        <h5 style=" text-align: left;">SET UNAVAILABLE PERIOD</h5>
-        <br>
-        <div class="row">
-          <div class="col" style="padding-top: 2%; text-align: left;" >
-            <h5>From</h5>
-          </div>
-          <div class="col-sm-9" style="padding: 1%;" >
-             <Datepicker></Datepicker>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col" style="padding-top: 2%; text-align: left;">
-            <h5>To</h5>
-          </div>
-          <div class="col-sm-9" style="padding: 1%;">
-             <Datepicker></Datepicker>
-          </div>
-        </div>
-           &nbsp;
-           <div class="col" style="text-align: right; width: 100%; padding-top: 1%;">
-           <button type="button" class="btn btn-light">Save</button>
-          </div>
-
+      
 
       
       </div>
@@ -149,6 +127,39 @@
         </div>
 
   <br>
+  <hr>
+  <div style="text-align: left;">
+  <h6>Add unavailable days</h6>
+  </div>
+         <br>
+        <div class="row">
+          <div class="col" style="padding-top: 2%; text-align: left;" >
+            <h6>From</h6>
+          </div>
+          <div class="col-sm-9" style="padding: 1%;" >
+             <Datepicker   
+           :minDate="start"
+           :maxDate="end"
+           v-model="unavailableStart" 
+                
+         >
+          </Datepicker>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col" style="padding-top: 2%; text-align: left;">
+            <h6>To</h6>
+          </div>
+          <div class="col-sm-9" style="padding: 1%;">
+             <Datepicker   :minDate="unavailableStart" :maxDate="end" v-model="unavailableEnd"></Datepicker>
+          </div>
+        </div>
+        <div class="row">
+                  <label v-if="reservationExists==true" style="color: red;">Reservation in this period already exists!</label>
+        </div>
+        <button type="button" class="btn btn-outline-dark">Add</button>
+  <br>
+  <hr>
    <div class="row">
         <div class="col">
            <button type="button" class="btn btn-secondary">Close</button>
@@ -166,8 +177,6 @@
   </div>
 
 </template>
-
-
 
 <script>
 import { ref} from "vue";
@@ -209,7 +218,10 @@ import axios from "axios";
 
      data(){
        return{
-              closeModal: false,
+      unavailableStart: '',
+      unavailableEnd: '',
+      reservationExists: false,
+      closeModal: false,
       disabledPickers: false,
       selectDisabled: false,
       currentEvent: "",
