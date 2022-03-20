@@ -168,7 +168,6 @@ public class Cabin {
         this.price = price;
         this.address = address;
         this.rating = rating;
-        this.cabinOwner = cabinOwner;
         this.additionalServices = new HashSet<>();
         this.images = new HashSet<>();
         this.availableCabinPeriods=new HashSet<>();
@@ -185,7 +184,6 @@ public class Cabin {
         this.address = address;
         this.additionalServices = additionalServices;
         this.rating = rating;
-        this.cabinOwner = cabinOwner;
         this.images=new HashSet<>();
         this.availableCabinPeriods=new HashSet<>();
     }

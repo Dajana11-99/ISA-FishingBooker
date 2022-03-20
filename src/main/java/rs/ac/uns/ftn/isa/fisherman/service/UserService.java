@@ -4,12 +4,9 @@ import rs.ac.uns.ftn.isa.fisherman.dto.UserRequestDTO;
 import rs.ac.uns.ftn.isa.fisherman.model.*;
 import javax.mail.MessagingException;
 import java.util.List;
-import java.util.Optional;
 
 
 public interface UserService {
-
-    Optional<User> findById(Long id);
     User findByUsername(String username);
     List<User> findAll ();
     User registerCabinOwner(CabinOwner cabinOwner) throws MessagingException;
@@ -18,7 +15,7 @@ public interface UserService {
 
     User registerAdmin(Admin admin);
     User registerFishingInstructor(FishingInstructor fishingInstructor) throws MessagingException;
-    String findRoleById(Long id);
+
 
     User activateAccount(String email, String code);
 
@@ -37,8 +34,4 @@ public interface UserService {
 
     void sendAcceptReason(String response, String recipient) throws MessagingException;
 
-
-    String getUsernameFromToken(String s);
-
-    String getRoleFromToken(String s);
 }

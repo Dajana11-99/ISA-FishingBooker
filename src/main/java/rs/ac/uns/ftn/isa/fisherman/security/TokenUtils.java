@@ -1,8 +1,6 @@
 package rs.ac.uns.ftn.isa.fisherman.security;
 
 import java.util.Date;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +11,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import rs.ac.uns.ftn.isa.fisherman.model.Authority;
 import rs.ac.uns.ftn.isa.fisherman.model.User;
 
 // Utility klasa za rad sa JSON Web Tokenima
@@ -21,31 +18,25 @@ import rs.ac.uns.ftn.isa.fisherman.model.User;
 public class TokenUtils {
 
     @Value("spring-security-example")
-    private String APP_NAME;
+    private String appName;
 
     // Tajna koju samo backend aplikacija treba da zna kako bi mogla da generise i proveri JWT https://jwt.io/
     @Value("somesecret")
-    public String SECRET;
+    public String secret;
 
     // Period vazenja tokena - 30 minuta
     @Value("1800000")
-    private int EXPIRES_IN;
+    private int expiresIn;
 
     // Naziv headera kroz koji ce se prosledjivati JWT u komunikaciji server-klijent
     @Value("Authorization")
-    private String AUTH_HEADER;
+    private String authHeader;
 
-    // Moguce je generisati JWT za razlicite klijente (npr. web i mobilni klijenti nece imati isto trajanje JWT,
-    // JWT za mobilne klijente ce trajati duze jer se mozda aplikacija redje koristi na taj nacin)
-    // Radi jednostavnosti primera, necemo voditi racuna o uređaju sa kojeg zahtev stiže.
-    //	private static final String AUDIENCE_UNKNOWN = "unknown";
-    //	private static final String AUDIENCE_MOBILE = "mobile";
-    //	private static final String AUDIENCE_TABLET = "tablet";
 
     private static final String AUDIENCE_WEB = "web";
 
     // Algoritam za potpisivanje JWT
-    private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
+    private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS512;
 
 
     // ============= Funkcije za generisanje JWT tokena =============
@@ -58,12 +49,12 @@ public class TokenUtils {
      */
     public String generateToken(String username) {
         return Jwts.builder()
-                .setIssuer(APP_NAME)
+                .setIssuer(appName)
                 .setSubject(username)
                 .setAudience(generateAudience())
                 .setIssuedAt(new Date())
                 .setExpiration(generateExpirationDate())
-                .signWith(SIGNATURE_ALGORITHM, SECRET).compact();
+                .signWith(signatureAlgorithm, secret).compact();
 
 
         // moguce je postavljanje proizvoljnih podataka u telo JWT tokena pozivom funkcije .claim("key", value), npr. .claim("role", user.getRole())
@@ -74,19 +65,6 @@ public class TokenUtils {
      * @return Tip uređaja.
      */
     private String generateAudience() {
-
-        //	Moze se iskoristiti org.springframework.mobile.device.Device objekat za odredjivanje tipa uredjaja sa kojeg je zahtev stigao.
-        //	https://spring.io/projects/spring-mobile
-
-        //	String audience = AUDIENCE_UNKNOWN;
-        //		if (device.isNormal()) {
-        //			audience = AUDIENCE_WEB;
-        //		} else if (device.isTablet()) {
-        //			audience = AUDIENCE_TABLET;
-        //		} else if (device.isMobile()) {
-        //			audience = AUDIENCE_MOBILE;
-        //		}
-
         return AUDIENCE_WEB;
     }
 
@@ -96,7 +74,7 @@ public class TokenUtils {
      * @return Datum do kojeg je JWT validan.
      */
     public Date generateExpirationDate() {
-        return new Date(new Date().getTime() + EXPIRES_IN);
+        return new Date(new Date().getTime() + expiresIn);
     }
 
     // =================================================================
@@ -104,10 +82,6 @@ public class TokenUtils {
     // ============= Funkcije za citanje informacija iz JWT tokena =============
 
 
-    private Boolean isTokenExpired(String token) {
-        final Date expiration = this.getExpirationDateFromToken(token);
-        return expiration.before(new Date());
-    }
     public String getToken(HttpServletRequest request) {
         String authHeader = getAuthHeaderFromHeader(request);
 
@@ -128,7 +102,9 @@ public class TokenUtils {
      * @param token JWT token.
      * @return Korisničko ime iz tokena ili null ukoliko ne postoji.
      */
-    public String getUsernameFromToken(String token) {
+
+    public String getUsernameFromToken(String token) //NOSONAR
+    {
     
         String username;
 
@@ -164,24 +140,6 @@ public class TokenUtils {
         return issueAt;
     }
 
-    /**
-     * Funkcija za preuzimanje informacije o uređaju iz tokena.
-     *
-     * @param token JWT token.
-     * @return Tip uredjaja.
-     */
-    public String getAudienceFromToken(String token) {
-        String audience;
-        try {
-            final Claims claims = this.getAllClaimsFromToken(token);
-            audience = claims.getAudience();
-        } catch (ExpiredJwtException ex) {
-            throw ex;
-        } catch (Exception e) {
-            audience = null;
-        }
-        return audience;
-    }
 
     /**
      * Funkcija za preuzimanje datuma do kada token važi.
@@ -203,35 +161,12 @@ public class TokenUtils {
         return expiration;
     }
 
-    public List<Authority> getUserRolesFromToken(String token) {
-        return (List<Authority>) getAllClaimsFromToken(token).get("USER_ROLE");
-    }
-    public String getRoleFromToken(String token) {
-        String role;
-
-        try {
-            final Claims claims = this.getAllClaimsFromToken(token);
-            role = claims.get("ROLE_", String.class);
-        } catch (ExpiredJwtException ex) {
-            throw ex;
-        } catch (Exception e) {
-            role = null;
-        }
-
-        return role;
-    }
-    /**
-     * Funkcija za čitanje svih podataka iz JWT tokena
-     *
-     * @param token JWT token.
-     * @return Podaci iz tokena.
-     */
     private Claims getAllClaimsFromToken(String token) {
 
         Claims claims;
         try {
             claims = Jwts.parser()
-                    .setSigningKey(SECRET)
+                    .setSigningKey(secret)
                     .parseClaimsJws(token)
                     .getBody();
         } catch (ExpiredJwtException ex) {
@@ -287,7 +222,7 @@ public class TokenUtils {
      * @return Period važenja tokena.
      */
     public int getExpiredIn() {
-        return EXPIRES_IN;
+        return expiresIn;
     }
 
 
@@ -300,7 +235,7 @@ public class TokenUtils {
      * @return Sadrzaj iz AUTH_HEADER-a.
      */
     public String getAuthHeaderFromHeader(HttpServletRequest request) {
-        return request.getHeader(AUTH_HEADER);
+        return request.getHeader(authHeader);
     }
 
 

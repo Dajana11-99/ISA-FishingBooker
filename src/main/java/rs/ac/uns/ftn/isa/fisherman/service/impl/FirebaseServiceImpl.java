@@ -3,9 +3,12 @@ package rs.ac.uns.ftn.isa.fisherman.service.impl;
 import com.google.auth.Credentials;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import rs.ac.uns.ftn.isa.fisherman.controller.FirebaseController;
 import rs.ac.uns.ftn.isa.fisherman.model.Image;
 import rs.ac.uns.ftn.isa.fisherman.service.AdventureService;
 import rs.ac.uns.ftn.isa.fisherman.service.BoatService;
@@ -22,14 +25,16 @@ import java.nio.file.Paths;
 import java.util.UUID;
 @Service
 public class FirebaseServiceImpl implements FirebaseService {
-    private String downloadUrl="https://firebasestorage.googleapis.com/v0/b/isafisherman-94973.appspot.com/o/%s?alt=media";
-    private String tempUrl="";
+    private final Logger logger= LoggerFactory.getLogger(FirebaseServiceImpl.class);
+    private static final String DOWNLOAD_URL ="https://firebasestorage.googleapis.com/v0/b/isafisherman-94973.appspot.com/o/%s?alt=media";
+
     @Autowired
     private CabinService cabinService;
     @Autowired
     private AdventureService adventureService;
     @Autowired
     private BoatService boatService;
+
     private String uploadFile(File file, String fileName) throws IOException {
         String currentDirectory = System.getProperty("user.dir");
         BlobId blobId = BlobId.of("isafisherman-94973.appspot.com", fileName);
@@ -37,14 +42,14 @@ public class FirebaseServiceImpl implements FirebaseService {
         Credentials credentials = GoogleCredentials.fromStream(new FileInputStream(currentDirectory+"/src/main/resources/firebaseToken.json"));
         Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
         storage.create(blobInfo, Files.readAllBytes(file.toPath()));
-        return String.format(downloadUrl, URLEncoder.encode(fileName, StandardCharsets.UTF_8));
+        return String.format(DOWNLOAD_URL, URLEncoder.encode(fileName, StandardCharsets.UTF_8));
     }
-    private File convertToFile(MultipartFile multipartFile, String fileName) throws IOException  //NOSONAR
+    private File convertToFile(MultipartFile multipartFile, String fileName) throws IOException
     {
         File tempFile = new File(fileName);
-        try (FileOutputStream fos = new FileOutputStream(tempFile)) {
+        try (FileOutputStream fos = new FileOutputStream(tempFile)) //NOSONAR
+        {
             fos.write(multipartFile.getBytes());
-            fos.close();
         }
         return tempFile;
     }
@@ -52,6 +57,7 @@ public class FirebaseServiceImpl implements FirebaseService {
     private String getExtension(String fileName) {
         return fileName.substring(fileName.lastIndexOf("."));
     }
+
     private String upload(MultipartFile multipartFile) {
 
         try {
@@ -59,11 +65,11 @@ public class FirebaseServiceImpl implements FirebaseService {
             fileName = UUID.randomUUID().toString().concat(this.getExtension(fileName));
 
             File file = this.convertToFile(multipartFile, fileName);
-            tempUrl = this.uploadFile(file, fileName);
-            file.delete();
-            return  fileName;
+            this.uploadFile(file, fileName);
+            file.delete(); //NOSONAR
+            return fileName;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.toString());
             return null;
         }
 

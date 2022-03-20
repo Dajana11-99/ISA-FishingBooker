@@ -2,11 +2,14 @@ package rs.ac.uns.ftn.isa.fisherman.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import rs.ac.uns.ftn.isa.fisherman.controller.FirebaseController;
 import rs.ac.uns.ftn.isa.fisherman.dto.UserRequestDTO;
 import rs.ac.uns.ftn.isa.fisherman.mail.*;
 import rs.ac.uns.ftn.isa.fisherman.model.*;
@@ -19,23 +22,17 @@ import javax.mail.MessagingException;
 
 @Service
 public class UserServiceImpl implements UserService {
+    private final Logger logger= LoggerFactory.getLogger(UserServiceImpl.class);
     private UserRepository userRepository;
     private MailService<String> mailService;
     private  AuthorityService authorityService;
     private PasswordEncoder passwordEncoder;
-    private TokenUtils tokenUtils;
     @Autowired
     public UserServiceImpl(UserRepository userRepository, MailService<String> mailService, AuthorityService authorityService, PasswordEncoder passwordEncoder, TokenUtils tokenUtils){
         this.userRepository=userRepository;
         this.mailService=mailService;
         this.authorityService=authorityService;
         this.passwordEncoder =passwordEncoder;
-        this.tokenUtils= tokenUtils;
-    }
-
-    @Override
-    public Optional<User> findById(Long id) {
-        return null;
     }
 
     @Override
@@ -115,7 +112,7 @@ public class UserServiceImpl implements UserService {
         try {
             mailService.sendMail(user.getUsername(),user.getUsername(),new AccountAcceptedInfo());
         } catch (MessagingException e) {
-            e.printStackTrace();
+             logger.error(e.toString());
         }
     }
     public void denyAccount(User user,String reason){
@@ -125,7 +122,7 @@ public class UserServiceImpl implements UserService {
         try {
             mailService.sendMail(email,reason,new AccountDeniedInfo());
         } catch (MessagingException e) {
-            e.printStackTrace();
+            logger.error(e.toString());
         }
     }
 
@@ -172,16 +169,5 @@ public class UserServiceImpl implements UserService {
         User user=userRepository.findByUsername(recipient);
         userRepository.delete(user);
     }
-
-    @Override
-    public String getUsernameFromToken(String s) {
-        return tokenUtils.getUsernameFromToken(s);
-    }
-
-    @Override
-    public String getRoleFromToken(String s) {
-        return tokenUtils.getRoleFromToken(s);
-    }
-
 
 }
