@@ -18,15 +18,14 @@ public class FirebaseInitialize {
 
     @PostConstruct
     public void initialize() throws IOException {
-        FileInputStream serviceAccount=null;
+        FileInputStream serviceAccount=new FileInputStream(CLOUD);
         try {
-            serviceAccount = new FileInputStream(CLOUD);
             FirebaseOptions options = new FirebaseOptions.Builder().setCredentials(GoogleCredentials.fromStream(serviceAccount)).build(); //NOSONAR
             FirebaseApp.initializeApp(options);
         }catch (Exception e){
             logger.error(e.toString());
         }finally {
-            serviceAccount.close();  //NOSONAR
+            serviceAccount.close(); 
         }
 
     }
