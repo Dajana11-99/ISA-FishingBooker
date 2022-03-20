@@ -17,17 +17,12 @@ public class FirebaseInitialize {
     private static final String CLOUD= "./isafisherman-firebase.json";
 
     @PostConstruct
-    @Deprecated(since = "5.3.16",forRemoval = true)
     public void initialize() throws IOException {
         try {
             FileInputStream serviceAccount = new FileInputStream(CLOUD);
-
-            FirebaseOptions options = new FirebaseOptions.Builder()
-                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    .build();
-
+            FirebaseOptions options = new FirebaseOptions.Builder().setCredentials(GoogleCredentials.fromStream(serviceAccount)).build(); //NOSONAR
             FirebaseApp.initializeApp(options);
-            serviceAccount.close();
+            serviceAccount.close();  //NOSONAR
         }catch (Exception e){
             logger.error(e.toString());
         }
