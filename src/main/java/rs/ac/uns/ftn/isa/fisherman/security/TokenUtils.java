@@ -83,15 +83,13 @@ public class TokenUtils {
 
 
     public String getToken(HttpServletRequest request) {
-        String authHeader = getAuthHeaderFromHeader(request);
+        String headerFromHeader = getAuthHeaderFromHeader(request);
 
         // JWT se prosledjuje kroz header 'Authorization' u formatu:
         // Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 
-
-
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            return authHeader.substring(7); // preuzimamo samo token (vrednost tokena je nakon "Bearer " prefiksa)
+        if (headerFromHeader != null && headerFromHeader.startsWith("Bearer ")) {
+            return headerFromHeader.substring(7); // preuzimamo samo token (vrednost tokena je nakon "Bearer " prefiksa)
         }
 
         return null;
@@ -110,7 +108,7 @@ public class TokenUtils {
 
         try {
             final Claims claims = this.getAllClaimsFromToken(token);
-            username = claims.getSubject();
+            username = claims.getSubject(); //NOSONAR
         } catch (ExpiredJwtException ex) {
             throw ex;
         } catch (Exception e) {
@@ -131,7 +129,7 @@ public class TokenUtils {
         Date issueAt;
         try {
             final Claims claims = this.getAllClaimsFromToken(token);
-            issueAt = claims.getIssuedAt();
+            issueAt = claims.getIssuedAt(); //NOSONAR
         } catch (ExpiredJwtException ex) {
             throw ex;
         } catch (Exception e) {
@@ -151,7 +149,7 @@ public class TokenUtils {
         Date expiration;
         try {
             final Claims claims = this.getAllClaimsFromToken(token);
-            expiration = claims.getExpiration();
+            expiration = claims.getExpiration(); //NOSONAR
         } catch (ExpiredJwtException ex) {
             throw ex;
         } catch (Exception e) {
