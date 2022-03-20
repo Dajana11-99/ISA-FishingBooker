@@ -12,5 +12,5 @@ public interface BoatRepository extends JpaRepository<Boat,Integer> {
     @Query(value = "SELECT * FROM boat WHERE users_id=:users_id",nativeQuery = true)
     Set<Boat> findByOwnersId(@Param("users_id")Long id);
     @Query(value = "SELECT * FROM boat WHERE users_id=:users_id and name=:name",nativeQuery = true)
-    Boat findByNameAndOwner(@Param("name")String name, @Param("users_id")Long users_id);
+    Boat findByNameAndOwner(@Param("name")String name, @Param("users_id")Long usersId);
 }

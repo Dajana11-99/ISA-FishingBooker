@@ -24,7 +24,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private UserDetailsService userDetailsService;
 
-    protected final Log LOGGER = LogFactory.getLog(getClass());
+    private static final Log LOGGER = LogFactory.getLog(TokenAuthenticationFilter.class);
 
     public TokenAuthenticationFilter(TokenUtils tokenHelper, UserDetailsService userDetailsService) {
         this.tokenUtils = tokenHelper;
@@ -55,7 +55,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
 
                     // 4. Provera da li je prosledjeni token validan
-                    if (tokenUtils.validateToken(authToken, userDetails)) {
+
+                    if (Boolean.TRUE.equals(tokenUtils.validateToken(authToken, userDetails))) {
 
                         // 5. Kreiraj autentifikaciju
                         TokenBasedAuthentication authentication = new TokenBasedAuthentication(userDetails);

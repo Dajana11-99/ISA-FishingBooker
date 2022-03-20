@@ -73,10 +73,10 @@ public class CabinServiceImpl implements CabinService {
         Set<AdditionalServices> oldAdditionalServices=oldCabin.getAdditionalServices();
         Set<Image> oldImages= oldCabin.getImages();
         oldCabin.setAdditionalServices(newCabin.getAdditionalServices());
-        if(deleteOldImages)  oldCabin.setImages(new HashSet<>());
+        if(Boolean.TRUE.equals(deleteOldImages))  oldCabin.setImages(new HashSet<>());
         cabinRepository.save(oldCabin);
         Set<AdditionalServices> savedServices= cabinRepository.findByName(oldCabin.getName()).getAdditionalServices();
-        if(deleteOldImages)   imageService.delete(oldImages);
+        if(Boolean.TRUE.equals(deleteOldImages))   imageService.delete(oldImages);
         additionalServicesService.delete(additionalServicesService.findDeletedAdditionalServices(oldAdditionalServices,savedServices));
     }
 

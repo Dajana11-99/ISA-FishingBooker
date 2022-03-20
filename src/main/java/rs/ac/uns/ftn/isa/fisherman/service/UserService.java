@@ -9,12 +9,12 @@ import java.util.List;
 public interface UserService {
     User findByUsername(String username);
     List<User> findAll ();
-    User registerCabinOwner(CabinOwner cabinOwner) throws MessagingException;
-    User registerBoatOwner(BoatOwner boatOwner) throws MessagingException;
-    User registerClient(Client client) throws MessagingException;
+    User registerCabinOwner(CabinOwner cabinOwner);
+    User registerBoatOwner(BoatOwner boatOwner);
+    User registerClient(Client client);
 
     User registerAdmin(Admin admin);
-    User registerFishingInstructor(FishingInstructor fishingInstructor) throws MessagingException;
+    User registerFishingInstructor(FishingInstructor fishingInstructor);
 
 
     User activateAccount(String email, String code);

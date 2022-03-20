@@ -59,7 +59,7 @@ public class UserController {
     }
     @GetMapping("/getNewUsers")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<UserRequestDTO> getNewUsers() throws MessagingException {
+    public List<UserRequestDTO> getNewUsers() {
         List<UserRequestDTO> newUsers=new ArrayList<>();
         for(CabinOwner cabinOwner: cabinOwnerService.getNewCabinOwners()) {
             newUsers.add(cabinOwnerMapper.cabinOwnerToUserRequestDto(cabinOwner));
@@ -87,8 +87,5 @@ public class UserController {
             users.add(userMapper.userToDeleteUserRequestDTO(user));
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
-
-
-
 
 }

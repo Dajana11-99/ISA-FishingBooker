@@ -13,7 +13,6 @@ import rs.ac.uns.ftn.isa.fisherman.dto.UserRequestDTO;
 import rs.ac.uns.ftn.isa.fisherman.service.*;
 import rs.ac.uns.ftn.isa.fisherman.service.impl.CustomUserDetailsService;
 
-
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthenticationController {
@@ -38,17 +37,17 @@ public class AuthenticationController {
     private final UserMapper userMapper=new UserMapper();
 
     @PostMapping("/login")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody LogInDto userRequest) {
+    public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody LogInDto userRequest) {
         try{
             UserTokenState userTokenState = loginService.logIn(userRequest.getUsername(),userRequest.getPassword());
             return ResponseEntity.ok(userTokenState);
         }catch (Exception e){
-            return ResponseEntity.badRequest().body("Incorrect credentials.");
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping("/signUpCabinOwner")
-    public ResponseEntity<String> registerCabinOwner(@RequestBody UserRequestDTO userRequest) throws Exception {
+    public ResponseEntity<String> registerCabinOwner(@RequestBody UserRequestDTO userRequest) {
 
             User existUser=userService.findByUsername(userRequest.getUsername());
             if(existUser== null)
@@ -70,7 +69,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signUpBoatOwner")
-    public ResponseEntity<String> registerBoatOwner(@RequestBody UserRequestDTO userRequest) throws MessagingException {
+    public ResponseEntity<String> registerBoatOwner(@RequestBody UserRequestDTO userRequest)  {
         User existUser = this.userService.findByUsername(userRequest.getUsername());
         if (existUser != null) {
             return new ResponseEntity<>(EMAIL_ALREADY_IN_USE, HttpStatus.BAD_REQUEST);
@@ -80,7 +79,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signUpFishingInstructor")
-    public ResponseEntity<String> registerFishingInstructor( @RequestBody UserRequestDTO userRequest) throws MessagingException {
+    public ResponseEntity<String> registerFishingInstructor( @RequestBody UserRequestDTO userRequest) {
         User existUser = this.userService.findByUsername(userRequest.getUsername());
         if (existUser != null) {
             return new ResponseEntity<>(EMAIL_ALREADY_IN_USE, HttpStatus.BAD_REQUEST);

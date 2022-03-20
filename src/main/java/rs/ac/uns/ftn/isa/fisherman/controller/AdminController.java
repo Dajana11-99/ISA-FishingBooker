@@ -37,7 +37,7 @@ public class AdminController {
         return new ResponseEntity<>("Success.", HttpStatus.CREATED);
     }
 
-    @RequestMapping(value= "/isPredefined/{email:.+}/", method = RequestMethod.GET)
+    @GetMapping(value= "/isPredefined/{email:.+}/")
     public ResponseEntity<Boolean> isPredefined(@PathVariable ("email") String email) {
         Boolean status= adminService.isPredefined(email);
         return new ResponseEntity<>(status, HttpStatus.OK);

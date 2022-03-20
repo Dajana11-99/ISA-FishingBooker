@@ -77,10 +77,10 @@ public class BoatServiceImpl implements BoatService {
         Set<AdditionalServices> oldAdditionalServices=oldBoat.getAdditionalServices();
         Set<Image> oldImages= oldBoat.getImages();
         oldBoat.setAdditionalServices(newBoat.getAdditionalServices());
-        if(deleteOldImages)  oldBoat.setImages(new HashSet<>());
+        if(Boolean.TRUE.equals(deleteOldImages))  oldBoat.setImages(new HashSet<>());
         boatRepository.save(oldBoat);
         Set<AdditionalServices> savedServices= boatRepository.findByName(oldBoat.getName()).getAdditionalServices();
-        if(deleteOldImages)   imageService.delete(oldImages);
+        if(Boolean.TRUE.equals(deleteOldImages))   imageService.delete(oldImages);
         additionalServicesService.delete(additionalServicesService.findDeletedAdditionalServices(oldAdditionalServices,savedServices));
     }
 

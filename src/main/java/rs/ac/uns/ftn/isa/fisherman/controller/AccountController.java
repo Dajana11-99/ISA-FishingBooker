@@ -22,7 +22,6 @@ public class AccountController {
     @Autowired
     private AdminService adminService;
 
-    public  AccountController(){}
 
     @PostMapping("/acceptAccount")
     @PreAuthorize("hasRole('ADMIN')")

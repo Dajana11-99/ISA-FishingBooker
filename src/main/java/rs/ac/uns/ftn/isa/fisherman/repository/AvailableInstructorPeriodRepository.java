@@ -10,5 +10,5 @@ import java.util.Set;
 public interface AvailableInstructorPeriodRepository extends JpaRepository<AvailableInstructorPeriod,Long> {
 
     @Query(value="SELECT * FROM available_period where users_id=:users_id",nativeQuery = true)
-    Set<AvailableInstructorPeriod> findByInstructorId(@Param("users_id")Long users_id);
+    Set<AvailableInstructorPeriod> findByInstructorId(@Param("users_id")Long usersId);
 }

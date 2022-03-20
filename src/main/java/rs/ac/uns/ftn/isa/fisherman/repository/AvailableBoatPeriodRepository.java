@@ -7,5 +7,5 @@ import java.util.Set;
 
 public interface AvailableBoatPeriodRepository extends JpaRepository<AvailableBoatPeriod,Long> {
     @Query(value="SELECT * FROM available_period where boat_id=:boat_id",nativeQuery = true)
-    Set<AvailableBoatPeriod> findByBoatId(@Param("boat_id")Long boat_id);
+    Set<AvailableBoatPeriod> findByBoatId(@Param("boat_id")Long boatId);
 }

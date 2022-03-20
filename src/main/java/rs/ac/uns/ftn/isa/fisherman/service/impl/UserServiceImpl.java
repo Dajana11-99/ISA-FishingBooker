@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findRoleById(id);
     }
     @Override
-    public CabinOwner registerCabinOwner(CabinOwner cabinOwner) throws MessagingException {
+    public CabinOwner registerCabinOwner(CabinOwner cabinOwner) {
         List<Authority> auth = authorityService.findByname(cabinOwner.getRoleApp());
         cabinOwner.setAuthorities(auth);
         cabinOwner.setPassword(passwordEncoder.encode(cabinOwner.getPassword()));
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         return cabinOwner;
     }
     @Override
-    public BoatOwner registerBoatOwner(BoatOwner boatOwner) throws MessagingException {
+    public BoatOwner registerBoatOwner(BoatOwner boatOwner) {
 
         List<Authority> auth = authorityService.findByname(boatOwner.getRoleApp());
         boatOwner.setAuthorities(auth);
@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public FishingInstructor registerFishingInstructor(FishingInstructor fishingInstructor) throws MessagingException {
+    public FishingInstructor registerFishingInstructor(FishingInstructor fishingInstructor){
         List<Authority> auth = authorityService.findByname(fishingInstructor.getRoleApp());
         fishingInstructor.setAuthorities(auth);
         fishingInstructor.setPassword(passwordEncoder.encode(fishingInstructor.getPassword()));
@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Client registerClient(Client client) throws MessagingException {
+    public Client registerClient(Client client){
         List<Authority> auth = authorityService.findByname(client.getRoleApp());
         client.setAuthorities(auth);
         client.setPassword(passwordEncoder.encode(client.getPassword()));
@@ -99,10 +99,6 @@ public class UserServiceImpl implements UserService {
         user.setActivationURL(null);
         user = this.userRepository.save(user);
         return user;
-    }
-    private void sendActivationURL(CabinOwner cabinOwner, String sourceURL) throws MessagingException {
-        String verificationURL= sourceURL + "/activation/" + cabinOwner.getActivationURL() + "/" + cabinOwner.getUsername();
-        mailService.sendMail(cabinOwner.getUsername(),verificationURL,new AccountAcceptedInfo());
     }
     public void acceptAccount(User user){
         user.setEnabled(true);

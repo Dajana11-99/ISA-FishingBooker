@@ -8,5 +8,5 @@ import java.util.Set;
 
 public interface AvailableCabinPeriodRepository extends JpaRepository<AvailableCabinPeriod, Long> {
     @Query(value="SELECT * FROM available_period where cabin_id=:cabin_id",nativeQuery = true)
-    Set<AvailableCabinPeriod> findByCabinId(@Param("cabin_id")Long cabin_id);
+    Set<AvailableCabinPeriod> findByCabinId(@Param("cabin_id")Long cabinId);
 }

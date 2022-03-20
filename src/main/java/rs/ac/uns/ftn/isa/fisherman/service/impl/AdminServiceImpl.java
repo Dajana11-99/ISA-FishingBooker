@@ -13,17 +13,14 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private AdminRepository adminRepository;
 
-
     @Override
     public Admin findByUsername(String username) {
         return adminRepository.findByUsername(username);
     }
 
     public Boolean isPredefined(String username){
-         Admin admin= adminRepository.findByUsername(username);
-            if(admin.getPredefined())
-                return true;
-            return false;
+        Admin admin= adminRepository.findByUsername(username);
+        return admin.getPredefined();
     }
     public List<Admin> getAllAdmin(){
         return adminRepository.findAll();
@@ -31,8 +28,6 @@ public class AdminServiceImpl implements AdminService {
 
     public Boolean hasAlreadyResetPassword(String username){
         Admin admin= adminRepository.findByUsername(username);
-         if(admin.getChangedPassword())
-             return true;
-         return  false;
+        return admin.getChangedPassword();
     }
 }

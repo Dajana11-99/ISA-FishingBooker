@@ -121,13 +121,12 @@ import axios from "axios";
                    return response; 
 
       }) .catch((error) => {
-                    if (error.response) {
-                     
-                        console.log(error.response.data);
-                        if (error.response.data == "Password or username is incorrect") {
-                            this.error=error.response.data;
+                   
+                        if (error.response == undefined) {
+                           console.log("usao")
+                            this.error="Incorrect credentials.";
                         }
-                    }
+                    
                 })
         }
 

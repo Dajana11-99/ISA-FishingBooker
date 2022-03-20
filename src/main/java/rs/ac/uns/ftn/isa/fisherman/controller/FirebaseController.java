@@ -17,7 +17,7 @@ public class FirebaseController {
     private FirebaseService firebaseService;
     private final Logger logger= LoggerFactory.getLogger(FirebaseController.class);
 
-    @RequestMapping(value="/uploadCabinImage/{cabin}",method = {RequestMethod.POST})
+    @PostMapping(value="/uploadCabinImage/{cabin}")
     public void uploadCabinImage(@PathVariable("cabin") String cabin,@RequestParam("file") MultipartFile multipartFile) {
         try {
             firebaseService.uploadCabinImage(multipartFile,cabin);
@@ -25,13 +25,12 @@ public class FirebaseController {
             logger.error(e.toString());
         }
     }
-
     @PostMapping("/download")
     public void download(@RequestBody ImageDto img) throws IOException {
         firebaseService.download(img.getUrl());
     }
 
-    @RequestMapping(value="/uploadAdventureImage/{adventure}",method = {RequestMethod.POST})
+    @PostMapping(value="/uploadAdventureImage/{adventure}")
     public void uploadAdventureImage(@PathVariable("adventure") String adventure,@RequestParam("file") MultipartFile multipartFile) {
         try {
             firebaseService.uploadAdventureImage(multipartFile,adventure);
@@ -40,9 +39,8 @@ public class FirebaseController {
         }
     }
 
-    @RequestMapping(value="/uploadBoatImage/{boat}",method = {RequestMethod.POST})
+    @PostMapping(value="/uploadBoatImage/{boat}")
     public void uploadBoatImage(@PathVariable("boat") String boat,@RequestParam("file") MultipartFile multipartFile) {
-        System.out.println("HIT -/upload | File Name : {}"+ multipartFile.getOriginalFilename());
         try {
             firebaseService.uploadBoatImage(multipartFile,boat);
         } catch (IOException e) {

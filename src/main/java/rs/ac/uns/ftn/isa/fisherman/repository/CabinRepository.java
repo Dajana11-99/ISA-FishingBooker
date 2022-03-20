@@ -9,6 +9,7 @@ import java.util.Set;
 public interface CabinRepository extends JpaRepository<Cabin,Integer> {
     Cabin findById(Long id);
     Cabin findByName(String cabin);
+
     @Query(value = "SELECT * FROM cabin WHERE users_id=:users_id",nativeQuery = true)
     Set<Cabin> findByOwnersId(@Param("users_id")Long id);
 }

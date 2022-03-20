@@ -22,7 +22,6 @@ public class CabinMapper {
     }
     public CabinDto cabinToCabinDto(Cabin cabin){
         ImageMapper imageMapper=new ImageMapper();
-        AdditionalServiceMapper additionalServiceMapper=new AdditionalServiceMapper();
         return new CabinDto(cabin.getId(),cabin.getName(),cabin.getDescription(),cabin.getNumOfRooms(),cabin.getBedsPerRoom(),
                 cabin.getRules(),cabin.getPrice(),addressMapper.addressToDTO(cabin.getAddress()),
                 additionalServiceMapper.additionalServicesToAdditionalServiceDtoS(cabin.getAdditionalServices()),

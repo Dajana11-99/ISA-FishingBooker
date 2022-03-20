@@ -1,8 +1,6 @@
 package rs.ac.uns.ftn.isa.fisherman.mapper;
-
 import rs.ac.uns.ftn.isa.fisherman.dto.FishingInstructorDto;
 import rs.ac.uns.ftn.isa.fisherman.dto.UserRequestDTO;
-
 import rs.ac.uns.ftn.isa.fisherman.model.FishingInstructor;
 
 public class FishingInstructorMapper {
@@ -10,7 +8,6 @@ public class FishingInstructorMapper {
     private final AvailableInstructorPeriodMapper availableInstructorPeriodMapper = new AvailableInstructorPeriodMapper();
 
     public FishingInstructor userRequestDtoToFishingInstructor(UserRequestDTO userRequest){
-        AddressMapper addressMapper=new AddressMapper();
         return new FishingInstructor(userRequest.getId(),userRequest.getFirstname(),userRequest.getLastname(),userRequest.getUsername(),
                 userRequest.getPassword(),userRequest.getPhoneNum(),addressMapper.dtoToAddress(userRequest.getAddress()),userRequest.getRegistrationReason());
     }
