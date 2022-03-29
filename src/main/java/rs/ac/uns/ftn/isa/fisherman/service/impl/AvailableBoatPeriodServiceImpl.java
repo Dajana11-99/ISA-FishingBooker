@@ -24,10 +24,16 @@ public class AvailableBoatPeriodServiceImpl implements AvailableBoatPeriodServic
     }
 
     @Override
-    public void setAvailableBoatPeriod(Set<AvailableBoatPeriod> availableBoatPeriods) {
-            for(AvailableBoatPeriod availablePeriod: availableBoatPeriods)
-                availableBoatPeriodRepository.save(availablePeriod);
+    public boolean setAvailableBoatPeriod(AvailableBoatPeriod availablePeriod) {
+        if(availableBoatPeriodRepository.availablePeriodAlreadyExists(availablePeriod.getBoat().getId(),
+                availablePeriod.getStartDate(),availablePeriod.getEndDate())) return false;
+        availableBoatPeriodRepository.save(availablePeriod);
+        return true;
     }
 
+    @Override
+    public boolean editAvailableBoatsPeriod(AvailableBoatPeriod oldAvailablePeriod, AvailableBoatPeriod newAvailablePeriod) {
+        return true;
+    }
 
 }

@@ -8,10 +8,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.isa.fisherman.dto.*;
 
-import rs.ac.uns.ftn.isa.fisherman.mapper.AvailableBoatOwnerPeriodMapper;
 import rs.ac.uns.ftn.isa.fisherman.mapper.AvailableBoatPeriodMapper;
 import rs.ac.uns.ftn.isa.fisherman.model.*;
-import rs.ac.uns.ftn.isa.fisherman.service.AvailableBoatOwnersPeriodService;
 
 import rs.ac.uns.ftn.isa.fisherman.service.AvailableBoatPeriodService;
 import rs.ac.uns.ftn.isa.fisherman.service.BoatOwnerService;
@@ -24,26 +22,17 @@ import java.util.Set;
 @RestController
 @RequestMapping(value = "/boatsPeriod", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AvailableBoatPeriodController {
+    private static final String SUCCESS ="Success";
+    private static final String ALREADY_EXISTS ="Already exists.";
     @Autowired
     private AvailableBoatPeriodService availableBoatPeriodService;
-    @Autowired
-    private AvailableBoatOwnersPeriodService availableBoatOwnersPeriodService;
+
     @Autowired
     private BoatOwnerService boatOwnerService;
     @Autowired
     private BoatService boatService;
     private final AvailableBoatPeriodMapper availableBoatPeriodMapper= new AvailableBoatPeriodMapper();
-    private final AvailableBoatOwnerPeriodMapper availableBoatOwnerPeriodMapper=new AvailableBoatOwnerPeriodMapper();
 
-
-    @GetMapping("/getAvailablePeriodOwner/{username:.+}/")
-    @PreAuthorize("hasRole('BOATOWNER')")
-    public ResponseEntity<Set<AvailablePeriodDto>> getAvailablePeriodBoatOwner (@PathVariable("username") String username) {
-        Set<AvailablePeriodDto> availablePeriods=availableBoatOwnerPeriodMapper
-                .availableBoatOwnerPeriodsToDtoS(availableBoatOwnersPeriodService
-                        .getAvailablePeriodByOwnersUsername(username));
-        return new ResponseEntity<>(availablePeriods, HttpStatus.OK);
-    }
 
     @PostMapping("/getAvailablePeriod")
     @PreAuthorize("hasRole('BOATOWNER')")
@@ -57,22 +46,28 @@ public class AvailableBoatPeriodController {
 
     @PostMapping("/setAvailableBoatsPeriod")
     @PreAuthorize("hasRole('BOATOWNER')")
-    public ResponseEntity<String> setAvailableBoatsPeriod (@RequestBody List<AvailablePeriodDto> availablePeriodDto) {
-        BoatOwner boatOwner= boatOwnerService.findByUsername(availablePeriodDto.get(0).getUsername());
-        Boat boat = boatService.findById(availablePeriodDto.get(0).getPropertyId());
-        Set<AvailableBoatPeriod> availableBoatPeriods = availableBoatPeriodMapper
-                .availableDtoSToAvailableBoatPeriods(new HashSet<>(availablePeriodDto),boatOwner,boat);
-        availableBoatPeriodService.setAvailableBoatPeriod(availableBoatPeriods);
-        return new ResponseEntity<>("Success", HttpStatus.OK);
+    public ResponseEntity<String> setAvailableBoatsPeriod (@RequestBody AvailablePeriodDto availablePeriodDto) {
+        Boat boat = boatService.findById(availablePeriodDto.getPropertyId());
+        AvailableBoatPeriod availableBoatPeriod = availableBoatPeriodMapper
+                .availablePeriodDtoToAvailableBoatPeriod(availablePeriodDto,boat);
+        if(availableBoatPeriodService.setAvailableBoatPeriod(availableBoatPeriod))
+             return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(ALREADY_EXISTS, HttpStatus.BAD_REQUEST);
     }
-    @PostMapping("/setAvailableBoatOwnersPeriod")
-    @PreAuthorize("hasRole('BOATOWNER')")
-    public ResponseEntity<String> setAvailableBoatOwnersPeriod (@RequestBody List<AvailablePeriodDto> availablePeriodDto) {
-        BoatOwner boatOwner= boatOwnerService.findByUsername(availablePeriodDto.get(0).getUsername());
-        Set<AvailableBoatOwnerPeriod> availableBoatOwnerPeriods = availableBoatOwnerPeriodMapper
-                .availableDtoSToAvailableBoatOwnerPeriods(new HashSet<>(availablePeriodDto),boatOwner);
-        availableBoatOwnersPeriodService.setAvailableBoatOwnersPeriod(availableBoatOwnerPeriods,boatOwner);
-        return new ResponseEntity<>("Success", HttpStatus.OK);
+
+    @PostMapping("/editAvailableBoatsPeriod")
+    @PreAuthorize("hasRole('CABINOWNER')")
+    public ResponseEntity<String> editAvailableCabinsPeriod (@RequestBody List<AvailablePeriodDto> periods) {
+        Boat boat = boatService.findById(periods.get(0).getPropertyId());
+        if(availableBoatPeriodService.editAvailableBoatsPeriod
+                (availableBoatPeriodMapper.availablePeriodDtoToAvailableBoatPeriod(periods.get(0),boat),
+                        availableBoatPeriodMapper.availablePeriodDtoToAvailableBoatPeriod(periods.get(1),boat)))
+            return new ResponseEntity<>("Success", HttpStatus.OK);
+        else
+            return new ResponseEntity<>("Already exists", HttpStatus.BAD_REQUEST);
     }
+
+
 
 }

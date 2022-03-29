@@ -732,7 +732,6 @@ import axios from "axios";
                  return response;
               })
               .catch(err => {
-                   console.log("usao u catch")
                    console.log(err)
                    this.$swal.fire({
                    position: 'top-end',

@@ -70,7 +70,6 @@ public class AvailableCabinPeriodController {
     @PostMapping("/editAvailableCabinsPeriod")
     @PreAuthorize("hasRole('CABINOWNER')")
     public ResponseEntity<String> editAvailableCabinsPeriod (@RequestBody List<AvailablePeriodDto> periods) {
-        System.out.println("jooooooooooooooooooooooooooooooooooooooooooooj   "+periods.get(1).getStartDate());
         CabinOwner cabinOwner= cabinOwnerService.findByUsername(periods.get(0).getUsername());
         Cabin cabin = cabinService.findById(periods.get(0).getPropertyId());
         if(availableCabinPeriodService.editAvailableCabinsPeriod
