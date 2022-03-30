@@ -794,7 +794,7 @@ import axios from "axios";
                                         title: 'Oops...',
                                         text: 'Something went wrong!',
                                })
-                                    this.clearModal()
+                                    this.clearModalReservation()
                               })
                               
                                  

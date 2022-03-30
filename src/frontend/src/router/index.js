@@ -30,7 +30,6 @@ import MyCalendar from '../views/FishingInstructor/MyCalendar'
 import ClientHome from '../views/Client/ClientHome.vue'
 import CabinCalendar from '../views/CabinOwner/CabinCalendar'
 import BoatCalendar from '../views/BoatOwner/BoatCalendar'
-import BoatOwnerCalendar from '../views/BoatOwner/BoatOwnerCalendar'
 import ClientReservationForm from '../views/Client/ClientReservationForm'
 import ClientCabins from '../views/Client/ClientCabins'
 import store from '../store/index'
@@ -458,21 +457,7 @@ const routes = [
          }
        }
   },
-  {
-    path: '/BoatOwnerCalendar/:email',
-    name: 'BoatOwnerCalendar',
-    component: BoatOwnerCalendar,
-       beforeEnter: (to, from,next) => {
-      // reject the navigation
-   
-      store.dispatch('refreshToken')
-     if(localStorage.token == 'empty' || localStorage.role !='BOATOWNER' || localStorage.logged == false){
-          next('/')
-        }else {
-          next()
-        }
-      }
-  },
+  
   
 
 ]
