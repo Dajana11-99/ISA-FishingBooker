@@ -4,9 +4,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.isa.fisherman.model.*;
 import rs.ac.uns.ftn.isa.fisherman.repository.AvailableBoatPeriodRepository;
-import rs.ac.uns.ftn.isa.fisherman.service.AvailableBoatPeriodService;
-import rs.ac.uns.ftn.isa.fisherman.service.BoatOwnerService;
-import rs.ac.uns.ftn.isa.fisherman.service.BoatReservationService;
+import rs.ac.uns.ftn.isa.fisherman.service.*;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -18,7 +16,11 @@ public class AvailableBoatPeriodServiceImpl implements AvailableBoatPeriodServic
     @Autowired
     private BoatReservationService boatReservationService;
     @Autowired
+    private QuickReservationBoatService quickReservationBoatService;
+    @Autowired
     private BoatOwnerService boatOwnerService;
+    @Autowired
+    private AvailablePeriodService availablePeriodService;
 
     @Override
     public Set<AvailableBoatPeriod> getAvailablePeriod(Long id) {
@@ -34,20 +36,56 @@ public class AvailableBoatPeriodServiceImpl implements AvailableBoatPeriodServic
     }
 
     @Override
-    public boolean editAvailableBoatsPeriod(AvailableBoatPeriod oldAvailablePeriod, AvailableBoatPeriod newAvailablePeriod) {
+    public boolean editAvailableBoatsPeriod(AvailableBoatPeriod oldPeriod, AvailableBoatPeriod newPeriod) {
+        AvailableBoatPeriod availableBoatPeriodToEdit= availableBoatPeriodRepository.findId(oldPeriod.getBoat().getId(),
+                oldPeriod.getStartDate(),oldPeriod.getEndDate());
+        if(availableBoatPeriodToEdit == null) return false;
+        if(!reservationsDontExistInPeriod(newPeriod)) return false;
+        if (!availableBoatPeriodRepository.availablePeriodIncludesUnavailable(availableBoatPeriodToEdit.getId(),
+                newPeriod.getStartDate(),newPeriod.getEndDate())){
+            return false;
+        }
+        LocalDateTime startOld=oldPeriod.getStartDate();
+        LocalDateTime endOld=oldPeriod.getEndDate();
+
+        LocalDateTime startNew=newPeriod.getStartDate();
+        LocalDateTime endNew=newPeriod.getEndDate();
+
+        if(startOld.equals(startNew)){
+            availableBoatPeriodToEdit.setStartDate(endNew.plusMinutes(1));
+        }else if(endOld.equals(endNew)){
+            availableBoatPeriodToEdit.setEndDate(startNew.minusMinutes(1));
+        }else {
+            availableBoatPeriodToEdit.setEndDate(startNew.minusMinutes(1));
+            newPeriod.setEndDate(endOld);
+            newPeriod.setStartDate(endNew.plusMinutes(1));
+            availableBoatPeriodRepository.save(newPeriod);
+        }
+        availableBoatPeriodRepository.save(availableBoatPeriodToEdit);
+        return true;
+    }
+    @Override
+    public boolean deleteAvailableBoatsPeriod(AvailableBoatPeriod availablePeriod) {
+        AvailableBoatPeriod availableBoatPeriodToDelete= availableBoatPeriodRepository.findId(availablePeriod.getBoat().getId(),
+                availablePeriod.getStartDate(),availablePeriod.getEndDate());
+        if(availableBoatPeriodToDelete == null) return false;
+
+        if(!reservationsDontExistInPeriod(availableBoatPeriodToDelete)) return false;
+
+        availablePeriodService.deleteAvailablePeriod(availableBoatPeriodToDelete.getId());
         return true;
     }
     public boolean boatIsAvailable(Long boatId, LocalDateTime start,  LocalDateTime end){
         return availableBoatPeriodRepository.boatIsAvailable(boatId,start,end);
     }
-    private boolean reservationsDontExistInPeriod(AvailableCabinPeriod availablePeriod){
-        if(boatReservationService.reservationExists(availablePeriod.getCabin().getId()
+    private boolean reservationsDontExistInPeriod(AvailableBoatPeriod availablePeriod){
+        if(boatReservationService.reservationExists(availablePeriod.getBoat().getId()
                 ,availablePeriod.getStartDate(),availablePeriod.getEndDate())) return false;
 
-/*
-        if(quickReservationCabinService.quickReservationExists(availablePeriod.getCabin().getId(),
+
+        if(quickReservationBoatService.quickReservationExists(availablePeriod.getBoat().getId(),
                 availablePeriod.getStartDate(),availablePeriod.getEndDate())) return false;
-*/
+
         return true;
     }
 

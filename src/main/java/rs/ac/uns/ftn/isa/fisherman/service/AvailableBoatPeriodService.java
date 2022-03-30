@@ -13,4 +13,5 @@ public interface AvailableBoatPeriodService {
     boolean boatIsAvailable(Long boatId, LocalDateTime start, LocalDateTime end);
 
     boolean editAvailableBoatsPeriod(AvailableBoatPeriod oldAvailablePeriod, AvailableBoatPeriod newAvailablePeriod);
+    boolean deleteAvailableBoatsPeriod(AvailableBoatPeriod availablePeriod);
 }

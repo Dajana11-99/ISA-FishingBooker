@@ -80,7 +80,7 @@ public class BoatController {
         if(boat != null)
             return new ResponseEntity<>(boatMapper.boatToBoatDto(boat),HttpStatus.OK);
         else
-            return new ResponseEntity<>(boatMapper.boatToBoatDto(boat),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new BoatDto(),HttpStatus.BAD_REQUEST);
     }
     @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/getAll")

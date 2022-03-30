@@ -179,7 +179,7 @@
   <hr>
 </vue-modality>
 
-<vue-modality ref="quickReservationInfo" title="Quick reservation information" hide-footer centered width="900px">
+<vue-modality ref="quickReservationInfo" title="Quick reservation information" hide-footer centered >
 
    <br>
         <div class="row">
@@ -555,7 +555,7 @@ import axios from "axios";
                   this.startQuickInfo=arg.event.start
                   this.endQuickInfo=arg.event.end
                   this.priceQuickInfo=arg.event.extendedProps.price
-                  if(arg.event.extendedProps.email==null){
+                  if(arg.event.extendedProps.email==null || arg.event.extendedProps.email==''){
                        this.usernameQuickInfo="Not reservated yet."
                        this.clientQuickFullNameInfo="Not reservated yet."
 
@@ -989,7 +989,6 @@ import axios from "axios";
                 }
               )
               .then(response => {
-                 //  this.calendarOptions.events.delete({id: this.cabinId ,title: 'Available', start: this.startEdit , end: this.endEdit , color: '#6f9681' })
                    this.argEventDeleting.remove()
                    this.$swal.fire({
                     position: 'top-end',
@@ -1002,7 +1001,7 @@ import axios from "axios";
                  return response;
               })
               .catch(err => {
-                   console.log("usao u catch")
+                
                    console.log(err)
                    this.$swal.fire({
                    position: 'top-end',

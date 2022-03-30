@@ -124,6 +124,137 @@
     </div>
 </vue-modality>
 
+<vue-modality ref="reservationInfo" title="Reservation information" hide-footer centered>
+
+   <br>
+        <div class="row">
+          <div class="col" style="padding-top: 2%; text-align: left; color: gray;" >
+            <p>Start</p>
+          </div>
+          <div class="col-sm-9" style="padding: 1%;" >
+             <Datepicker   
+           v-model="startInfo" 
+                
+         disabled >
+          </Datepicker>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col" style="padding-top: 2%; text-align: left; color: gray;">
+            <p>End</p>
+          </div>
+          <div class="col-sm-9" style="padding: 1%;">
+             <Datepicker  v-model="endInfo" disabled></Datepicker>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3" style="padding-top: 1%; text-align: left; color: gray;">
+            <p>Username</p>
+          </div>
+          <div class="col-sm-9" style="padding: 1%; text-align: left;">
+             <p><b>{{usernameInfo}}</b></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3" style="padding-top: 1%; text-align: left; color: gray;">
+            <p>Full name</p>
+          </div>
+          <div class="col-sm-9" style="padding: 1%; text-align: left; ">
+             <p><b>{{clientFullNameInfo}}</b></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3" style="padding-top: 1%; text-align: left; color: gray;">
+            <p>Full price</p>
+          </div>
+          <div class="col-sm-9" style="padding: 1%; text-align: left; ">
+             
+                 <p><b>{{priceInfo}}$</b></p>
+                
+          </div>
+        </div>
+         <div class="row">
+          <div class="col-sm-3" style="padding-top: 1%; text-align: left; color: gray;">
+            <p>Captain</p>
+          </div>
+          <div class="col-sm-9" style="padding: 1%; text-align: left; ">
+             
+                 <p v-if="captainIsRequired==true"><b>YES</b></p>
+                  <p v-else><b>NO</b></p>
+                
+          </div>
+        </div>
+
+  
+  <hr>
+</vue-modality>
+
+<vue-modality ref="quickReservationInfo" title="Quick reservation information" hide-footer centered >
+
+   <br>
+        <div class="row">
+          <div class="col" style="padding-top: 2%; text-align: left; color: gray;" >
+            <p>Start</p>
+          </div>
+          <div class="col-sm-9" style="padding: 1%;" >
+             <Datepicker   
+           v-model="startQuickInfo" 
+                
+         disabled >
+          </Datepicker>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col" style="padding-top: 2%; text-align: left; color: gray;">
+            <p>End</p>
+          </div>
+          <div class="col-sm-9" style="padding: 1%;">
+             <Datepicker  v-model="endQuickInfo" disabled></Datepicker>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3" style="padding-top: 1%; text-align: left; color: gray;">
+            <p>Username</p>
+          </div>
+          <div class="col-sm-9" style="padding: 1%; text-align: left;">
+             <p><b>{{usernameQuickInfo}}</b></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3" style="padding-top: 1%; text-align: left; color: gray;">
+            <p>Full name</p>
+          </div>
+          <div class="col-sm-9" style="padding: 1%; text-align: left; ">
+             <p><b>{{clientQuickFullNameInfo}}</b></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3" style="padding-top: 1%; text-align: left; color: gray;">
+            <p>Full price</p>
+          </div>
+          <div class="col-sm-9" style="padding: 1%; text-align: left; ">
+             
+                 <p><b>{{priceQuickInfo}}$</b></p>
+                
+          </div>
+        </div>
+         <div class="row">
+          <div class="col-sm-3" style="padding-top: 1%; text-align: left; color: gray;">
+            <p>Captain</p>
+          </div>
+          <div class="col-sm-9" style="padding: 1%; text-align: left; ">
+             
+                 <p v-if="captainIsRequiredQuick==true"><b>YES</b></p>
+                  <p v-else><b>NO</b></p>
+                
+          </div>
+        </div>
+
+  
+  <hr>
+</vue-modality>
 
 <vue-modality ref="makeQuickReservation" title="Create quick reservation" hide-footer hide-header centered width="900px" no-close-on-backdrop=true no-close-on-esc=true>
 
@@ -380,19 +511,21 @@ import BoatOwnerNav from './BoatOwnerNav.vue'
                   this.startEdit=arg.event.start
                   this.endEdit=arg.event.end
                   this.argEventDeleting=arg.event
-           }/*else if(arg.event.title=='Reservation'){
+           }else if(arg.event.title=='Reservation'){
                   this.$refs.reservationInfo.open()
                   this.startInfo=arg.event.start
                   this.endInfo=arg.event.end
                   this.priceInfo=arg.event.extendedProps.price
                   this.usernameInfo=arg.event.extendedProps.email
                   this.clientFullNameInfo=arg.event.extendedProps.clientFullName
+                  this.captainIsRequired=arg.event.extendedProps.captainIsRequired
            }else if(arg.event.title=='QuickReservation'){
                   this.$refs.quickReservationInfo.open()
                   this.startQuickInfo=arg.event.start
                   this.endQuickInfo=arg.event.end
                   this.priceQuickInfo=arg.event.extendedProps.price
-                  if(arg.event.extendedProps.email==null){
+                  this.captainIsRequiredQuick=arg.event.extendedProps.captainIsRequired
+                  if(arg.event.extendedProps.email==null || arg.event.extendedProps.email==''){
                        this.usernameQuickInfo="Not reservated yet."
                        this.clientQuickFullNameInfo="Not reservated yet."
 
@@ -401,13 +534,25 @@ import BoatOwnerNav from './BoatOwnerNav.vue'
                   this.clientQuickFullNameInfo=arg.event.extendedProps.clientFullName
                  
                   }
-           }*/
+           }
         },
         selectMirror: true,
         dayMaxEvents: true,
         initialView: "dayGridMonth",
         events: [],
         },
+        startInfo: null,
+        endInfo: null,
+        priceInfo: null,
+        usernameInfo: null,
+        clientFullNameInfo: null,
+        startQuickInfo: null,
+        endQuickInfo: null,
+        priceQuickInfo: null,
+        usernameQuickInfo: '',
+        clientQuickFullNameInfo: null,
+        captainIsRequired: null,
+        captainIsRequiredQuick: null,
          email: '',
          boatDto: {
 
@@ -485,6 +630,8 @@ import BoatOwnerNav from './BoatOwnerNav.vue'
             endQuickReservation: null,
             dateIsNotValidQuick: false,
             newPrice: 0,
+            boatId: null,
+          
        }
 
      },
@@ -538,7 +685,7 @@ import BoatOwnerNav from './BoatOwnerNav.vue'
                                   var end=newData.endDate
                                   newData.startDate=this.setDate(start)
                                   newData.endDate=this.setDate(end)
-                                  this.calendarOptions.events.push({id: newData.id , extendedProps: {email: newData.clientUsername, price: newData.price, clientFullName: newData.clientFullName} ,title: 'Reservation', start: newData.startDate , end: newData.endDate})
+                                  this.calendarOptions.events.push({id: newData.id , extendedProps: {email: newData.clientUsername, price: newData.price, clientFullName: newData.clientFullName, captainIsRequired: newData.needsCaptainServices} ,title: 'Reservation', start: newData.startDate , end: newData.endDate})
                         }   
                 })
 
@@ -551,7 +698,7 @@ import BoatOwnerNav from './BoatOwnerNav.vue'
                                 var end=newData.endDate
                                 newData.startDate=this.setDate(start)
                                 newData.endDate=this.setDate(end)
-                                this.calendarOptions.events.push({id: newData.id ,color: '#ffd04f', extendedProps: {email: newData.clientUsername, price: newData.price, clientFullName: newData.clientFullName} ,title: 'QuickReservation', start: newData.startDate , end: newData.endDate})
+                                this.calendarOptions.events.push({id: newData.id ,color: '#ffd04f', extendedProps: {email: newData.clientUsername, price: newData.price, clientFullName: newData.clientFullName, captainIsRequired: newData.needsCaptainServices} ,title: 'QuickReservation', start: newData.startDate , end: newData.endDate})
                       }   
               })
 
@@ -640,14 +787,14 @@ import BoatOwnerNav from './BoatOwnerNav.vue'
                 startDate: this.formatDate(this.startEdit),
                 endDate: this.formatDate(this.endEdit),
                 username: this.email,
-                propertyId: this.cabinId
+                propertyId: this.boatId
                 },
                 {
                  id: null,
                 startDate: this.formatDate(this.unavailableStart),
                 endDate: this.formatDate(this.unavailableEnd),
                 username: this.email,
-                propertyId: this.cabinId
+                propertyId: this.boatId
                 }]
 
               )
@@ -717,7 +864,7 @@ import BoatOwnerNav from './BoatOwnerNav.vue'
                                 })
                               .then((response) => {
                                       console.log(response)
-                                      this.calendarOptions.events.push({extendedProps: {email: this.client, price: this.totalPrice, clientFullName: ''} ,title: 'Reservation', start: this.startReservation , end: this.endReservation})
+                                      this.calendarOptions.events.push({extendedProps: {email: this.client, price: this.totalPrice, clientFullName: '', captainIsRequired: this.needsCaptainServices} ,title: 'Reservation', start: this.startReservation , end: this.endReservation})
                                     
                                        this.$swal.fire({
                                           position: 'top-end',
@@ -769,7 +916,7 @@ import BoatOwnerNav from './BoatOwnerNav.vue'
                                 })
                               .then((response) => {
                                     console.log(response)
-                                    this.calendarOptions.events.push({color: '#ffd04f', extendedProps: {email: this.client, price: this.totalPrice, clientFullName: null} ,title: 'QuickReservation', start: this.startQuickReservation , end: this.endQuickReservation})
+                                    this.calendarOptions.events.push({color: '#ffd04f', extendedProps: {email: this.client, price: this.totalPrice, clientFullName: null, captainIsRequired: this.needsCaptainServices} ,title: 'QuickReservation', start: this.startQuickReservation , end: this.endQuickReservation})
                                     
                                      this.$swal.fire({
                                           position: 'top-end',
@@ -843,6 +990,43 @@ import BoatOwnerNav from './BoatOwnerNav.vue'
                  this.totalPrice=0
                   this.needsCaptainServices=false
             },
+            deleteAvailablePeriod: function(){
+                  axios.post("http://localhost:8081/boatsPeriod/deleteAvailableBoatsPeriod",
+                  {
+                    id: null,
+                    startDate: this.formatDate(this.startEdit),
+                    endDate: this.formatDate(this.endEdit),
+                    username: this.email,
+                    propertyId: this.boatId
+                    }
+                  )
+                  .then(response => {
+                      this.argEventDeleting.remove()
+                      this.$swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Available period successfully deleted!',
+                        showConfirmButton: false,
+                        timer: 2500
+                      })
+                        this.clearModalEdit()
+                    return response;
+                  })
+                  .catch(err => {
+                    
+                      console.log(err)
+                      this.$swal.fire({
+                      position: 'top-end',
+                      icon: 'error',
+                      title: 'Available period can not be deleted',
+                      showConfirmButton: false,
+                      timer: 2500
+                      })
+                      this.clearModalEdit()
+                    })
+
+             
+            }
 
     
     

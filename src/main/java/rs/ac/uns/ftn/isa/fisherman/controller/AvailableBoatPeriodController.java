@@ -56,16 +56,27 @@ public class AvailableBoatPeriodController {
             return new ResponseEntity<>(ALREADY_EXISTS, HttpStatus.BAD_REQUEST);
     }
 
+    @PostMapping("/deleteAvailableBoatsPeriod")
+    @PreAuthorize("hasRole('BOATOWNER')")
+    public ResponseEntity<String> deleteAvailableBoatsPeriod (@RequestBody AvailablePeriodDto availablePeriodDto) {
+        Boat boat = boatService.findById(availablePeriodDto.getPropertyId());
+        if(availableBoatPeriodService.deleteAvailableBoatsPeriod
+                (availableBoatPeriodMapper.availablePeriodDtoToAvailableBoatPeriod(availablePeriodDto,boat)))
+            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+        else
+            return new ResponseEntity<>("Bad request", HttpStatus.BAD_REQUEST);
+    }
+
     @PostMapping("/editAvailableBoatsPeriod")
-    @PreAuthorize("hasRole('CABINOWNER')")
+    @PreAuthorize("hasRole('BOATOWNER')")
     public ResponseEntity<String> editAvailableCabinsPeriod (@RequestBody List<AvailablePeriodDto> periods) {
         Boat boat = boatService.findById(periods.get(0).getPropertyId());
         if(availableBoatPeriodService.editAvailableBoatsPeriod
                 (availableBoatPeriodMapper.availablePeriodDtoToAvailableBoatPeriod(periods.get(0),boat),
                         availableBoatPeriodMapper.availablePeriodDtoToAvailableBoatPeriod(periods.get(1),boat)))
-            return new ResponseEntity<>("Success", HttpStatus.OK);
+            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
         else
-            return new ResponseEntity<>("Already exists", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Bad request", HttpStatus.BAD_REQUEST);
     }
 
 
