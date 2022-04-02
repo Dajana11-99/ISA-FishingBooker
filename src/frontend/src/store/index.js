@@ -27,7 +27,6 @@ const store = createStore({
                 localStorage.setItem('token',response.data.accessToken)
                 localStorage.setItem('role',response.data.userType)
                 localStorage.setItem('logged',true)
-                console.log("AAAAAAAAAA"+localStorage.token)
                 axios.defaults.headers['Authorization']="Bearer "+ localStorage.token
                 
 
@@ -61,13 +60,10 @@ const store = createStore({
            try{
                 
             let response = await axios.post("http://localhost:8081/auth/refresh")
-            console.log("OVO JE REFRESH TOOOOKEN  uradiooo"+ response.data.accessToken)
             localStorage.clear()
             localStorage.setItem('token',response.data.accessToken)
             localStorage.setItem('logged',true)
             localStorage.setItem('role',response.data.userType.toUpperCase())
-            console.log("OVO JE REFRESH TOOOOKEN  "+ localStorage.token)
-            console.log("OVO JE REFRESH TOOOOKEN hhahahahhahaha "+ response.data.expiresIn)
             axios.defaults.headers['Authorization']="Bearer "+ localStorage.token
                 
            }

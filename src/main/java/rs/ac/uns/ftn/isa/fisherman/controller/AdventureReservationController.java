@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.isa.fisherman.dto.AdventureReservationDto;;
+import rs.ac.uns.ftn.isa.fisherman.dto.CabinReservationDto;
 import rs.ac.uns.ftn.isa.fisherman.mapper.AdventureMapper;
 import rs.ac.uns.ftn.isa.fisherman.mapper.AdventureReservationMapper;
 import rs.ac.uns.ftn.isa.fisherman.model.*;
@@ -49,5 +50,16 @@ public class AdventureReservationController {
         for(AdventureReservation adventureReservation: adventureReservationService.getPresentByInstructorId(instructorId))
         adventureReservations.add(adventureReservationMapper.adventureReservationToAdventureReservationDto(adventureReservation));
         return new ResponseEntity<>(adventureReservations,HttpStatus.OK);
+    }
+
+    @GetMapping("/getPastReservations/{username:.+}/")
+    @PreAuthorize("hasRole('FISHING_INSTRUCTOR')")
+    public ResponseEntity<Set<AdventureReservationDto>> getPastReservations (@PathVariable("username") String username) {
+        Long instructorId= fishingInstructorService.findByUsername(username).getId();
+        Set<AdventureReservationDto> reservationDtos=new HashSet<>();
+        for(AdventureReservation adventureReservation: adventureReservationService.getPastReservations(instructorId)){
+            reservationDtos.add(adventureReservationMapper.adventureReservationToAdventureReservationDto(adventureReservation));
+        }
+        return new ResponseEntity<>(reservationDtos,HttpStatus.OK);
     }
 }

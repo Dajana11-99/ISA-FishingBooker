@@ -15,7 +15,7 @@ public interface AvailableBoatPeriodRepository extends JpaRepository<AvailableBo
     boolean availablePeriodAlreadyExists(@Param("boat_id")Long id,@Param("start") LocalDateTime start,@Param("end") LocalDateTime end);
 
     @Query(value="SELECT CASE WHEN  COUNT(ap) > 0 THEN true ELSE false END FROM available_period ap where boat_id=:boat_id and ((:start between start_date and end_date)) and ((:end between start_date and end_date))",nativeQuery = true)
-    boolean boatIsAvailable(@Param("boat_id")Long boat_id,@Param("start") LocalDateTime start,@Param("end") LocalDateTime end);
+    boolean boatIsAvailable(@Param("boat_id")Long boatId,@Param("start") LocalDateTime start,@Param("end") LocalDateTime end);
 
     @Query(value="SELECT * FROM available_period where boat_id=:boat_id and start_date=:startDate and end_date=:endDate",nativeQuery = true)
     AvailableBoatPeriod findId(@Param("boat_id")Long id, @Param("startDate")LocalDateTime startDate, @Param("endDate")LocalDateTime endDate);

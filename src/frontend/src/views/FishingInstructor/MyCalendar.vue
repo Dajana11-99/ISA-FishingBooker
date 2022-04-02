@@ -1071,7 +1071,8 @@ export default {
                  this.value=[]
                  this.options =[]
                  this.totalPrice=0
-                 this.selected= 0
+                 this.selected= 0,
+                 this.discount =0
                  let idx=0
                  for(let i =0; i< this.adventureDto[idx].additionalServices.length; i++){
                                this.options.push({ 

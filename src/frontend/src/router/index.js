@@ -38,6 +38,11 @@ import ClientReservations from '../views/Client/ClientReservations'
 import ClientCabinProfile from '../views/Client/ClientCabinProfile'
 import ReservationsBoatOwner from '../views/BoatOwner/ReservationsBoatOwner'
 import ClientEvaluationForm from '../views/Client/ClientEvaluationForm'
+import QuickReservationsBoatOwner from '../views/BoatOwner/QuickReservationsBoat'
+import ReservationsCabinOwner from '../views/CabinOwner/ReservationsCabinOwner'
+import QuickReservationsCabin from '../views/CabinOwner/QuickReservationsCabin'
+import QuickReservationAdventure from '../views/FishingInstructor/QuickReservationsAdventure'
+import ReservationAdventure from '../views/FishingInstructor/AdventureReservations'
 
 const routes = [
   
@@ -153,10 +158,80 @@ const routes = [
       }                                                         
 
   },
+  
+  {
+    path: '/quickReservationsBoatOwner/:email',
+    name: 'QuickReservationsBoatOwner',
+    component: QuickReservationsBoatOwner,
+    beforeEnter: (to, from,next) => {
+      store.dispatch('refreshToken')
+     if(localStorage.token == 'empty' || localStorage.role !='BOATOWNER' || localStorage.logged == false){
+          next('/')
+        }else {
+          next()
+        }
+      }                                                         
+
+  },
+  {
+    path: '/reservationsCabinOwner/:email',
+    name: 'ReservationsCabinOwner',
+    component: ReservationsCabinOwner,
+    beforeEnter: (to, from,next) => {
+      store.dispatch('refreshToken')
+     if(localStorage.token == 'empty' || localStorage.role !='CABINOWNER' || localStorage.logged == false){
+          next('/')
+        }else {
+          next()
+        }
+      }                                                         
+
+  },
+  
+  {
+    path: '/quickReservationsCabinOwner/:email',
+    name: 'QuickReservationsCabinOwner',
+    component: QuickReservationsCabin,
+    beforeEnter: (to, from,next) => {
+      store.dispatch('refreshToken')
+     if(localStorage.token == 'empty' || localStorage.role !='CABINOWNER' || localStorage.logged == false){
+          next('/')
+        }else {
+          next()
+        }
+      }                                                         
+
+  },
   {
     path: '/fishingInstructorHome/:email',
     name: 'FishingInstructorHome',
     component: FishingInstructorHome,
+    beforeEnter: (to, from,next) => {
+      store.dispatch('refreshToken')
+      if(localStorage.token == 'empty' || localStorage.role !='FISHINGINSTRUCTOR' || localStorage.logged == false){
+           next('/')
+         }else {
+           next()
+         }
+       }
+  },
+  {
+    path: '/quickReservationAdventure/:email',
+    name: 'QuickReservationAdventure',
+    component: QuickReservationAdventure,
+    beforeEnter: (to, from,next) => {
+      store.dispatch('refreshToken')
+      if(localStorage.token == 'empty' || localStorage.role !='FISHINGINSTRUCTOR' || localStorage.logged == false){
+           next('/')
+         }else {
+           next()
+         }
+       }
+  },
+  {
+    path: '/reservationAdventure/:email',
+    name: 'ReservationAdventure',
+    component: ReservationAdventure,
     beforeEnter: (to, from,next) => {
       store.dispatch('refreshToken')
       if(localStorage.token == 'empty' || localStorage.role !='FISHINGINSTRUCTOR' || localStorage.logged == false){

@@ -3,8 +3,6 @@ package rs.ac.uns.ftn.isa.fisherman.mapper;
 import rs.ac.uns.ftn.isa.fisherman.dto.BoatReservationDto;
 import rs.ac.uns.ftn.isa.fisherman.model.*;
 
-import java.util.HashSet;
-import java.util.Set;
 
 public class BoatReservationMapper {
     private  BoatMapper boatMapper=new BoatMapper();

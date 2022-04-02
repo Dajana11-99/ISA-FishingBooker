@@ -23,9 +23,10 @@ import java.util.Set;
 @RestController
 @RequestMapping(value = "/cabinsPeriod", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AvailableCabinPeriodController {
-
+    private static final String SUCCESS ="Success";
+    private static final String ALREADY_EXISTS ="Already exists.";
     @Autowired
-   private AvailableCabinPeriodService availableCabinPeriodService;
+    private AvailableCabinPeriodService availableCabinPeriodService;
     @Autowired
     private CabinOwnerService cabinOwnerService;
     @Autowired
@@ -50,9 +51,9 @@ public class AvailableCabinPeriodController {
         Cabin cabin = cabinService.findById(availablePeriodDto.getPropertyId());
         if(availableCabinPeriodService.setAvailableCabinPeriod
                 (availableCabinPeriodMapper.availablePeriodDtoToAvailableCabinPeriod(availablePeriodDto,cabinOwner,cabin)))
-            return new ResponseEntity<>("Success", HttpStatus.OK);
+            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
         else
-            return new ResponseEntity<>("Already exists", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ALREADY_EXISTS, HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/deleteAvailableCabinsPeriod")
@@ -62,9 +63,9 @@ public class AvailableCabinPeriodController {
         Cabin cabin = cabinService.findById(availablePeriodDto.getPropertyId());
         if(availableCabinPeriodService.deleteAvailableCabinsPeriod
                 (availableCabinPeriodMapper.availablePeriodDtoToAvailableCabinPeriod(availablePeriodDto,cabinOwner,cabin)))
-            return new ResponseEntity<>("Success", HttpStatus.OK);
+            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
         else
-            return new ResponseEntity<>("Already exists", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ALREADY_EXISTS, HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/editAvailableCabinsPeriod")
@@ -75,9 +76,9 @@ public class AvailableCabinPeriodController {
         if(availableCabinPeriodService.editAvailableCabinsPeriod
                 (availableCabinPeriodMapper.availablePeriodDtoToAvailableCabinPeriod(periods.get(0),cabinOwner,cabin),
                   availableCabinPeriodMapper.availablePeriodDtoToAvailableCabinPeriod(periods.get(1),cabinOwner,cabin)))
-            return new ResponseEntity<>("Success", HttpStatus.OK);
+            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
         else
-            return new ResponseEntity<>("Already exists", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ALREADY_EXISTS, HttpStatus.BAD_REQUEST);
     }
 
 }

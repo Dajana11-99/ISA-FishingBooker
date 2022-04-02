@@ -1,9 +1,6 @@
 package rs.ac.uns.ftn.isa.fisherman.service.impl;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import rs.ac.uns.ftn.isa.fisherman.model.CabinReservation;
-import rs.ac.uns.ftn.isa.fisherman.model.Client;
 import rs.ac.uns.ftn.isa.fisherman.model.QuickReservationCabin;
 import rs.ac.uns.ftn.isa.fisherman.repository.QuickReservationCabinRepository;
 import rs.ac.uns.ftn.isa.fisherman.service.AvailableCabinPeriodService;
@@ -52,6 +49,16 @@ public class QuickReservationCabinServiceImpl implements QuickReservationCabinSe
     @Override
     public boolean futureQuickReservationsExist(LocalDateTime currentDate, Long id) {
         return quickReservationCabinRepository.futureQuickReservationsExist(currentDate,id);
+    }
+
+    @Override
+    public Set<QuickReservationCabin> findReservationsByOwnerId(Long id) {
+        return quickReservationCabinRepository.findReservationsByOwnerId(id,LocalDateTime.now());
+    }
+
+    @Override
+    public Set<QuickReservationCabin> getPastReservations(Long id) {
+        return quickReservationCabinRepository.getPastReservations(id,LocalDateTime.now());
     }
 
     private boolean validateForReservation(QuickReservationCabin cabinQuickReservation){

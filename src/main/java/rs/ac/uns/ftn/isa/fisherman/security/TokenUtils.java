@@ -252,11 +252,12 @@ public class TokenUtils {
         return (audience.equals(AUDIENCE_TABLET) || audience.equals(AUDIENCE_MOBILE));
     }
 
-    public String getAudienceFromToken(String token) {
+    public String getAudienceFromToken(String token) //NOSONAR
+    {
         String audience;
         try {
             final Claims claims = this.getAllClaimsFromToken(token);
-            audience = claims.getAudience();
+            audience = claims.getAudience();//NOSONAR
         } catch (Exception e) {
             audience = null;
         }

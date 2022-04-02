@@ -13,17 +13,17 @@ public class CabinReservationMapper {
     private final AdditionalServiceMapper additionalServicesMapper=new AdditionalServiceMapper();
     public CabinReservation cabinReservationDtoToCabinReservation(CabinReservationDto cabinReservationDto){
         Cabin cabin = cabinMapper.cabinDtoToCabin(cabinReservationDto.getCabinDto());
-        CabinReservation cabinReservation = new CabinReservation(cabinReservationDto.getId(),
+        return new CabinReservation(cabinReservationDto.getId(),
                 cabinReservationDto.getStartDate(),cabinReservationDto.getEndDate(), cabinReservationDto.getPrice(),
                 new Client(), cabin, null);
-        return cabinReservation;
+
     }
     public CabinReservation cabinOwnerReservationDtoToCabinReservation(CabinReservationDto cabinReservationDto){
         Cabin cabin = cabinMapper.cabinDtoToCabin(cabinReservationDto.getCabinDto());
-        CabinReservation cabinReservation = new CabinReservation(cabinReservationDto.getId(),
+        return new CabinReservation(cabinReservationDto.getId(),
                 cabinReservationDto.getStartDate(),cabinReservationDto.getEndDate(), cabinReservationDto.getPrice(),
                 new Client(), cabin, additionalServicesMapper.additionalServicesDtoToAdditionalServices(cabinReservationDto.getAddedAdditionalServices()));
-        return cabinReservation;
+
     }
 
     public CabinReservationDto cabinReservationToCabinReservationDto(CabinReservation cabinReservation){

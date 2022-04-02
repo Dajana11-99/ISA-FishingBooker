@@ -6,15 +6,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import rs.ac.uns.ftn.isa.fisherman.dto.CabinDto;
-import rs.ac.uns.ftn.isa.fisherman.dto.CabinReservationDto;
-import rs.ac.uns.ftn.isa.fisherman.dto.SearchAvailablePeriodsCabinDto;
-import rs.ac.uns.ftn.isa.fisherman.dto.UserRequestDTO;
+import rs.ac.uns.ftn.isa.fisherman.dto.*;
 import rs.ac.uns.ftn.isa.fisherman.mapper.CabinReservationMapper;
-import rs.ac.uns.ftn.isa.fisherman.model.Cabin;
+import rs.ac.uns.ftn.isa.fisherman.model.*;
 import rs.ac.uns.ftn.isa.fisherman.mapper.CabinMapper;
 import rs.ac.uns.ftn.isa.fisherman.model.CabinReservation;
 import rs.ac.uns.ftn.isa.fisherman.service.CabinEvaluationService;
+import rs.ac.uns.ftn.isa.fisherman.service.CabinOwnerService;
 import rs.ac.uns.ftn.isa.fisherman.service.CabinReservationCancellationService;
 import rs.ac.uns.ftn.isa.fisherman.service.ReservationCabinService;
 
@@ -28,6 +26,8 @@ public class ReservationCabinController {
     @Autowired
     private ReservationCabinService reservationCabinService;
     @Autowired
+    private CabinOwnerService cabinOwnerService;
+    @Autowired
     private CabinReservationCancellationService cabinReservationCancellationService;
     @Autowired
     private CabinEvaluationService cabinEvaluationService;
@@ -38,7 +38,7 @@ public class ReservationCabinController {
     @PostMapping("/getAvailableCabins")
     @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<Set<CabinDto>> getAvailableCabins (@RequestBody SearchAvailablePeriodsCabinDto searchAvailablePeriodsCabinDto) {
-        Set<CabinDto> cabinsDto= new HashSet<CabinDto>();
+        Set<CabinDto> cabinsDto= new HashSet<>();
         for(Cabin cabin:reservationCabinService.getAvailableCabins(searchAvailablePeriodsCabinDto)){
             cabinsDto.add(cabinMapper.cabinToCabinDto(cabin));
         }
@@ -101,5 +101,27 @@ public class ReservationCabinController {
             return new ResponseEntity<>("Successful cancellation.", HttpStatus.OK);
         else
             return new ResponseEntity<>("Unsuccessful cancellation.", HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/getByOwnerUsername/{username:.+}/")
+    @PreAuthorize("hasRole('CABINOWNER')")
+    public ResponseEntity<Set<CabinReservationDto>> getByOwnerUsername (@PathVariable("username") String username) {
+        CabinOwner cabinOwner= cabinOwnerService.findByUsername(username);
+        Set<CabinReservationDto> cabinReservationDtos=new HashSet<>();
+        for(CabinReservation cabinReservation: reservationCabinService.findReservationsByOwnerId(cabinOwner.getId())){
+            cabinReservationDtos.add(cabinReservationMapper.cabinReservationToCabinReservationDto(cabinReservation));
+        }
+        return new ResponseEntity<>(cabinReservationDtos,HttpStatus.OK);
+    }
+
+    @GetMapping("/getPastReservations/{username:.+}/")
+    @PreAuthorize("hasRole('CABINOWNER')")
+    public ResponseEntity<Set<CabinReservationDto>> getPastReservations (@PathVariable("username") String username) {
+        CabinOwner cabinOwner= cabinOwnerService.findByUsername(username);
+        Set<CabinReservationDto> cabinReservationDtos=new HashSet<>();
+        for(CabinReservation cabinReservation: reservationCabinService.getPastReservations(cabinOwner.getId())){
+            cabinReservationDtos.add(cabinReservationMapper.cabinReservationToCabinReservationDto(cabinReservation));
+        }
+        return new ResponseEntity<>(cabinReservationDtos,HttpStatus.OK);
     }
 }

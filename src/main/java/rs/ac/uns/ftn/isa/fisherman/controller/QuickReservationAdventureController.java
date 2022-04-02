@@ -7,10 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import rs.ac.uns.ftn.isa.fisherman.dto.AdventureReservationDto;
 import rs.ac.uns.ftn.isa.fisherman.dto.QuickReservationAdventureDto;
-import rs.ac.uns.ftn.isa.fisherman.mapper.AdventureMapper;
-import rs.ac.uns.ftn.isa.fisherman.mapper.AdventureReservationMapper;
 import rs.ac.uns.ftn.isa.fisherman.mapper.QuickReservationAdventureMapper;
 import rs.ac.uns.ftn.isa.fisherman.model.*;
 import rs.ac.uns.ftn.isa.fisherman.service.FishingInstructorService;
@@ -40,11 +37,23 @@ public class QuickReservationAdventureController {
     }
     @GetMapping(value= "/getByInstructorId/{username:.+}/")
     @PreAuthorize("hasRole('FISHING_INSTRUCTOR')")
-    public ResponseEntity<Set<QuickReservationAdventureDto>> getPresentByCabinId(@PathVariable ("username")String username) {
+    public ResponseEntity<Set<QuickReservationAdventureDto>> getByInstructorId(@PathVariable ("username")String username) {
         Long instructorId= fishingInstructorService.findByUsername(username).getId();
         Set<QuickReservationAdventureDto> reservationDtos= new HashSet<>();
         for(QuickReservationAdventure quickReservationAdventure: quickReservationAdventureService.getByInstructorId(instructorId))
             reservationDtos.add(quickReservationAdventureMapper.quickAdventureReservationToQuickAdventureReservationDto(quickReservationAdventure));
+        return new ResponseEntity<>(reservationDtos,HttpStatus.OK);
+    }
+
+
+    @GetMapping("/getPastReservations/{username:.+}/")
+    @PreAuthorize("hasRole('FISHING_INSTRUCTOR')")
+    public ResponseEntity<Set<QuickReservationAdventureDto>> getPastReservations (@PathVariable("username") String username) {
+        Long instructorId= fishingInstructorService.findByUsername(username).getId();
+        Set<QuickReservationAdventureDto> reservationDtos=new HashSet<>();
+        for(QuickReservationAdventure quickReservationAdventure: quickReservationAdventureService.getPastReservations(instructorId)){
+            reservationDtos.add(quickReservationAdventureMapper.quickAdventureReservationToQuickAdventureReservationDto(quickReservationAdventure));
+        }
         return new ResponseEntity<>(reservationDtos,HttpStatus.OK);
     }
 

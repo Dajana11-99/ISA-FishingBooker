@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import rs.ac.uns.ftn.isa.fisherman.dto.BoatReservationDto;
 import rs.ac.uns.ftn.isa.fisherman.dto.QuickReservationBoatDto;
 import rs.ac.uns.ftn.isa.fisherman.mapper.BoatReservationMapper;
 import rs.ac.uns.ftn.isa.fisherman.mapper.QuickReservationBoatMapper;
@@ -51,6 +52,16 @@ public class QuickReservationBoatController {
         BoatOwner boatOwner= boatOwnerService.findByUsername(username);
         Set<QuickReservationBoatDto> boatReservationDtos=new HashSet<>();
         for(QuickReservationBoat quickReservationBoat: quickReservationBoatService.findReservationsByOwnerId(boatOwner.getId())){
+            boatReservationDtos.add(quickReservationBoatMapper.boatQuickReservationToDto(quickReservationBoat));
+        }
+        return new ResponseEntity<>(boatReservationDtos,HttpStatus.OK);
+    }
+    @GetMapping("/getPastQuickReservations/{username:.+}/")
+    @PreAuthorize("hasRole('BOATOWNER')")
+    public ResponseEntity<Set<QuickReservationBoatDto>> getPastReservations (@PathVariable("username") String username) {
+        BoatOwner boatOwner= boatOwnerService.findByUsername(username);
+        Set<QuickReservationBoatDto> boatReservationDtos=new HashSet<>();
+        for(QuickReservationBoat quickReservationBoat: quickReservationBoatService.getPastReservations(boatOwner.getId())){
             boatReservationDtos.add(quickReservationBoatMapper.boatQuickReservationToDto(quickReservationBoat));
         }
         return new ResponseEntity<>(boatReservationDtos,HttpStatus.OK);

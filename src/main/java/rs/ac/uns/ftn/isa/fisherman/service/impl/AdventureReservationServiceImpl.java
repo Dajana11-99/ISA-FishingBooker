@@ -68,6 +68,12 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
         return  adventureReservationRepository.futureReservationsExist(currentDate,id);
     }
 
+    @Override
+    public Set<AdventureReservation> getPastReservations(Long id) {
+        LocalDateTime currentDate = LocalDateTime.now();
+        return adventureReservationRepository.getPastReservations(id,currentDate);
+    }
+
     private boolean validateForReservation(AdventureReservation adventureReservation, Client client){
         LocalDateTime currentDate= LocalDateTime.now();
         if(client==null) return false;

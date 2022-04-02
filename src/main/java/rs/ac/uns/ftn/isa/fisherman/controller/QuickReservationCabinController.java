@@ -6,9 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.isa.fisherman.dto.QuickReservationCabinDto;
-import rs.ac.uns.ftn.isa.fisherman.mapper.CabinReservationMapper;
 import rs.ac.uns.ftn.isa.fisherman.mapper.QuickReservationCabinMapper;
+import rs.ac.uns.ftn.isa.fisherman.model.CabinOwner;
 import rs.ac.uns.ftn.isa.fisherman.model.QuickReservationCabin;
+import rs.ac.uns.ftn.isa.fisherman.service.CabinOwnerService;
 import rs.ac.uns.ftn.isa.fisherman.service.QuickReservationCabinService;
 
 import java.util.HashSet;
@@ -19,7 +20,10 @@ import java.util.Set;
 public class QuickReservationCabinController {
     @Autowired
     private QuickReservationCabinService quickReservationCabinService;
+    @Autowired
+    private CabinOwnerService cabinOwnerService;
     private final QuickReservationCabinMapper quickReservationCabinMapper=new QuickReservationCabinMapper();
+
     @PostMapping("/ownerCreates")
     @PreAuthorize("hasRole('CABINOWNER')")
     public ResponseEntity<String> ownerCreates (@RequestBody QuickReservationCabinDto quickReservationCabinDto) {
@@ -36,6 +40,26 @@ public class QuickReservationCabinController {
         for(QuickReservationCabin quickReservationCabin: quickReservationCabinService.getByCabinId(cabinId))
             quickReservationCabinDtos.add(quickReservationCabinMapper.quickReservationToDto(quickReservationCabin));
         return new ResponseEntity<>(quickReservationCabinDtos,HttpStatus.OK);
+    }
+    @GetMapping("/getByOwnerUsername/{username:.+}/")
+    @PreAuthorize("hasRole('CABINOWNER')")
+    public ResponseEntity<Set<QuickReservationCabinDto>> getByOwnerUsername (@PathVariable("username") String username) {
+        CabinOwner cabinOwner= cabinOwnerService.findByUsername(username);
+        Set<QuickReservationCabinDto> cabinReservationDtos=new HashSet<>();
+        for(QuickReservationCabin quickReservationCabin: quickReservationCabinService.findReservationsByOwnerId(cabinOwner.getId())){
+            cabinReservationDtos.add(quickReservationCabinMapper.quickReservationToDto(quickReservationCabin));
+        }
+        return new ResponseEntity<>(cabinReservationDtos,HttpStatus.OK);
+    }
+    @GetMapping("/getPastQuickReservations/{username:.+}/")
+    @PreAuthorize("hasRole('CABINOWNER')")
+    public ResponseEntity<Set<QuickReservationCabinDto>> getPastReservations (@PathVariable("username") String username) {
+        CabinOwner cabinOwner= cabinOwnerService.findByUsername(username);
+        Set<QuickReservationCabinDto> cabinReservationDtos=new HashSet<>();
+        for(QuickReservationCabin quickReservationCabin: quickReservationCabinService.getPastReservations(cabinOwner.getId())){
+            cabinReservationDtos.add(quickReservationCabinMapper.quickReservationToDto(quickReservationCabin));
+        }
+        return new ResponseEntity<>(cabinReservationDtos,HttpStatus.OK);
     }
 
 }

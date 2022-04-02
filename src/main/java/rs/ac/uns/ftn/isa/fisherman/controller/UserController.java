@@ -15,7 +15,6 @@ import rs.ac.uns.ftn.isa.fisherman.service.BoatOwnerService;
 import rs.ac.uns.ftn.isa.fisherman.service.CabinOwnerService;
 import rs.ac.uns.ftn.isa.fisherman.service.FishingInstructorService;
 import rs.ac.uns.ftn.isa.fisherman.service.UserService;
-import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
 

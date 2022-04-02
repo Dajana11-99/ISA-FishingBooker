@@ -1,5 +1,4 @@
 package rs.ac.uns.ftn.isa.fisherman.service;
-
 import rs.ac.uns.ftn.isa.fisherman.dto.SearchAvailablePeriodsCabinDto;
 import rs.ac.uns.ftn.isa.fisherman.model.Cabin;
 import rs.ac.uns.ftn.isa.fisherman.dto.CabinReservationDto;
@@ -22,4 +21,7 @@ public interface ReservationCabinService {
     Set<CabinReservation> getClientReservationHistoryByUsername(String clientUsername);
 
     boolean futureReservationsExist(LocalDateTime currentDate, Long id);
+
+    Set< CabinReservation> findReservationsByOwnerId(Long id);
+    Set<CabinReservation> getPastReservations(Long id);
 }

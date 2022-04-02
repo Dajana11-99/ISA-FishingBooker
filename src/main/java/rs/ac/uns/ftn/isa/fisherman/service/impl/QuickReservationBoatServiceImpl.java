@@ -56,7 +56,8 @@ public class QuickReservationBoatServiceImpl implements QuickReservationBoatServ
 
     @Override
     public Set<QuickReservationBoat> findReservationsByOwnerId(Long id) {
-        return quickReservationBoatRepository.findReservationsByOwnerId(id);
+        LocalDateTime currentDate=LocalDateTime.now();
+        return quickReservationBoatRepository.findReservationsByOwnerId(id,currentDate);
     }
 
     @Override
@@ -84,5 +85,11 @@ public class QuickReservationBoatServiceImpl implements QuickReservationBoatServ
     @Override
     public boolean futureQuickReservationsExist(LocalDateTime currentDate,Long boatId){
         return quickReservationBoatRepository.futureQuickReservationsExist(currentDate,boatId);
+    }
+
+    @Override
+    public Set<QuickReservationBoat> getPastReservations(Long id) {
+        LocalDateTime currentDate=LocalDateTime.now();
+        return quickReservationBoatRepository.getPastReservations(id, currentDate);
     }
 }

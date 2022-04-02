@@ -14,4 +14,6 @@ public interface AdventureReservationService {
     boolean reservationExists(Long cabinId, LocalDateTime startDate, LocalDateTime endDate);
 
     boolean futureReservationsExist(LocalDateTime currentDate, Long id);
+
+    Set<AdventureReservation>  getPastReservations(Long id);
 }
