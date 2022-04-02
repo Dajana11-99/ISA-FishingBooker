@@ -14,6 +14,7 @@ import rs.ac.uns.ftn.isa.fisherman.mapper.CabinReservationMapper;
 import rs.ac.uns.ftn.isa.fisherman.model.Cabin;
 import rs.ac.uns.ftn.isa.fisherman.mapper.CabinMapper;
 import rs.ac.uns.ftn.isa.fisherman.model.CabinReservation;
+import rs.ac.uns.ftn.isa.fisherman.service.CabinEvaluationService;
 import rs.ac.uns.ftn.isa.fisherman.service.CabinReservationCancellationService;
 import rs.ac.uns.ftn.isa.fisherman.service.ReservationCabinService;
 
@@ -28,6 +29,9 @@ public class ReservationCabinController {
     private ReservationCabinService reservationCabinService;
     @Autowired
     private CabinReservationCancellationService cabinReservationCancellationService;
+    @Autowired
+    private CabinEvaluationService cabinEvaluationService;
+
     private final CabinMapper cabinMapper = new CabinMapper();
     private final CabinReservationMapper cabinReservationMapper=new CabinReservationMapper();
 
@@ -82,8 +86,11 @@ public class ReservationCabinController {
     @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<Set<CabinReservationDto>> getReservationsHistory(@RequestBody UserRequestDTO userRequestDTO) {
         Set<CabinReservationDto> cabinReservationDtos= new HashSet<>();
-        for(CabinReservation cabinReservation: reservationCabinService.getClientReservationHistoryByUsername(userRequestDTO.getUsername()))
-            cabinReservationDtos.add(cabinReservationMapper.cabinReservationToCabinReservationDto(cabinReservation));
+        for(CabinReservation cabinReservation: reservationCabinService.getClientReservationHistoryByUsername(userRequestDTO.getUsername())){
+            CabinReservationDto cabinReservationDto = cabinReservationMapper.cabinReservationToCabinReservationDto(cabinReservation);
+            cabinReservationDto.setEvaluated(cabinEvaluationService.reservationHasEvaluation(cabinReservation.getId()));
+            cabinReservationDtos.add(cabinReservationDto);
+        }
         return new ResponseEntity<>(cabinReservationDtos,HttpStatus.OK);
     }
 

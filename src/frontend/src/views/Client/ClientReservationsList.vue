@@ -118,7 +118,6 @@
                     </h6>
                     <div class="row">
                       <div class="col" style="text-align: right">
-                        <template v-if="!reservationProcess"> </template>
                         <template v-if="upcomingCabinReservations">
                           <button
                             @click="cancelReservation(cabinReservationDto)"
@@ -131,6 +130,15 @@
                             "
                           >
                             CANCEL
+                          </button>
+                        </template>
+                        <template v-if="(!upcomingCabinReservations) && !cabinReservationDto.evaluated">
+                          <button
+                            @click="evaluateReservation(cabinReservationDto)"
+                            type="button"
+                            class="btn btn-outline-dark rounded-pill"
+                          >
+                            EVALUATE
                           </button>
                         </template>
                       </div>
@@ -282,7 +290,6 @@ export default {
       return "logoF1.png";
     },
     getFullAddress: function (index) {
-      console.log(this.sortedCabinReservations);
       if (this.cabinReservationsLoaded == true)
         return (
           this.sortedCabinReservations[index].cabinDto.addressDto.streetAndNum +
@@ -295,6 +302,9 @@ export default {
     },
     seeProfile: function (cabinName) {
       this.$router.push("/cabinProfile/" + this.email + "/" + cabinName);
+    },
+    evaluateReservation: function (cabinReservationDto) {
+      this.$router.push("/evaluation/" + this.email + "/" + "cabin/" + cabinReservationDto.id);
     },
     cancelReservation: function (cabinReservationDto) {
       this.loader = this.$loading.show({

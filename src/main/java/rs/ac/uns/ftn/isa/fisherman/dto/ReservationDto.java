@@ -11,6 +11,15 @@ public class ReservationDto {
     protected Double price;
     protected String clientUsername;
     protected String clientFullName;
+    private boolean evaluated;
+
+    public boolean isEvaluated() {
+        return evaluated;
+    }
+
+    public void setEvaluated(boolean evaluated) {
+        this.evaluated = evaluated;
+    }
 
     public ReservationDto(Long id, LocalDateTime startDate, LocalDateTime endDate, Double price, String clientUsername, String clientFullName) {
         this.id = id;
