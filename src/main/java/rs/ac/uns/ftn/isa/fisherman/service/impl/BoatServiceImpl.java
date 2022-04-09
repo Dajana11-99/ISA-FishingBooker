@@ -126,15 +126,17 @@ public class BoatServiceImpl implements BoatService {
 
     @Override
     public double findAvgBoatRatingByOwnerId(Long ownerId) {
-        Set<Boat> boats=new HashSet<>();
+        boolean ratingExists=false;
         double count=0;
         double sum=0;
         for(Boat boat: boatRepository.findByOwnersId(ownerId) ){
-
-            sum+= boat.getRating();
-            count++;
+            if(boat.getRating()!=0) {
+                ratingExists=true;
+                sum += boat.getRating();
+                count++;
+            }
         }
-
-        return sum/count;
+       if (ratingExists) return sum/count;
+       return sum;
     }
 }
