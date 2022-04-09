@@ -12,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
+import rs.ac.uns.ftn.isa.fisherman.dto.AddressDTO;
+import rs.ac.uns.ftn.isa.fisherman.dto.UserRequestDTO;
 import rs.ac.uns.ftn.isa.fisherman.mail.AccountAcceptedInfo;
 import rs.ac.uns.ftn.isa.fisherman.mail.AccountDeniedInfo;
 import rs.ac.uns.ftn.isa.fisherman.mail.MailService;
@@ -23,8 +26,10 @@ import rs.ac.uns.ftn.isa.fisherman.service.impl.UserServiceImpl;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
+import javax.transaction.Transactional;
 import java.util.*;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -35,7 +40,7 @@ import static org.mockito.Mockito.when;
 public class UserServiceTest {
 
     @Mock
-    private UserRepository userServiceRepositoryMock;
+    private UserRepository userRepositoryMock;
     @InjectMocks
     private UserServiceImpl userService;
 
@@ -66,9 +71,9 @@ public class UserServiceTest {
     public void testAcceptAccount() throws MessagingException {
         FishingInstructor fishingInstructor = new FishingInstructor(1L,"Instructor","Instructorcic","dajanazlokapa1@gmail.com","123",null,null,null,null,"dasdasdasd");
 
-        when(userServiceRepositoryMock.findAll()).thenReturn(Arrays.asList(fishingInstructor, new BoatOwner()));
-        when(userServiceRepositoryMock.save(fishingInstructor)).thenReturn(fishingInstructor);
-        when(userServiceRepositoryMock.findByUsername(fishingInstructor.getUsername())).thenReturn(fishingInstructor);
+        when(userRepositoryMock.findAll()).thenReturn(Arrays.asList(fishingInstructor, new BoatOwner()));
+        when(userRepositoryMock.save(fishingInstructor)).thenReturn(fishingInstructor);
+        when(userRepositoryMock.findByUsername(fishingInstructor.getUsername())).thenReturn(fishingInstructor);
 
         userService.acceptAccount(fishingInstructor);
 
@@ -82,8 +87,8 @@ public class UserServiceTest {
     public void testDenyAccount() throws MessagingException {
         FishingInstructor fishingInstructor = new FishingInstructor(1L,"Instructor","Instructorcic","milos12@gmail.com","123",null,null,null,null,"dasdasdasd");
         String reason= "Because he is bad man.";
-        when(userServiceRepositoryMock.findAll()).thenReturn(Arrays.asList(fishingInstructor, new BoatOwner(),new FishingInstructor()));
-        doNothing().when(userServiceRepositoryMock).delete(fishingInstructor);
+        when(userRepositoryMock.findAll()).thenReturn(Arrays.asList(fishingInstructor, new BoatOwner(),new FishingInstructor()));
+        doNothing().when(userRepositoryMock).delete(fishingInstructor);
 
         userService.denyAccount(fishingInstructor,reason);
 
@@ -104,11 +109,11 @@ public class UserServiceTest {
                 "123","011/345-345",new Address(20.457273,44.787197,"Serbia",
                 "Beograd","Beogradska 1"),"reason",3.4);
 
-        when(userRepository.getAll()).thenReturn(Arrays.asList(user));
-        when(userRepository.findByUsername(userRequestDTO.getUsername())).thenReturn(user);
+        when(userRepositoryMock.getAll()).thenReturn(Arrays.asList(user));
+        when(userRepositoryMock.findByUsername(userRequestDTO.getUsername())).thenReturn(user);
 
         userService.editUser(userRequestDTO);
-        userRepository.save(user);
+        userRepositoryMock.save(user);
 
         assertEquals(user.getAddress().getCity(),userRequestDTO.getAddress().getCity());
         assertEquals(user.getAddress().getStreetAndNum(),userRequestDTO.getAddress().getStreetAndNum());
