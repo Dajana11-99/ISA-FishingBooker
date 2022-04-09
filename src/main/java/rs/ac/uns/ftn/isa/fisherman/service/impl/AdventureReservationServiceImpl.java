@@ -73,8 +73,7 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
 
     @Override
     public Set<AdventureReservation> getPastReservations(String username) {
-        LocalDateTime currentDate = LocalDateTime.now();
-        return adventureReservationRepository.getPastReservations(username,currentDate);
+        return adventureReservationRepository.getPastReservations(username,LocalDateTime.now());
     }
 
 
@@ -121,11 +120,7 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
         for(AdventureReservation adventureReservation: reservations){
             numOfHoursForReportReservation= calculateOverlapingDates(start,end,adventureReservation.getStartDate(),adventureReservation.getEndDate());
             reservationHours= Duration.between(adventureReservation.getStartDate(),adventureReservation.getEndDate()).toMinutes()/60d;
-            System.out.println("sati ukucano za izvestaj "+numOfHoursForReportReservation);
-            System.out.println("sati u rez "+reservationHours);
             profit+=(numOfHoursForReportReservation* adventureReservation.getPaymentInformation().getOwnersPart())/reservationHours;
-            System.out.println("profit  "+profit);
-
         }
         return profit;
     }
@@ -135,9 +130,6 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
         LocalDateTime start = Collections.max(Arrays.asList(startReport, startReservation));
         LocalDateTime end = Collections.min(Arrays.asList(endReport, endReservation));
         numberOfOverlappingHours = ChronoUnit.MINUTES.between(start, end);
-
-        System.out.println("Minuta izmedju  "+numberOfOverlappingHours);
-        System.out.println("Sati izmedju  "+numberOfOverlappingHours/60d);
         return numberOfOverlappingHours/60d;
     }
 

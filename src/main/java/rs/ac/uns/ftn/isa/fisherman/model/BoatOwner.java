@@ -13,22 +13,10 @@ public class BoatOwner extends User {
     private Set<Boat> boats;
 
 
-    @OneToMany(mappedBy = "boatOwner", cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE},orphanRemoval = true)
-    private Set<AvailableBoatOwnerPeriod> availableBoatOwnerPeriods;
-
-    public Set<AvailableBoatOwnerPeriod> getAvailableBoatOwnerPeriods() {
-        return availableBoatOwnerPeriods;
-    }
-
-    public void setAvailableBoatOwnerPeriods(Set<AvailableBoatOwnerPeriod> availableBoatOwnerPeriods) {
-        this.availableBoatOwnerPeriods = availableBoatOwnerPeriods;
-    }
-
     public BoatOwner() {}
 
     public BoatOwner(Long id, String name, String lastName, String username, String password, String phoneNum, Address address,String registrationReason) {
         super(id, name, lastName, username, password, phoneNum, address,registrationReason);
-        this.availableBoatOwnerPeriods=new HashSet<>();
     }
 
     public Set<Boat> getBoats() {

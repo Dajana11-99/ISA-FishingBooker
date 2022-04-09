@@ -6,8 +6,5 @@ import java.util.List;
 
 public interface BoatOwnerService {
     BoatOwner findByUsername(String ownersUsername);
-
     void save(BoatOwner boatOwner);
-
-
 }

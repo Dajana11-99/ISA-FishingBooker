@@ -20,7 +20,7 @@ public class FishingInstructor extends  User {
     @OneToMany(mappedBy = "fishingInstructor", fetch = FetchType.LAZY, cascade = CascadeType.DETACH, orphanRemoval = true)
     private Set<Adventure> adventures;
 
-    @OneToMany(mappedBy = "fishingInstructor", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "fishingInstructor", fetch = FetchType.EAGER, cascade = CascadeType.DETACH, orphanRemoval = true)
     private Set<AvailableInstructorPeriod> availableInstructorPeriods;
 
     @Override

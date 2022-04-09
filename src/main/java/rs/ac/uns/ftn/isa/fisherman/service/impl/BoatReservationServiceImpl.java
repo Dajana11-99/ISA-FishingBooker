@@ -14,10 +14,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class BoatReservationServiceImpl implements BoatReservationService {
@@ -109,8 +106,14 @@ public class BoatReservationServiceImpl implements BoatReservationService {
     }
 
     @Override
-    public Set<BoatReservation> getPastReservations(String ownersUsername) {
-        return boatReservationRepository.getPastReservations(ownersUsername,LocalDateTime.now());
+    public List<BoatReservation> getPastReservations(String ownersUsername) {
+        LocalDateTime currentDate=LocalDateTime.now();
+        List<BoatReservation> pastReservations=new ArrayList<>();
+        for(BoatReservation boatReservation: boatReservationRepository.getReservationsByOwnerUsername(ownersUsername)){
+            if(currentDate.isAfter(boatReservation.getEndDate()))
+                pastReservations.add(boatReservation);
+        }
+        return pastReservations;
     }
 
     @Override
@@ -119,9 +122,8 @@ public class BoatReservationServiceImpl implements BoatReservationService {
     }
 
     @Override
-    public double findReservationsAndSumProfit(String ownerUsername, LocalDateTime start, LocalDateTime end) {
-
-        return sumProfitOfPricesCalucatedByHours(boatReservationRepository.findReservationsInPeriodToSumProfit(ownerUsername,start,end),start,end);
+    public List<BoatReservation> findReservationsToSumProfit(String ownerUsername, LocalDateTime start, LocalDateTime end) {
+        return boatReservationRepository.findReservationsInPeriodToSumProfit(ownerUsername,start,end);
     }
     @Override
     public double sumProfitOfPricesCalucatedByHours(List<BoatReservation> reservations, LocalDateTime start, LocalDateTime end){
@@ -132,8 +134,6 @@ public class BoatReservationServiceImpl implements BoatReservationService {
             numOfHoursForReportReservation= calculateOverlapingDates(start,end,boatReservation.getStartDate(),boatReservation.getEndDate());
             reservationHours=Duration.between(boatReservation.getStartDate(),boatReservation.getEndDate()).toMinutes()/60d;
             profit+=(numOfHoursForReportReservation* boatReservation.getPaymentInformation().getOwnersPart())/reservationHours;
-            System.out.println("profit  "+profit);
-
         }
         return profit;
     }

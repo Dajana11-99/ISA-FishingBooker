@@ -15,7 +15,7 @@ public interface BoatService {
 
     void addNewImage(Boat boat, Image image);
 
-    Set<Boat> findByOwnersId(Long id);
+    List<Boat> findByOwnersId(Long id);
 
     Boat findByName(String name);
 
@@ -29,5 +29,5 @@ public interface BoatService {
 
     boolean canBeEditedOrDeleted(Long id);
 
-    Double findAvgBoatRatingByOwnerId(Long ownerId);
+    double findAvgBoatRatingByOwnerId(Long ownerId);
 }

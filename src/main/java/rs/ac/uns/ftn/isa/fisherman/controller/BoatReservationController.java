@@ -13,7 +13,9 @@ import rs.ac.uns.ftn.isa.fisherman.service.BoatOwnerService;
 import rs.ac.uns.ftn.isa.fisherman.service.BoatOwnersReservationReportService;
 import rs.ac.uns.ftn.isa.fisherman.service.BoatReservationService;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -62,8 +64,8 @@ public class BoatReservationController {
 
     @GetMapping("/getPastReservations/{username:.+}/")
     @PreAuthorize("hasRole('BOATOWNER')")
-    public ResponseEntity<Set<BoatReservationDto>> getPastReservations (@PathVariable("username") String username) {
-        Set<BoatReservationDto> boatReservationDtos=new HashSet<>();
+    public ResponseEntity<List<BoatReservationDto>> getPastReservations (@PathVariable("username") String username) {
+        List<BoatReservationDto> boatReservationDtos=new ArrayList<>();
         for(BoatReservation boatReservation: boatReservationService.getPastReservations(username)){
             boatReservationDtos.add(boatReservationMapper.boatReservationToBoatReservationDto(boatReservation));
         }

@@ -18,8 +18,6 @@ import java.util.Set;
 @RestController
 @RequestMapping(value = "/reports", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ReportsController {
-
-
     @Autowired
     private OwnersReportService ownersReportService;
     private OwnersReportMapper ownersReportMapper= new OwnersReportMapper();

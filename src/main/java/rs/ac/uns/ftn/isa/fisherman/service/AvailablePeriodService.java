@@ -1,6 +1,8 @@
 package rs.ac.uns.ftn.isa.fisherman.service;
 
 
+import rs.ac.uns.ftn.isa.fisherman.model.AvailablePeriod;
+
 public interface AvailablePeriodService {
     void deleteAvailablePeriod (Long id);
 }

@@ -22,7 +22,7 @@ public interface CabinService {
 
     void delete(Long id);
 
-    void edit(Cabin cabin, Boolean deleteOldImages);
+    Cabin edit(Cabin cabin, Boolean deleteOldImages);
     boolean canBeEditedOrDeleted(Long id);
 
 

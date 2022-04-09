@@ -146,7 +146,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void editUser(UserRequestDTO userRequest) {
-        User newInfo= findByUsername(userRequest.getUsername());
+        User newInfo= userRepository.findByUsername(userRequest.getUsername());
+        newInfo.setLastName(userRequest.getLastname());
         newInfo.setPhoneNum(userRequest.getPhoneNum());
         newInfo.getAddress().setCountry(userRequest.getAddress().getCountry());
         newInfo.getAddress().setCity(userRequest.getAddress().getCity());

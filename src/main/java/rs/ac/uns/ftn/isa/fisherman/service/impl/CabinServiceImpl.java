@@ -78,7 +78,7 @@ public class CabinServiceImpl implements CabinService {
     }
 
     @Override
-    public void edit(Cabin newCabin, Boolean deleteOldImages) {
+    public Cabin edit(Cabin newCabin, Boolean deleteOldImages) {
         Cabin oldCabin=this.cabinRepository.findByName(newCabin.getName());
         oldCabin.setAddress(newCabin.getAddress());
         oldCabin.setPrice(newCabin.getPrice());
@@ -95,6 +95,7 @@ public class CabinServiceImpl implements CabinService {
         Set<AdditionalServices> savedServices= cabinRepository.findByName(oldCabin.getName()).getAdditionalServices();
         if(Boolean.TRUE.equals(deleteOldImages))   imageService.delete(oldImages);
         additionalServicesService.delete(additionalServicesService.findDeletedAdditionalServices(oldAdditionalServices,savedServices));
+        return oldCabin;
     }
 
     @Override

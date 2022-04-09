@@ -7,7 +7,6 @@ import java.util.Set;
 
 public interface AvailableInstructorPeriodService {
 
-
     Set<AvailableInstructorPeriod> getAvailablePeriod(String username);
 
     boolean setAvailableInstructorPeriod(AvailableInstructorPeriod availableInstructorPeriod);
@@ -15,5 +14,6 @@ public interface AvailableInstructorPeriodService {
     boolean instructorIsAvailable(Long id, LocalDateTime startDate, LocalDateTime endDate);
 
     boolean deleteAvailableBoatsPeriod(AvailableInstructorPeriod availableInstructorPeriod);
+
     boolean editAvailableInstructorsPeriod(AvailableInstructorPeriod oldPeriod, AvailableInstructorPeriod newPeriod);
 }

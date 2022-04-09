@@ -17,11 +17,11 @@ public interface BoatReservationService {
 
     boolean futureReservationsExist(LocalDateTime currentDate, Long boatId);
 
-    Set<BoatReservation> getPastReservations(String ownersUsername);
+    List<BoatReservation> getPastReservations(String ownersUsername);
 
     Integer countReservationsInPeriod(LocalDateTime start, LocalDateTime end, String ownerUsername);
 
-    double findReservationsAndSumProfit(String ownerUsername, LocalDateTime start, LocalDateTime end);
+    List<BoatReservation> findReservationsToSumProfit(String ownerUsername, LocalDateTime start, LocalDateTime end);
 
     double sumProfitOfPricesCalucatedByHours(List<BoatReservation> reservations, LocalDateTime start, LocalDateTime end);
 

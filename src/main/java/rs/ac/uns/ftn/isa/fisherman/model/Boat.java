@@ -101,7 +101,7 @@ public class Boat {
         this.images=new HashSet<>();
         this.availableBoatPeriods=new HashSet<>();
     }
-    @OneToMany(mappedBy = "boat", fetch = FetchType.EAGER, cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "boat", fetch = FetchType.EAGER, cascade = CascadeType.DETACH,orphanRemoval = true)
     private Set<AvailableBoatPeriod> availableBoatPeriods;
     public Boat(Long id, String name, String type, double length, String engineCode, String enginePower, String maxSpeed, String navigationEquipment, Address address, String description, Integer maxPeople, String rules, String fishingEquipment, double price, double rating, String cancelingCondition,Set<AdditionalServices> additionalServices) {
         this.id = id;

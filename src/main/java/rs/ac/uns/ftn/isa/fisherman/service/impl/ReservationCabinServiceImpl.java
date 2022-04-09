@@ -121,27 +121,21 @@ public class ReservationCabinServiceImpl implements ReservationCabinService {
     }
 
     @Override
-    public double findReservationsAndSumProfit(String ownerUsername, LocalDateTime start, LocalDateTime end) {
-        return sumProfitOfPricesCalculatedByDays(cabinReservationRepository.findReservationsInPeriodToSumProfit(ownerUsername,start,end),start,end);
+    public List<CabinReservation> findReservationsToSumProfit(String ownerUsername, LocalDateTime start, LocalDateTime end) {
+        return cabinReservationRepository.findReservationsInPeriodToSumProfit(ownerUsername,start,end);
     }
     @Override
     public double sumProfitOfPricesCalculatedByDays(List<CabinReservation> reservations, LocalDateTime start, LocalDateTime end){
         double profit=0.0;
-        long numOfDaysForReport= Duration.between(start,end).toDays();
         long numOfDaysForReportReservation= 0;
-
-        System.out.println("broj dana za izvestaj   "+numOfDaysForReport);
         for(CabinReservation cabinReservation: reservations){
             numOfDaysForReportReservation= calculateOverlapingDates(start,end,cabinReservation.getStartDate(),cabinReservation.getEndDate());
-            System.out.println("dana za rez  "+numOfDaysForReportReservation);
-            profit+=(numOfDaysForReportReservation* cabinReservation.getPaymentInformation().getOwnersPart())/Duration.between(cabinReservation.getStartDate(),cabinReservation.getEndDate()).toDays();
-            System.out.println("profit  "+profit);
-
+            profit+=(numOfDaysForReportReservation*cabinReservation.getPaymentInformation().getOwnersPart())/Duration.between(cabinReservation.getStartDate(),cabinReservation.getEndDate()).toDays();
         }
         return profit;
     }
 
-    private long calculateOverlapingDates(LocalDateTime startReport, LocalDateTime endReport, LocalDateTime startReservation, LocalDateTime endReservation){
+    public long calculateOverlapingDates(LocalDateTime startReport, LocalDateTime endReport, LocalDateTime startReservation, LocalDateTime endReservation){
         long numberOfOverlappingDates=0;
         LocalDate start = Collections.max(Arrays.asList(startReport.toLocalDate(), startReservation.toLocalDate()));
         LocalDate end = Collections.min(Arrays.asList(endReport.toLocalDate(), endReservation.toLocalDate()));
@@ -224,7 +218,7 @@ public class ReservationCabinServiceImpl implements ReservationCabinService {
         return cabinReservationRepository.reservationExists(cabinId,startDate,endDate);
     }
 
-    private void sendMailNotification(CabinReservation cabinReservation,String email){
+    public void sendMailNotification(CabinReservation cabinReservation,String email){
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm:ss");
             String message = cabinReservation.getCabin().getName() + " is booked from " + cabinReservation.getStartDate().format(formatter) + " to " + cabinReservation.getEndDate().format(formatter) + " .";
@@ -256,14 +250,6 @@ public class ReservationCabinServiceImpl implements ReservationCabinService {
         return cabinReservationRepository.getPastReservations(ownerUsername,LocalDateTime.now());
     }
 
-    @Override
-    public void ownerCreatesReview(CabinReservation reservation, boolean isSuccessFull) {
-        CabinReservation cabinReservation = cabinReservationRepository.getById(reservation.getId());
-        cabinReservation.setSuccessfull(isSuccessFull);
-        //cabinReservation.getOwnersReport().setComment(reservation.getOwnersReport().getComment());
-        //cabinReservation.getOwnersReport().setBadComment(reservation.getOwnersReport().isBadComment());
-        cabinReservationRepository.save(cabinReservation);
-    }
     public CabinReservation getById(Long id) {
         return cabinReservationRepository.getById(id);
     }

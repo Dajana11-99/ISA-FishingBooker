@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.isa.fisherman.dto.StatisticsReportDto;
 import rs.ac.uns.ftn.isa.fisherman.mapper.ReservationPointsMapper;
+import rs.ac.uns.ftn.isa.fisherman.model.BoatReservation;
 import rs.ac.uns.ftn.isa.fisherman.model.ReservationPoints;
 import rs.ac.uns.ftn.isa.fisherman.service.*;
 
@@ -71,7 +72,8 @@ public class BoatStatisticsReportController {
     @PreAuthorize("hasRole('BOATOWNER')")
     public ResponseEntity<List<Double>> sumProfit(@PathVariable("username") String username,@RequestBody List<LocalDateTime> dateRange) {
         List<Double> profit=new ArrayList<>();
-        profit.add(boatReservationService.findReservationsAndSumProfit(username,dateRange.get(0),dateRange.get(1)));
+        List<BoatReservation> reservations= boatReservationService.findReservationsToSumProfit(username,dateRange.get(0),dateRange.get(1));
+        profit.add(boatReservationService.sumProfitOfPricesCalucatedByHours(reservations,dateRange.get(0),dateRange.get(1)));
         profit.add(quickReservationBoatService.findReservationsAndSumProfit(username,dateRange.get(0),dateRange.get(1)));
         return new ResponseEntity<>(profit, HttpStatus.OK);
     }

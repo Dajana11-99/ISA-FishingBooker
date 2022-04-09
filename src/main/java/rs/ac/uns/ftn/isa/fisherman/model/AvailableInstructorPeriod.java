@@ -1,11 +1,14 @@
 package rs.ac.uns.ftn.isa.fisherman.model;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
 @Entity
+
+@DiscriminatorValue("InstructorPeriod")
 public class AvailableInstructorPeriod extends AvailablePeriod {
 
     @ManyToOne
