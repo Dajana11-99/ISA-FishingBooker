@@ -5,11 +5,18 @@
 ![](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)
 ![](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 ![](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase)
-
+[![badge](https://img.shields.io/badge/Heroku-backend-9676B9)](https://ancient-cliffs-65079.herokuapp.com/)
+[![badge](https://img.shields.io/badge/Heroku-frontend-9676B9)](https://rocky-ravine-63735.herokuapp.com/)
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=Dajana11-99_ISA-FishingBooker)
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Dajana11-99_ISA-FishingBooker&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Dajana11-99_ISA-FishingBooker)
 # Fisherman
+
+### Heroku
+Backend: [![badge](https://img.shields.io/badge/Heroku-backend-9676B9)](https://ancient-cliffs-65079.herokuapp.com/)
+
+Frontend: [![badge](https://img.shields.io/badge/Heroku-frontend-9676B9)](https://rocky-ravine-63735.herokuapp.com/)
+
 ## Description
 
 Web application for booking fishing cabins, boats and trips. Full stack academic project made for course Internet Software Architectures at Faculty of Technical Sciences, Novi Sad.
@@ -19,12 +26,12 @@ Web application for booking fishing cabins, boats and trips. Full stack academic
 | [Aleksa Stojic RA83/2018](https://github.com/stojic19) <br> <img src="https://avatars.githubusercontent.com/stojic19" width="170" height="170"> | [Magdalena Reljin RA82/2018](https://github.com/magdalenaRA822018) <br> <img src="https://avatars.githubusercontent.com/magdalenaRA822018" width="170" height="170"> | [Dajana Zlokapa RA240/2018](https://github.com/Dajana11-99) <br> <img src="https://avatars.githubusercontent.com/Dajana11-99" width="170" height="170"> |
 
 ## Table of Contents
-- [Built with](#tehcnologies)
+- [Built_with](#built_with)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Screenshots](#screenshots)
+- [DevOps_microflow](#devops_microflow)
 
-## Built with
+## Built_with
 - Backend: java + Spring Boot [JDK 11.0.12, SDK 14.0.2]
 - Frontend: Vue js x3, Bootstrap
 - Persistence: PostgreSQL,Firebase
@@ -58,4 +65,4 @@ Roles and credentials:
 - Predefined admin - username: dajanazlokapa1@gmail.com, password: 123
 - Admin - username: proba@gmail.com, password: 123
 
-## Screenshots
+## DevOps_microflow
