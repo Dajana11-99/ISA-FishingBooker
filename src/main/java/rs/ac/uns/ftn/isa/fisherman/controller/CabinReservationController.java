@@ -52,22 +52,32 @@ public class CabinReservationController {
             return new ResponseEntity<>("Client banned from making reservations!", HttpStatus.BAD_REQUEST);
         if(cabinReservationCancellationService.clientHasCancellationForCabinInPeriod(cabinReservationDto.getCabinDto().getId(), cabinReservationDto.getClientUsername(), cabinReservationDto.getStartDate(), cabinReservationDto.getEndDate()))
             return new ResponseEntity<>("Client has cancellation for cabin in given period!", HttpStatus.BAD_REQUEST);
+        try {
         if(reservationCabinService.makeReservation(cabinReservationDto))
             return new ResponseEntity<>("Success.", HttpStatus.OK);
         else
             return new ResponseEntity<>("Cabin already reserved in period!", HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Someone already made reservation or owner edited cabin. Please try again..", HttpStatus.BAD_REQUEST);
+
+        }
     }
+
     @PostMapping("/ownerCreates")
     @PreAuthorize("hasRole('CABINOWNER')")
-    public ResponseEntity<String> ownerCreates (@RequestBody CabinReservationDto cabinReservationDto) {
+    public ResponseEntity<String> ownerCreates (@RequestBody CabinReservationDto cabinReservationDto) throws Exception {
         CabinOwner cabinOwner = cabinOwnerService.findByUsername(cabinReservationDto.getCabinDto().getOwnerUsername());
         CabinReservation cabinReservation= cabinReservationMapper.cabinOwnerReservationDtoToCabinReservation(cabinReservationDto);
         cabinReservation.getCabin().setCabinOwner(cabinOwner);
-        if(reservationCabinService.ownerCreates(cabinReservation,cabinReservationDto.getClientUsername())) {
+        try {
+            if(reservationCabinService.ownerCreates(cabinReservation,cabinReservationDto.getClientUsername())) {
 
-            return new ResponseEntity<>("Success.", HttpStatus.OK);
-        }else {
-            return new ResponseEntity<>("Unsuccessful reservation.", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Success.", HttpStatus.OK);
+            }else {
+                return new ResponseEntity<>("Unsuccessful reservation.", HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>("Someone already made reservation or owner edited cabin. Please try again..", HttpStatus.BAD_REQUEST);
         }
     }
 

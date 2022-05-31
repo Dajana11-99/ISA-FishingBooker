@@ -4,6 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import rs.ac.uns.ftn.isa.fisherman.dto.QuickReservationAdventureDto;
 import rs.ac.uns.ftn.isa.fisherman.mail.AdventureReservationSuccessfulInfo;
 import rs.ac.uns.ftn.isa.fisherman.mail.MailService;
@@ -43,7 +46,9 @@ public class QuickReservationAdventureImpl implements QuickReservationAdventureS
     private ClientService clientService;
 
     @Override
-    public boolean instructorCreates(QuickReservationAdventure quickReservationAdventure) {
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
+    public boolean instructorCreates(QuickReservationAdventure quickReservationAdventure) throws Exception {
+        if(quickReservationAdventure == null) return false;
         if(!validateForReservation(quickReservationAdventure)) return false;
 
         QuickReservationAdventure successfullQuickReservation=new QuickReservationAdventure(quickReservationAdventure.getId(),quickReservationAdventure.getStartDate(),
@@ -51,10 +56,15 @@ public class QuickReservationAdventureImpl implements QuickReservationAdventureS
                 quickReservationAdventure.getOwnersUsername(),
                 quickReservationAdventure.getAdventure(),quickReservationAdventure.getFishingInstructor(),quickReservationAdventure.getDiscount(),null);
         successfullQuickReservation.setEvaluated(false);
+
         quickReservationAdventureRepository.save(successfullQuickReservation);
+
+
         if(quickReservationAdventure.getAddedAdditionalServices()!=null){
             successfullQuickReservation.setAddedAdditionalServices(quickReservationAdventure.getAddedAdditionalServices());
+
             quickReservationAdventureRepository.save(successfullQuickReservation);
+
         }
         sendMailNotificationToSubscribedUsers(successfullQuickReservation.getAdventure().getId(),successfullQuickReservation.getAdventure().getName());
         return true;

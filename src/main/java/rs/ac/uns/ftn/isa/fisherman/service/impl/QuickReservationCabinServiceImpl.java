@@ -3,6 +3,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import rs.ac.uns.ftn.isa.fisherman.dto.QuickReservationCabinDto;
 import rs.ac.uns.ftn.isa.fisherman.mail.CabinReservationSuccessfulInfo;
 import rs.ac.uns.ftn.isa.fisherman.mail.MailService;
@@ -41,20 +44,21 @@ public class QuickReservationCabinServiceImpl implements QuickReservationCabinSe
     @Autowired
     private ClientService clientService;
     private final Logger logger= LoggerFactory.getLogger(FirebaseServiceImpl.class);
-    @Override
-    public boolean ownerCreates(QuickReservationCabin quickReservationCabin) {
-        if(!validateForReservation(quickReservationCabin)) return false;
 
-        QuickReservationCabin successfullQuickReservation=new QuickReservationCabin(quickReservationCabin.getId(),quickReservationCabin.getStartDate(),
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
+    public boolean ownerCreates(QuickReservationCabin quickReservationCabin) throws Exception {
+        QuickReservationCabin successfullQuickReservation = null;
+        if(!validateForReservation(quickReservationCabin)) return false;
+        successfullQuickReservation=new QuickReservationCabin(quickReservationCabin.getId(),quickReservationCabin.getStartDate(),
                 quickReservationCabin.getEndDate(),null,quickReservationCabin.getPaymentInformation(), quickReservationCabin.isOwnerWroteAReport(),
                 quickReservationCabin.getOwnersUsername(),quickReservationCabin.getCabin(),quickReservationCabin.getDiscount(),null);
         successfullQuickReservation.setEvaluated(false);
         quickReservationCabinRepository.save(successfullQuickReservation);
-        if(quickReservationCabin.getAddedAdditionalServices()!=null){
+        if(quickReservationCabin.getAddedAdditionalServices()!=null) {
             successfullQuickReservation.setAddedAdditionalServices(quickReservationCabin.getAddedAdditionalServices());
             quickReservationCabinRepository.save(successfullQuickReservation);
         }
-
         sendMailNotificationToSubscribedUsers(successfullQuickReservation.getCabin().getId(),successfullQuickReservation.getCabin().getName());
         return true;
     }

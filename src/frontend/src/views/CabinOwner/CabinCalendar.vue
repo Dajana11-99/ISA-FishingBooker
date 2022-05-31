@@ -868,7 +868,7 @@ import axios from "axios";
                                        this.$swal.fire({
                                         icon: 'error',
                                         title: 'Oops...',
-                                        text: 'Something went wrong!',
+                                        text: err.response.data,
                                })
                                     this.clearModalReservation()
                               })
@@ -927,7 +927,7 @@ import axios from "axios";
                                        this.$swal.fire({
                                         icon: 'error',
                                         title: 'Oops...',
-                                        text: 'Something went wrong!',
+                                        text: err.response.data,
                                       })
                                     this.clearModalQuick()
                               })

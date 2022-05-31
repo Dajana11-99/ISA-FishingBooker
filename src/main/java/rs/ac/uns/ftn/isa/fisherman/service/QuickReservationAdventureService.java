@@ -9,7 +9,7 @@ import java.util.Set;
 
 public interface QuickReservationAdventureService {
 
-    boolean instructorCreates(QuickReservationAdventure adventureReservation);
+    boolean instructorCreates(QuickReservationAdventure adventureReservation) throws Exception;
     Set<QuickReservationAdventure> getByInstructorUsername(String username) ;
     boolean quickReservationExists(String username, LocalDateTime startDate, LocalDateTime endDate);
     boolean futureQuickReservationsExist(LocalDateTime currentDate,Long id);

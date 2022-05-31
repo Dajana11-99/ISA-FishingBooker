@@ -33,12 +33,16 @@ public class QuickReservationCabinController {
 
     @PostMapping("/ownerCreates")
     @PreAuthorize("hasRole('CABINOWNER')")
-    public ResponseEntity<String> ownerCreates (@RequestBody QuickReservationCabinDto quickReservationCabinDto) {
+    public ResponseEntity<String> ownerCreates (@RequestBody QuickReservationCabinDto quickReservationCabinDto) throws Exception {
         QuickReservationCabin quickReservationCabin= quickReservationCabinMapper.dtoToQuickReservation(quickReservationCabinDto);
-        if(quickReservationCabinService.ownerCreates(quickReservationCabin)){
-            return new ResponseEntity<>("Success.", HttpStatus.CREATED);
-        }else{
-            return new ResponseEntity<>("Unsuccessfull reservation.", HttpStatus.BAD_REQUEST);
+        try {
+            if(quickReservationCabinService.ownerCreates(quickReservationCabin)){
+                return new ResponseEntity<>("Success.", HttpStatus.CREATED);
+            }else{
+                return new ResponseEntity<>("Unsuccessfull reservation.", HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>("Someone already made reservation.", HttpStatus.BAD_REQUEST);
         }
     }
     @GetMapping(value= "/getByCabinId/{cabinId}")

@@ -33,14 +33,16 @@ public class AdventureReservationController {
 
     @PostMapping("/instructorCreates")
     @PreAuthorize("hasRole('FISHING_INSTRUCTOR')")
-    public ResponseEntity<String> instructorCreates (@RequestBody AdventureReservationDto adventureReservationDto) {
+    public ResponseEntity<String> instructorCreates (@RequestBody AdventureReservationDto adventureReservationDto) throws Exception {
         FishingInstructor fishingInstructor= fishingInstructorService.findByUsername(adventureReservationDto.getAdventureDto().getFishingInstructorUsername());
         AdventureReservation adventureReservation = adventureReservationMapper.adventureReservationDtoToAdventureReservation(adventureReservationDto,fishingInstructor);
-        if(adventureReservationService.instructorCreates(adventureReservation,adventureReservationDto.getClientUsername())) {
-
-            return new ResponseEntity<>("Success.", HttpStatus.OK);
-        }else {
-            return new ResponseEntity<>("Unsuccessfull reservation.", HttpStatus.BAD_REQUEST);
+        try {
+            if (adventureReservationService.instructorCreates(adventureReservation, adventureReservationDto.getClientUsername()))
+                return new ResponseEntity<>("Success.", HttpStatus.OK);
+            else
+                return new ResponseEntity<>("Unsuccessfull reservation.", HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            return new ResponseEntity<>("Someone already made reservation or owner edited adventure. Please try again.", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -98,11 +100,15 @@ public class AdventureReservationController {
         if(penaltyService.isUserBlockedFromReservation(adventureReservationDto.getClientUsername()))
             return new ResponseEntity<>("Client banned from making reservations!", HttpStatus.BAD_REQUEST);
         if(adventureReservationCancellationService.clientHasCancellationWithInstructorInPeriod(adventureReservationDto.getOwnersUsername(), adventureReservationDto.getClientUsername(), adventureReservationDto.getStartDate(), adventureReservationDto.getEndDate()))
-            return new ResponseEntity<>("Client has cancellation for adventure in given period!", HttpStatus.BAD_REQUEST);
-        if(adventureReservationService.makeReservation(adventureReservationDto))
-            return new ResponseEntity<>("Success.", HttpStatus.OK);
-        else
-            return new ResponseEntity<>("Fishing instructor already reserved in period!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Client has cancellation for boat in given period!", HttpStatus.BAD_REQUEST);
+        try {
+            if(adventureReservationService.makeReservation(adventureReservationDto))
+                return new ResponseEntity<>("Success.", HttpStatus.OK);
+            else
+                return new ResponseEntity<>("Fishing instructor already reserved in period!", HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Someone already made reservatin or owner edited adventure. Please try again.", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping(value= "/getUpcomingReservations")

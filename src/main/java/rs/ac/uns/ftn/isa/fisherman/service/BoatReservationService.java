@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface BoatReservationService {
-    boolean ownerCreates(BoatReservation boatReservation, String clientUsername);
+    boolean ownerCreates(BoatReservation boatReservation, String clientUsername) throws Exception;
 
     Set<BoatReservation> getPresentByCabinId(Long boatId);
 
@@ -36,7 +36,7 @@ public interface BoatReservationService {
 
     Set<Boat> getAvailableBoats(SearchAvailablePeriodsBoatAndAdventureDto searchAvailablePeriodsBoatDto);
 
-    boolean makeReservation(BoatReservationDto boatReservationDto);
+    boolean makeReservation(BoatReservationDto boatReservationDto) throws Exception;
 
     Set<BoatReservation> getUpcomingClientReservationsByUsername(String clientUsername);
 

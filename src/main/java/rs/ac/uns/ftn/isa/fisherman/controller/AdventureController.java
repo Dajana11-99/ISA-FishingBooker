@@ -94,12 +94,19 @@ public class AdventureController {
 
     @PreAuthorize("hasRole('FISHING_INSTRUCTOR')")
     @PostMapping("/edit")
-    public ResponseEntity<String> editAdventure(@RequestBody AdventureDto adventureDto){
-        FishingInstructor fishingInstructor= fishingInstructorService.findByUsername(adventureDto.getFishingInstructorUsername());
+    public ResponseEntity<String> editAdventure(@RequestBody AdventureDto adventureDto) {
+        FishingInstructor fishingInstructor = fishingInstructorService.findByUsername(adventureDto.getFishingInstructorUsername());
         Adventure adventure = adventureMapper.adventureDtoToEditAdventure(adventureDto);
-        adventureService.edit(adventure,fishingInstructor.getId());
-        return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+        try {
+            if (adventureService.edit(adventure, fishingInstructor.getId()))
+                return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+            else
+                return new ResponseEntity<>("You can't edit this adventure because reservations in future exist !", HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("You can't edit this adventure because reservations in future exist !", HttpStatus.BAD_REQUEST);
+        }
     }
+
     @PreAuthorize("hasRole('FISHING_INSTRUCTOR')")
     @GetMapping("/findInstructorsAdventure/{username:.+}/")
     public ResponseEntity<Set<AdventureDto>> findInstructorsAdventure(@PathVariable ("username") String username){

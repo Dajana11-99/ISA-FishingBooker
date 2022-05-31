@@ -4,6 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import rs.ac.uns.ftn.isa.fisherman.dto.SearchAvailablePeriodsCabinDto;
 import rs.ac.uns.ftn.isa.fisherman.dto.CabinReservationDto;
 import rs.ac.uns.ftn.isa.fisherman.mail.CabinReservationSuccessfulInfo;
@@ -89,8 +92,10 @@ public class ReservationCabinServiceImpl implements ReservationCabinService {
         return false;
     }
 
+
     @Override
-    public boolean makeReservation(CabinReservationDto cabinReservationDto) {
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
+    public boolean makeReservation(CabinReservationDto cabinReservationDto) throws Exception{
         if(cabinNotFreeInPeriod(cabinReservationDto.getCabinDto().getId(), cabinReservationDto.getStartDate(), cabinReservationDto.getEndDate()))
             return false;
         CabinReservation cabinReservation = setUpCabinReservationFromDto(cabinReservationDto);
@@ -102,6 +107,7 @@ public class ReservationCabinServiceImpl implements ReservationCabinService {
         {
             cabinReservation.setAddedAdditionalServices(additionalServiceMapper.additionalServicesDtoToAdditionalServices(cabinReservationDto.getAddedAdditionalServices()));
             cabinReservationRepository.save(cabinReservation);
+
         }
         SendReservationMailToClient(cabinReservationDto);
         return true;
@@ -219,23 +225,30 @@ public class ReservationCabinServiceImpl implements ReservationCabinService {
     }
 
     @Override
-    public boolean ownerCreates(CabinReservation cabinReservation, String clientUsername) {
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
+    public boolean ownerCreates(CabinReservation cabinReservation, String clientUsername) throws Exception {
+        CabinReservation successfullReservation = null;
         Client client = clientService.findByUsername(clientUsername);
+
+        if(cabinReservation == null) return false;
+        if(client == null) return  false;
         if(!validateForReservation(cabinReservation,client)) return false;
-        CabinReservation successfullReservation=new CabinReservation(cabinReservation.getId(),cabinReservation.getStartDate(),
-                    cabinReservation.getEndDate(),client,cabinReservation.getPaymentInformation(),cabinReservation.isOwnerWroteAReport(),
-                    cabinReservation.getOwnersUsername(),cabinReservation.getCabin(),null, false);
+        successfullReservation=new CabinReservation(cabinReservation.getId(),cabinReservation.getStartDate(),
+                cabinReservation.getEndDate(),client,cabinReservation.getPaymentInformation(),cabinReservation.isOwnerWroteAReport(),
+                cabinReservation.getOwnersUsername(),cabinReservation.getCabin(),null, false);
         PaymentInformation paymentInformation = reservationPaymentService.setTotalPaymentAmount(successfullReservation,successfullReservation.getCabin().getCabinOwner());
         successfullReservation.setPaymentInformation(paymentInformation);
         reservationPaymentService.updateUserRankAfterReservation(client,successfullReservation.getCabin().getCabinOwner());
         cabinReservationRepository.save(successfullReservation);
         if(cabinReservation.getAddedAdditionalServices()!=null){
-                successfullReservation.setAddedAdditionalServices(cabinReservation.getAddedAdditionalServices());
-                cabinReservationRepository.save(successfullReservation);
+            successfullReservation.setAddedAdditionalServices(cabinReservation.getAddedAdditionalServices());
+            cabinReservationRepository.save(successfullReservation);
         }
+
         sendMailNotification(successfullReservation,client.getUsername());
         return true;
     }
+
 
     @Override
     public Set<CabinReservation> getPresentByCabinId(Long cabinId) {

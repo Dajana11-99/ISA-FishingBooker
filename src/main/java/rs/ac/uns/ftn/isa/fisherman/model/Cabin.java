@@ -60,6 +60,9 @@ public class Cabin {
     @OneToMany(mappedBy = "cabin", fetch = FetchType.EAGER, cascade = CascadeType.DETACH, orphanRemoval = true)
     private Set<AvailableCabinPeriod> availableCabinPeriods;
 
+    @Version
+    private  int version;
+
     public Cabin() {}
 
     public CabinOwner getCabinOwner() {
@@ -134,6 +137,14 @@ public class Cabin {
     public void setAdditionalServices(Set<AdditionalServices> additionalServices) {
 
         this.additionalServices = additionalServices;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     public Address getAddress() {

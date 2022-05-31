@@ -961,7 +961,7 @@ import BoatOwnerNav from './BoatOwnerNav.vue'
                                        this.$swal.fire({
                                         icon: 'error',
                                         title: 'Oops...',
-                                        text: 'Something went wrong!',
+                                        text: err.response.data,
                                })
                                     this.clearModalReservation()
                               })
@@ -1019,7 +1019,7 @@ import BoatOwnerNav from './BoatOwnerNav.vue'
                                        this.$swal.fire({
                                         icon: 'error',
                                         title: 'Oops...',
-                                        text: 'Something went wrong!',
+                                        text: err.response.data,
                                       })
                                     this.clearModalQuick()
                               })

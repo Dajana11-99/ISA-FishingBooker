@@ -32,14 +32,19 @@ public class QuickReservationBoatController {
 
     @PostMapping("/ownerCreates/{username:.+}/")
     @PreAuthorize("hasRole('BOATOWNER')")
-    public ResponseEntity<String> ownerCreates (@PathVariable("username") String username,@RequestBody QuickReservationBoatDto quickReservationBoatDto) {
+    public ResponseEntity<String> ownerCreates (@PathVariable("username") String username,@RequestBody QuickReservationBoatDto quickReservationBoatDto){
         QuickReservationBoat quickReservationBoat= quickReservationBoatMapper.dtoToBoatQuickReservation(quickReservationBoatDto);
         BoatOwner boatOwner= boatOwnerService.findByUsername(username);
         quickReservationBoat.getBoat().setBoatOwner(boatOwner);
-        if(quickReservationBoatService.ownerCreates(quickReservationBoat)){
-            return new ResponseEntity<>("Success.", HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>("Unsuccessfull reservation.", HttpStatus.BAD_REQUEST);
+        try {
+            if (quickReservationBoatService.ownerCreates(quickReservationBoat)) {
+                return new ResponseEntity<>("Success.", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Unsuccessfull reservation.", HttpStatus.BAD_REQUEST);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>("Someone made reservation!", HttpStatus.BAD_REQUEST);
+
         }
     }
     @GetMapping(value= "/getByBoatId/{boatId}")

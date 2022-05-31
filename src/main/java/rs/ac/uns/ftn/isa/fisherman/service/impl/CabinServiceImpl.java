@@ -2,6 +2,9 @@ package rs.ac.uns.ftn.isa.fisherman.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import rs.ac.uns.ftn.isa.fisherman.model.AdditionalServices;
 import rs.ac.uns.ftn.isa.fisherman.model.Cabin;
 import rs.ac.uns.ftn.isa.fisherman.model.Image;
@@ -78,7 +81,8 @@ public class CabinServiceImpl implements CabinService {
     }
 
     @Override
-    public Cabin edit(Cabin newCabin, Boolean deleteOldImages) {
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
+    public boolean edit(Cabin newCabin, Boolean deleteOldImages) throws Exception {
         Cabin oldCabin=this.cabinRepository.findByName(newCabin.getName());
         oldCabin.setAddress(newCabin.getAddress());
         oldCabin.setPrice(newCabin.getPrice());
@@ -92,10 +96,12 @@ public class CabinServiceImpl implements CabinService {
         oldCabin.setAdditionalServices(newCabin.getAdditionalServices());
         if(Boolean.TRUE.equals(deleteOldImages))  oldCabin.setImages(new HashSet<>());
         cabinRepository.save(oldCabin);
+
         Set<AdditionalServices> savedServices= cabinRepository.findByName(oldCabin.getName()).getAdditionalServices();
         if(Boolean.TRUE.equals(deleteOldImages))   imageService.delete(oldImages);
         additionalServicesService.delete(additionalServicesService.findDeletedAdditionalServices(oldAdditionalServices,savedServices));
-        return oldCabin;
+
+        return true;
     }
 
     @Override

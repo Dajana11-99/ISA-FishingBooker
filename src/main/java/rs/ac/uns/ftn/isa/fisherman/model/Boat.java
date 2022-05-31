@@ -78,6 +78,9 @@ public class Boat {
     @JoinColumn(name = "users_id")
     protected BoatOwner boatOwner;
 
+    @Version
+    private  int version;
+
     public Boat(){}
 
     public Boat(Long id, String name, String type, double length, String engineCode, String enginePower, String maxSpeed, String navigationEquipment, Address address, String description, Integer maxPeople, String rules, String fishingEquipment, double price, double rating, String cancelingCondition) {
@@ -123,6 +126,14 @@ public class Boat {
         this.additionalServices=additionalServices;
         this.images=new HashSet<>();
         this.availableBoatPeriods=new HashSet<>();
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     public BoatOwner getBoatOwner() {

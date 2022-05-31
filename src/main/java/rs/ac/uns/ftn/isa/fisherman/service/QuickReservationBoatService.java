@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface QuickReservationBoatService {
-    boolean ownerCreates(QuickReservationBoat quickReservationBoat);
+    boolean ownerCreates(QuickReservationBoat quickReservationBoat) throws Exception;
     Set<QuickReservationBoat> getByBoatId(Long cabinId);
     boolean quickReservationExists(Long id, LocalDateTime startDate, LocalDateTime endDate);
     boolean ownerIsNotAvailableQuickResrvation(String ownerUsername, LocalDateTime start, LocalDateTime end);

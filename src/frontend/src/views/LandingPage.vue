@@ -231,7 +231,7 @@ If you are fishing instructor, captain or cabin/boat owner this is the place to 
 .slikadiv{
   background-image: url('../assets/santorinifishing.jpg');
   background-repeat: no-repeat;
-  background-size: 1700px 700px;
+  background-size: 100% 100%;
   height: 900px;
   
   

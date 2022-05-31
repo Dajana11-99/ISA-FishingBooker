@@ -21,7 +21,7 @@ public interface BoatService {
 
     Boat findByNameAndOwner(String boatName, Long boatOwner);
 
-    boolean edit(Boat boat, Boolean deleteOldImages);
+    boolean edit(Boat boat, Boolean deleteOldImages) throws Exception;
 
     boolean delete(Long id);
 

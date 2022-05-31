@@ -909,7 +909,7 @@ export default {
                                        this.$swal.fire({
                                         icon: 'error',
                                         title: 'Oops...',
-                                        text: 'Something went wrong!',
+                                        text: err.response.data,
                                })
                                     this.clearModalReservation()
                               })
@@ -972,7 +972,7 @@ export default {
                                        this.$swal.fire({
                                         icon: 'error',
                                         title: 'Oops...',
-                                        text: 'Something went wrong!',
+                                        text: err.response.data,
                                       })
                                     this.clearModalQuick()
                               })

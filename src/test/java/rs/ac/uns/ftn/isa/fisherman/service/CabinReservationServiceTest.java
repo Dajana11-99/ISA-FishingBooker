@@ -130,7 +130,7 @@ public class CabinReservationServiceTest {
         assertThat(reservationCabinService.searchAvailableCabins(searchAvailablePeriodsCabinDto)).hasSize(1);
     }
     @Test
-    public void testMakeReservation(){
+    public void testMakeReservation() throws Exception {
         CabinDto cabin = new CabinDto();
         cabin.setId(1L);
         cabin.setOwnerUsername("testOwner");

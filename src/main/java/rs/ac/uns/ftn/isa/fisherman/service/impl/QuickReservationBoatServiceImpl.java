@@ -4,6 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import rs.ac.uns.ftn.isa.fisherman.dto.QuickReservationBoatDto;
 import rs.ac.uns.ftn.isa.fisherman.mail.BoatReservationSuccessfulInfo;
 import rs.ac.uns.ftn.isa.fisherman.mail.MailService;
@@ -40,26 +43,31 @@ public class QuickReservationBoatServiceImpl implements QuickReservationBoatServ
     private BoatSubscriptionService boatSubscriptionService;
 
     @Override
-    public boolean ownerCreates(QuickReservationBoat quickReservationBoat) {
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
+    public boolean ownerCreates(QuickReservationBoat quickReservationBoat) throws Exception {
         if(!validateForReservation(quickReservationBoat)) return false;
 
         QuickReservationBoat successfullQuickReservation=new QuickReservationBoat(quickReservationBoat.getId(), quickReservationBoat.getStartDate(),
                 quickReservationBoat.getEndDate(),null,quickReservationBoat.getPaymentInformation(),quickReservationBoat.isOwnerWroteAReport(),
-             quickReservationBoat.getOwnersUsername(),
-             quickReservationBoat.getBoat(),quickReservationBoat.getDiscount(),null, quickReservationBoat.getNeedsCaptainServices());
+                quickReservationBoat.getOwnersUsername(),
+                quickReservationBoat.getBoat(),quickReservationBoat.getDiscount(),null, quickReservationBoat.getNeedsCaptainServices());
         successfullQuickReservation.setEvaluated(false);
         if(quickReservationBoat.getAddedAdditionalServices()!=null){
             if(quickReservationBoat.getNeedsCaptainServices()) {
                 if (ownerIsNotAvailable(successfullQuickReservation.getBoat().getBoatOwner().getUsername(),
                         successfullQuickReservation.getStartDate(), successfullQuickReservation.getEndDate())) return false;
             }
+
             quickReservationBoatRepository.save(successfullQuickReservation);
+
             successfullQuickReservation.setAddedAdditionalServices(quickReservationBoat.getAddedAdditionalServices());
+
             quickReservationBoatRepository.save(successfullQuickReservation);
+
         }else{
             quickReservationBoatRepository.save(successfullQuickReservation);
         }
-            sendMailNotificationToSubscribedUsers(successfullQuickReservation.getBoat().getId(),successfullQuickReservation.getBoat().getName());
+        sendMailNotificationToSubscribedUsers(successfullQuickReservation.getBoat().getId(),successfullQuickReservation.getBoat().getName());
 
         return true;
     }

@@ -3,6 +3,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import rs.ac.uns.ftn.isa.fisherman.dto.BoatReservationDto;
 import rs.ac.uns.ftn.isa.fisherman.dto.SearchAvailablePeriodsBoatAndAdventureDto;
 import rs.ac.uns.ftn.isa.fisherman.mail.BoatReservationSuccessfulInfo;
@@ -43,9 +46,14 @@ public class BoatReservationServiceImpl implements BoatReservationService {
     private BoatReservationCancellationRepository boatReservationCancellationRepository;
     private final BoatReservationMapper boatReservationMapper = new BoatReservationMapper();
     private final AdditionalServiceMapper additionalServiceMapper = new AdditionalServiceMapper();
+
+
     @Override
-    public boolean ownerCreates(BoatReservation boatReservation, String clientUsername) {
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
+    public boolean ownerCreates(BoatReservation boatReservation, String clientUsername) throws Exception{
         Client client = clientService.findByUsername(clientUsername);
+        if(boatReservation == null) return  false;
+        if(client == null) return  false;
         if(!validateForReservation(boatReservation,client)) return false;
         BoatReservation successfullReservation=new BoatReservation(boatReservation.getId(),boatReservation.getStartDate(),
                 boatReservation.getEndDate(),client,boatReservation.getPaymentInformation(),boatReservation.isOwnerWroteAReport(),
@@ -60,15 +68,22 @@ public class BoatReservationServiceImpl implements BoatReservationService {
                 if (ownerIsNotAvailable(successfullReservation.getBoat().getBoatOwner().getUsername(),
                         successfullReservation.getStartDate(), successfullReservation.getEndDate())) return false;
             }
+
             boatReservationRepository.save(successfullReservation);
+
             successfullReservation.setAddedAdditionalServices(boatReservation.getAddedAdditionalServices());
+
             boatReservationRepository.save(successfullReservation);
+
         }else{
+
             boatReservationRepository.save(successfullReservation);
+
         }
         sendMailNotification(successfullReservation,client.getUsername());
         return true;
     }
+
 
     @Override
     public Set<BoatReservation> getPresentByCabinId(Long boatId) {
@@ -219,7 +234,9 @@ public class BoatReservationServiceImpl implements BoatReservationService {
     }
 
     @Override
-    public boolean makeReservation(BoatReservationDto boatReservationDto) {
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
+    public boolean makeReservation(BoatReservationDto boatReservationDto) throws Exception {
+        if(boatReservationDto == null) return  false;
         if(boatNotFreeInPeriod(boatReservationDto.getBoatDto().getId(), boatReservationDto.getStartDate(), boatReservationDto.getEndDate()))
             return false;
         BoatReservation boatReservation = setUpBoatReservationFromDto(boatReservationDto);
@@ -227,10 +244,14 @@ public class BoatReservationServiceImpl implements BoatReservationService {
         boatReservation.setPaymentInformation(paymentInformation);
         reservationPaymentService.updateUserRankAfterReservation(boatReservation.getClient(), boatReservation.getBoat().getBoatOwner());
         boatReservationRepository.save(boatReservation);
+
+
         if(boatReservationDto.getAddedAdditionalServices()!=null)
         {
             boatReservation.setAddedAdditionalServices(additionalServiceMapper.additionalServicesDtoToAdditionalServices(boatReservationDto.getAddedAdditionalServices()));
+
             boatReservationRepository.save(boatReservation);
+
         }
         SendReservationMailToClient(boatReservationDto);
         return true;

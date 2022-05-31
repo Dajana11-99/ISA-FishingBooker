@@ -4,6 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import rs.ac.uns.ftn.isa.fisherman.dto.AdventureReservationDto;
 import rs.ac.uns.ftn.isa.fisherman.dto.SearchAvailablePeriodsBoatAndAdventureDto;
 import rs.ac.uns.ftn.isa.fisherman.mail.AdventureReservationSuccessfulInfo;
@@ -48,26 +51,33 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
 
     private AdventureReservationMapper adventureReservationMapper = new AdventureReservationMapper();
     private final AdditionalServiceMapper additionalServiceMapper = new AdditionalServiceMapper();
+
+
     @Override
-    public boolean instructorCreates(AdventureReservation adventureReservation, String clientUsername) {
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
+    public boolean instructorCreates(AdventureReservation adventureReservation, String clientUsername) throws Exception{
         Client client = clientService.findByUsername(clientUsername);
+        if(adventureReservation == null) return false;
+        if(client == null) return false;
         if(!validateForReservation(adventureReservation,client)) return false;
         AdventureReservation successfullReservation=new AdventureReservation(adventureReservation.getId(),adventureReservation.getStartDate()
-        ,adventureReservation.getEndDate(),client,adventureReservation.getPaymentInformation(),adventureReservation.isOwnerWroteAReport(),adventureReservation.getOwnersUsername(),
+                ,adventureReservation.getEndDate(),client,adventureReservation.getPaymentInformation(),adventureReservation.isOwnerWroteAReport(),adventureReservation.getOwnersUsername(),
                 adventureReservation.getAdventure(),adventureReservation.getFishingInstructor(),null);
         PaymentInformation paymentInformation = reservationPaymentService.setTotalPaymentAmount(successfullReservation,successfullReservation.getFishingInstructor());
         successfullReservation.setPaymentInformation(paymentInformation);
         reservationPaymentService.updateUserRankAfterReservation(client,successfullReservation.getFishingInstructor());
+
         adventureReservationRepository.save(successfullReservation);
+
+
         if(adventureReservation.getAddedAdditionalServices()!=null){
             successfullReservation.setAddedAdditionalServices(adventureReservation.getAddedAdditionalServices());
             adventureReservationRepository.save(successfullReservation);
-        }
 
+        }
         sendMailNotification(successfullReservation,client.getUsername());
         return true;
     }
-
     @Override
     public Set<AdventureReservation> getPresentByInstructorId(String username) {
         return adventureReservationRepository.getPresentByInstructorId(username,LocalDateTime.now());
@@ -191,7 +201,8 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
     }
 
     @Override
-    public boolean makeReservation(AdventureReservationDto adventureReservationDto) {
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
+    public boolean makeReservation(AdventureReservationDto adventureReservationDto) throws Exception {
         if(fishingInstructorNotFree(adventureReservationDto.getOwnersUsername(), adventureReservationDto.getStartDate(), adventureReservationDto.getEndDate()))
             return false;
         AdventureReservation adventureReservation = setUpAdventureReservationFromDto(adventureReservationDto);

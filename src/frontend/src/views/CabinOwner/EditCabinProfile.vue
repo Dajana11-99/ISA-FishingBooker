@@ -341,7 +341,7 @@
               })
            
        },
-       editCabin: function(event){
+           editCabin: function(event){
            event.preventDefault()
            if(this.imagesSelected==true)
                this.cabinDto.images=null
@@ -371,7 +371,14 @@
 
                                 }
                                 return response;
-                             })
+                             }).catch(error => {
+                            console.log(error)
+                              this.$swal.fire({
+                              icon: "error",
+                              title: "Something went wrong!",
+                              text: "You can't edit this cabin because future reservations exist!",
+                       });
+                        })
 
                      }else{
                            this.$swal.fire({

@@ -60,6 +60,17 @@ public class Adventure {
     @JoinColumn(name = "users_id")
     protected  FishingInstructor fishingInstructor;
 
+    @Version
+    private  int version;
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
     public Long getId() {
         return id;
     }

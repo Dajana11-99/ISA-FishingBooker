@@ -35,10 +35,15 @@ public class QuickReservationAdventureController {
     public ResponseEntity<String> instructorCreates (@RequestBody QuickReservationAdventureDto quickReservationAdventureDto) {
         FishingInstructor fishingInstructor= fishingInstructorService.findByUsername(quickReservationAdventureDto.getAdventureDto().getFishingInstructorUsername());
         QuickReservationAdventure quickReservationAdventure = quickReservationAdventureMapper.dtoToQuickReservationAdventure(quickReservationAdventureDto,fishingInstructor);
-        if(quickReservationAdventureService.instructorCreates(quickReservationAdventure)) {
-            return new ResponseEntity<>("Success.", HttpStatus.OK);
-        }else {
-            return new ResponseEntity<>("Unsuccessfull reservation.", HttpStatus.BAD_REQUEST);
+        try {
+            if (quickReservationAdventureService.instructorCreates(quickReservationAdventure)) {
+                return new ResponseEntity<>("Success.", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Unsuccessfull reservation.", HttpStatus.BAD_REQUEST);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>("Someone made reservation !", HttpStatus.BAD_REQUEST);
+
         }
     }
     @GetMapping(value= "/getByInstructorId/{username:.+}/")

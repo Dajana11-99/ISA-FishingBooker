@@ -41,12 +41,18 @@ public class BoatReservationController {
         BoatReservation boatReservation= boatReservationMapper.boatReservationOwnerDtoToBoatReservation(boatReservationDto);
         BoatOwner boatOwner= boatOwnerService.findByUsername(username);
         boatReservation.getBoat().setBoatOwner(boatOwner);
-        if(boatReservationService.ownerCreates(boatReservation,boatReservationDto.getClientUsername())) {
-            return new ResponseEntity<>("Success.", HttpStatus.OK);
-        }else {
-            return new ResponseEntity<>("Unsuccessfull reservation.", HttpStatus.BAD_REQUEST);
+        try {
+            if (boatReservationService.ownerCreates(boatReservation, boatReservationDto.getClientUsername())) {
+                return new ResponseEntity<>("Success.", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Unsuccessfull reservation.", HttpStatus.BAD_REQUEST);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>("Someone already made reservation or owner edited boat. Please try again.", HttpStatus.BAD_REQUEST);
+
         }
     }
+
 
     @GetMapping(value= "/getByBoatId/{boatId}")
     @PreAuthorize("hasRole('BOATOWNER')")
@@ -113,10 +119,14 @@ public class BoatReservationController {
                 boatReservationService.ownerIsNotAvailable(boatReservationDto.getOwnersUsername(),
                         boatReservationDto.getStartDate(), boatReservationDto.getEndDate()))
             return new ResponseEntity<>("Captain service is not available!", HttpStatus.BAD_REQUEST);
+        try {
         if(boatReservationService.makeReservation(boatReservationDto))
             return new ResponseEntity<>("Success.", HttpStatus.OK);
         else
             return new ResponseEntity<>("Boat already reserved in period!", HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Someone already made reservation or owner edited boat. Please try again!", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping(value= "/getUpcomingReservations")

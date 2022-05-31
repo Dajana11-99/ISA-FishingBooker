@@ -1,6 +1,9 @@
 package rs.ac.uns.ftn.isa.fisherman.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import rs.ac.uns.ftn.isa.fisherman.model.AdditionalServices;
 import rs.ac.uns.ftn.isa.fisherman.model.Boat;
 import rs.ac.uns.ftn.isa.fisherman.model.Image;
@@ -75,7 +78,8 @@ public class BoatServiceImpl implements BoatService {
     }
 
     @Override
-    public boolean edit(Boat newBoat, Boolean deleteOldImages) {
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
+    public boolean edit(Boat newBoat, Boolean deleteOldImages) throws Exception {
         Boat oldBoat=this.boatRepository.findByNameAndOwner(newBoat.getName(),newBoat.getBoatOwner().getId());
         oldBoat.setType(newBoat.getType());
         oldBoat.setLength(newBoat.getLength());
@@ -94,7 +98,9 @@ public class BoatServiceImpl implements BoatService {
         Set<Image> oldImages= oldBoat.getImages();
         oldBoat.setAdditionalServices(newBoat.getAdditionalServices());
         if(Boolean.TRUE.equals(deleteOldImages))  oldBoat.setImages(new HashSet<>());
+
         boatRepository.save(oldBoat);
+
         Set<AdditionalServices> savedServices= boatRepository.findByName(oldBoat.getName()).getAdditionalServices();
         if(Boolean.TRUE.equals(deleteOldImages))   imageService.delete(oldImages);
         additionalServicesService.delete(additionalServicesService.findDeletedAdditionalServices(oldAdditionalServices,savedServices));

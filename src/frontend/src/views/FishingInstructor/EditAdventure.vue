@@ -310,7 +310,7 @@ import FishingInstructorNavbar from './FishingInstructorNav.vue'
               this.prices=''
               }
        },
-       editAdventure: function(event){
+         editAdventure: function(event){
             event.preventDefault();
       
              if(this.imagesSelected==true)

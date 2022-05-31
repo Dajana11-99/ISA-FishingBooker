@@ -7,18 +7,13 @@ import java.util.List;
 import java.util.Set;
 
 public interface AdventureService {
-
     void save(Adventure adventure);
     Adventure findByName(String adventureName);
-
     void addNewImage(String adventureName, Image image);
-    
     Set<Adventure> findAdventuresByInstructorId(Long id);
     Adventure findAdventureByName(String adventureName, Long fishingInstructorId);
-
     void delete(Long id);
-
-    void edit(Adventure adventure, Long id);
+    boolean edit(Adventure adventure, Long id) throws Exception;
     boolean canBeEditedOrDeleted(Long id);
     List<Adventure> findAll();
     boolean addNewAdventure(Adventure adventure,Set<AdditionalServices>additionalServices);

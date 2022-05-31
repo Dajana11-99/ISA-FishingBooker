@@ -411,7 +411,7 @@
               })
           
        },
-       editBoat: function(event){
+        editBoat: function(event){
            event.preventDefault()
 
            if(this.imagesSelected==true)
@@ -452,6 +452,13 @@
                                 this.$router.push('/boatProfile/'+ this.email+'/'+this.boatName);
                               }
                               return response;
+                        }).catch(error => {
+                            console.log(error)
+                              this.$swal.fire({
+                              icon: "error",
+                              title: "Something went wrong!",
+                              text: "You can't edit this boat because future reservations exist!",
+                       });
                         })
 
                      }else{

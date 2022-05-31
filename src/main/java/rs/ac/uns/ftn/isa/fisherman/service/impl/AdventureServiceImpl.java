@@ -1,6 +1,9 @@
 package rs.ac.uns.ftn.isa.fisherman.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import rs.ac.uns.ftn.isa.fisherman.model.*;
 import rs.ac.uns.ftn.isa.fisherman.repository.AdventureRepository;
 import rs.ac.uns.ftn.isa.fisherman.service.*;
@@ -87,7 +90,8 @@ public class AdventureServiceImpl implements AdventureService {
     }
 
     @Override
-    public void edit(Adventure adventure, Long instructorId) {
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
+    public boolean edit(Adventure adventure, Long instructorId) throws Exception{
         Adventure oldAdventure= adventureRepository.findAdventureByName(adventure.getName(),instructorId);
         oldAdventure.setDescription(adventure.getDescription());
         oldAdventure.setAddress(adventure.getAddress());
@@ -102,9 +106,11 @@ public class AdventureServiceImpl implements AdventureService {
         oldAdventure.setAdditionalServices(adventure.getAdditionalServices());
         if(adventure.getImages()==null)  oldAdventure.setImages(new HashSet<>());
         adventureRepository.save(oldAdventure);
+
         Set<AdditionalServices> savedServices=adventureRepository.findAdventureByName(adventure.getName(),instructorId).getAdditionalServices();
         if(adventure.getImages()==null)   imageService.delete(oldImages);
         additionalServicesService.delete(additionalServicesService.findDeletedAdditionalServices(oldAdditionalServices,savedServices));
+        return  true;
     }
     @Override
     public boolean canBeEditedOrDeleted(Long id) {
