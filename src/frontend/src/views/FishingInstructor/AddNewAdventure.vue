@@ -350,7 +350,7 @@
                  this.adventureDto.cancelingCondition='FREE'
                else
                   this.adventureDto.cancelingCondition='NOT FREE'
-               axios.post("http://localhost:8081/adventures/save",this.adventureDto)
+               axios.post(process.env.VUE_APP_BACKEND_URL+"adventures/save",this.adventureDto)
                .then(response => {
                         
                         this.saveImages()
@@ -377,7 +377,7 @@
                     let formData = new FormData();
                     let file =  this.imagesSelectedEvent.target.files[i];
                     formData.append('file', file);
-                       axios.post("http://localhost:8081/firebase/uploadAdventureImage/"+this.adventureDto.name,formData)
+                       axios.post(process.env.VUE_APP_BACKEND_URL+"firebase/uploadAdventureImage/"+this.adventureDto.name,formData)
                       .then(response => {
                           this.loader.hide();
                           this.loader=null;

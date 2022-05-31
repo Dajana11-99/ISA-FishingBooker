@@ -99,7 +99,7 @@ import axios from "axios";
            this.user.username=this.LogInDto.username
                   if(response.data.userType==='ADMIN'){
                        console.log("TOKEEEEEEEEEEEEEEEEEEEEEEEEEEN"+ localStorage.token )
-                        axios.post("http://localhost:8081/account/passwordStatus",this.user)
+                        axios.post(process.env.VUE_APP_BACKEND_URL+"account/passwordStatus",this.user)
                         .then(response => {
                             if(response.data==true){
                             this.$router.push('/profileAdmin/'+this.LogInDto.username);

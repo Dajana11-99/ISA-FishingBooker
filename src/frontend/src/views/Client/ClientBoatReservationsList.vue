@@ -775,7 +775,7 @@ export default {
       if (!this.upcomingReservations) {
         axios
           .post(
-            "http://localhost:8081/reservationBoat/getReservationsHistory",
+            process.env.VUE_APP_BACKEND_URL+"reservationBoat/getReservationsHistory",
             {
               username: this.email,
             },
@@ -789,7 +789,7 @@ export default {
           });
         axios
           .post(
-            "http://localhost:8081/quickReservationBoat/getReservationsHistory",
+            process.env.VUE_APP_BACKEND_URL+"quickReservationBoat/getReservationsHistory",
             {
               username: this.email,
             },
@@ -805,7 +805,7 @@ export default {
         this.user.username = this.email;
         axios
           .post(
-            "http://localhost:8081/reservationBoat/getUpcomingReservations",
+            process.env.VUE_APP_BACKEND_URL+"reservationBoat/getUpcomingReservations",
             {
               username: this.email,
             },
@@ -819,7 +819,7 @@ export default {
           });
         axios
           .post(
-            "http://localhost:8081/quickReservationBoat/getUpcomingReservations",
+            process.env.VUE_APP_BACKEND_URL+"quickReservationBoat/getUpcomingReservations",
             {
               username: this.email,
             },
@@ -836,7 +836,7 @@ export default {
     getAvailableQuickReservations: function () {
       axios
         .get(
-          "http://localhost:8081/quickReservationBoat/getAvailableReservations",
+          process.env.VUE_APP_BACKEND_URL+"quickReservationBoat/getAvailableReservations",
           {},
           {}
         )
@@ -928,7 +928,7 @@ export default {
       this.quickReservationBoat.clientUsername = this.email;
       axios
         .post(
-          "http://localhost:8081/quickReservationBoat/makeQuickReservation",
+          process.env.VUE_APP_BACKEND_URL+"quickReservationBoat/makeQuickReservation",
           this.quickReservationBoat,
           {}
         )
@@ -967,7 +967,7 @@ export default {
         path = "quickReservationBoat";
       axios
         .post(
-          "http://localhost:8081/"+ path + "/cancelReservation",
+          process.env.VUE_APP_BACKEND_URL+""+ path + "/cancelReservation",
           this.boatForCancellation,
           {}
         )

@@ -111,7 +111,7 @@ import axios from "axios";
             if(this.userRequestDto.reasonForDeleting===""){
                 this.showLabel=true;
             }else{
-            axios.post("http://localhost:8081/auth/saveDeleteAccountRequest",this.userRequestDto)
+            axios.post(process.env.VUE_APP_BACKEND_URL+"auth/saveDeleteAccountRequest",this.userRequestDto)
             .then(response => {
                         this.$swal.fire(
                           'Request sent!',

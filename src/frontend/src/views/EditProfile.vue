@@ -151,7 +151,7 @@ import axios from "axios";
        
        loadData: function(){
            this.userRequestDto.username=this.email
-                 axios.post("http://localhost:8081/auth/findByEmail/",this.userRequestDto)
+                 axios.post(process.env.VUE_APP_BACKEND_URL+"auth/findByEmail/",this.userRequestDto)
                  .then(response => {
                         this.userRequestDto = response.data
                         this.userRequestDto.role=this.role
@@ -162,7 +162,7 @@ import axios from "axios";
        editData: function(event){
             event.preventDefault();
 
-            axios.post("http://localhost:8081/auth/editUser/",this.userRequestDto)
+            axios.post(process.env.VUE_APP_BACKEND_URL+"auth/editUser/",this.userRequestDto)
                  .then(response => {
                         this.$swal.fire({
                            position: 'top-end',

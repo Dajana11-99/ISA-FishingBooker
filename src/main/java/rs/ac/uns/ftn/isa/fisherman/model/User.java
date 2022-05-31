@@ -15,14 +15,14 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 public abstract class User implements UserDetails {
-
     private static final String ROLE_APP = "";
     @Id
     @SequenceGenerator(name = "account_sequence_generator", sequenceName = "account_sequence", initialValue = 100)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_sequence_generator")
     @Column(name = "id", unique = true)
     protected Long id;
-
+    @Version
+    private int version;
     @Column(name="name")
     protected String name;
     @Column(name="lastName")
@@ -182,6 +182,14 @@ public abstract class User implements UserDetails {
     @Override
     public String getPassword() {
         return password;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     @JsonIgnore

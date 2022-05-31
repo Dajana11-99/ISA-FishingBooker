@@ -346,7 +346,7 @@
                     canCancel: true,
                     onCancel: this.onCancel,
                 });
-               axios.post("http://localhost:8081/cabins/save",this.cabinDto)
+               axios.post(process.env.VUE_APP_BACKEND_URL+"cabins/save",this.cabinDto)
                .then(response => {
                         
                         this.saveImages()
@@ -373,7 +373,7 @@
                     let formData = new FormData();
                     let file =  this.imagesSelectedEvent.target.files[i];
                     formData.append('file', file);
-                    axios.post("http://localhost:8081/firebase/uploadCabinImage/"+this.cabinDto.name,formData)
+                    axios.post(process.env.VUE_APP_BACKEND_URL+"firebase/uploadCabinImage/"+this.cabinDto.name,formData)
                     .then(response => {
                        this.loader.hide();
                        this.loader=null

@@ -698,7 +698,7 @@ import axios from "axios";
      },
      methods: {
          getCabinsAvailablePeriod: function(){
-               axios.post("http://localhost:8081/cabinsPeriod/getAvailablePeriod",this.cabinDto)
+               axios.post(process.env.VUE_APP_BACKEND_URL+"cabinsPeriod/getAvailablePeriod",this.cabinDto)
                .then(response => {
                   this.availableCabinPeriod=response.data
                      for( let newData of response.data ){
@@ -712,7 +712,7 @@ import axios from "axios";
 
          },
          getCabinReservations: function(){
-               axios.get("http://localhost:8081/reservationCabin/getByCabinId/"+this.cabinId)
+               axios.get(process.env.VUE_APP_BACKEND_URL+"reservationCabin/getByCabinId/"+this.cabinId)
                .then(response => {
                      for( let newData of response.data ){
                                 var start=newData.startDate
@@ -729,7 +729,7 @@ import axios from "axios";
 
          },
          getQuickReservations: function(){
-               axios.get("http://localhost:8081/quickReservationCabin/getByCabinId/"+this.cabinId)
+               axios.get(process.env.VUE_APP_BACKEND_URL+"quickReservationCabin/getByCabinId/"+this.cabinId)
                .then(response => {
                      for( let newData of response.data ){
                                 var start=newData.startDate
@@ -749,7 +749,7 @@ import axios from "axios";
          getCabin: function(){
              this.cabinDto.name=this.cabinName
             
-             axios.post("http://localhost:8081/cabins/findByName",this.cabinDto)
+             axios.post(process.env.VUE_APP_BACKEND_URL+"cabins/findByName",this.cabinDto)
                .then(response => {
                          this.cabinDto=response.data
                          this.cabinId=this.cabinDto.id
@@ -787,7 +787,7 @@ import axios from "axios";
               propertyId: this.cabinId
              
              }
-              axios.post("http://localhost:8081/cabinsPeriod/setAvailableCabinsPeriod",this.availableCabinPeriod)
+              axios.post(process.env.VUE_APP_BACKEND_URL+"cabinsPeriod/setAvailableCabinsPeriod",this.availableCabinPeriod)
               .then(response => {
                    this.calendarOptions.events.push({id: this.cabinId ,title: 'Available', start: this.start , end: this.end , color: '#6f9681' })
                    this.start='',
@@ -833,7 +833,7 @@ import axios from "axios";
                                  this.calculatePrice(this.startReservation,this.endReservation,this.cabinDto.price)
                                 axios
                                 .post(
-                                "http://localhost:8081/reservationCabin/ownerCreates",
+                                process.env.VUE_APP_BACKEND_URL+"reservationCabin/ownerCreates",
                                 {
                                 id: null,
                                 startDate: this.formatDate(this.startReservation),
@@ -890,7 +890,7 @@ import axios from "axios";
                                  this.calculatePrice(this.startQuickReservation,this.endQuickReservation,this.cabinDto.price)
                                 axios
                                 .post(
-                                "http://localhost:8081/quickReservationCabin/ownerCreates",
+                                process.env.VUE_APP_BACKEND_URL+"quickReservationCabin/ownerCreates",
                                 {
                                 id: null,
                                 startDate: this.formatDate(this.startQuickReservation),
@@ -1006,7 +1006,7 @@ import axios from "axios";
                     this.editDataIsNotValid=true
                     return
                  }
-                  axios.post("http://localhost:8081/cabinsPeriod/editAvailableCabinsPeriod",[
+                  axios.post(process.env.VUE_APP_BACKEND_URL+"cabinsPeriod/editAvailableCabinsPeriod",[
                {
                  id: null,
                 startDate: this.formatDate(this.startEdit),
@@ -1067,7 +1067,7 @@ import axios from "axios";
                  this.$refs.makeQuickReservation.open()
             },
             deleteAvailablePeriod: function(){
-              axios.post("http://localhost:8081/cabinsPeriod/deleteAvailableCabinsPeriod",
+              axios.post(process.env.VUE_APP_BACKEND_URL+"cabinsPeriod/deleteAvailableCabinsPeriod",
                {
                  id: null,
                 startDate: this.formatDate(this.startEdit),

@@ -162,7 +162,7 @@ export default ({
           getReservations: function(){
                 axios
                 .get(
-                "http://localhost:8081/adventureStatisticsReport/countReservationsByAdventure/"+this.email+"/"+this.advname)
+                process.env.VUE_APP_BACKEND_URL+"adventureStatisticsReport/countReservationsByAdventure/"+this.email+"/"+this.advname)
                 .then((response) => {
                     
                     for(let i=0; i< response.data.length; i++)
@@ -175,7 +175,7 @@ export default ({
           getQuickReservations: function(){
                 axios
                 .get(
-                "http://localhost:8081/adventureStatisticsReport/countQuickReservationsByAdventure/"+this.email+"/"+this.advname)
+                process.env.VUE_APP_BACKEND_URL+"adventureStatisticsReport/countQuickReservationsByAdventure/"+this.email+"/"+this.advname)
                 .then((response) => {
                        for(let i=0; i< response.data.length; i++)
                        this.data.datasets[1].data.push([response.data[i]])
@@ -200,7 +200,7 @@ export default ({
              dateRange.push(this.formatDate(this.end))
              axios
                 .post(
-                "http://localhost:8081/adventureStatisticsReport/sumProfitByAdventure/"+this.email+"/"+this.advname, dateRange
+                process.env.VUE_APP_BACKEND_URL+"adventureStatisticsReport/sumProfitByAdventure/"+this.email+"/"+this.advname, dateRange
                
                 )
                 .then((response) => {

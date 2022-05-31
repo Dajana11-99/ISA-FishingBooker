@@ -162,7 +162,7 @@ export default ({
           getReservations: function(){
                 axios
                 .get(
-                "http://localhost:8081/boatStatisticsReport/countReservationsByBoat/"+this.email+"/"+this.boatName)
+                process.env.VUE_APP_BACKEND_URL+"boatStatisticsReport/countReservationsByBoat/"+this.email+"/"+this.boatName)
                 .then((response) => {
                     
                     for(let i=0; i< response.data.length; i++)
@@ -175,7 +175,7 @@ export default ({
           getQuickReservations: function(){
                 axios
                 .get(
-                "http://localhost:8081/boatStatisticsReport/countQuickReservationsByBoat/"+this.email+"/"+this.boatName)
+                process.env.VUE_APP_BACKEND_URL+"boatStatisticsReport/countQuickReservationsByBoat/"+this.email+"/"+this.boatName)
                 .then((response) => {
                        for(let i=0; i< response.data.length; i++)
                        this.data.datasets[1].data.push([response.data[i]])
@@ -199,7 +199,7 @@ export default ({
              dateRange.push(this.formatDate(this.end))
              axios
                 .post(
-                "http://localhost:8081/boatStatisticsReport/sumProfitByBoat/"+this.email+"/", dateRange
+                process.env.VUE_APP_BACKEND_URL+"boatStatisticsReport/sumProfitByBoat/"+this.email+"/", dateRange
                
                 )
                 .then((response) => {

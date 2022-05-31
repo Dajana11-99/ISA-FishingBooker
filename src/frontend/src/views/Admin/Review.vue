@@ -136,7 +136,7 @@ import VueModality from 'vue-modality-v3'
      },
      methods: {
        getAllReports: function(){
-               axios.get("http://localhost:8081/reports/getAllReports")
+               axios.get(process.env.VUE_APP_BACKEND_URL+"reports/getAllReports")
             .then(response => {this.reports = response.data
               
               })
@@ -162,7 +162,7 @@ import VueModality from 'vue-modality-v3'
                     canCancel: true,
                     onCancel: this.onCancel,
                    });
-               axios.post("http://localhost:8081/reports/sendReviewResponse",{
+               axios.post(process.env.VUE_APP_BACKEND_URL+"reports/sendReviewResponse",{
                      id:this.id,
                     comment: this.comment,
                     ownersUsername: this.ownersUsername,

@@ -175,7 +175,7 @@ export default {
         if(this.confirmPassword === this.user.password){
         if(this.selectedClient === 'CABIN OWNER'){
                axios
-               .post("http://localhost:8081/auth/signUpCabinOwner",this.user)
+               .post(process.env.VUE_APP_BACKEND_URL+"auth/signUpCabinOwner",this.user)
                .then((response) => {
                  console.log("RESPONSEE"+response.data)
                  if(response.data =='Email already in use.'){
@@ -190,7 +190,7 @@ export default {
             
         }else if(this.selectedClient === 'BOAT OWNER'){
                axios
-               .post("http://localhost:8081/auth/signUpBoatOwner",this.user)
+               .post(process.env.VUE_APP_BACKEND_URL+"auth/signUpBoatOwner",this.user)
                .then((response) => {
                    this.$router.push('/accountAlert/'+this.user.username);
                     return response;
@@ -198,7 +198,7 @@ export default {
 
         }else if(this.selectedClient === 'FISHING INSTRUCTOR'){
               axios
-               .post("http://localhost:8081/auth/signUpFishingInstructor",this.user)
+               .post(process.env.VUE_APP_BACKEND_URL+"auth/signUpFishingInstructor",this.user)
                .then((response) => {
                    this.$router.push('/accountAlert/'+this.user.username);
                     return response;
@@ -206,7 +206,7 @@ export default {
 
         }else if(this.selectedClient === 'CLIENT'){
               axios
-               .post("http://localhost:8081/auth/signUpClient",this.user)
+               .post(process.env.VUE_APP_BACKEND_URL+"auth/signUpClient",this.user)
                .then((response) => {
                    this.$router.push('/clientAccountAlert/'+this.user.username);
                     return response;

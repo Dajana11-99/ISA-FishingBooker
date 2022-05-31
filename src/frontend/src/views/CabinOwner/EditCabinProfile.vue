@@ -286,7 +286,7 @@
      methods: {
        getCabin: function(){
              this.cabinDto.name=this.cabinName
-             axios.post("http://localhost:8081/cabins/findByName",this.cabinDto)
+             axios.post(process.env.VUE_APP_BACKEND_URL+"cabins/findByName",this.cabinDto)
                .then(response => {
                         this.cabinDto=response.data
                         this.idx=this.cabinDto.additionalServices.length
@@ -320,10 +320,10 @@
               this.idx--;
        },
        deleteCabin: function(){
-            axios.post("http://localhost:8081/cabins/canBeEditedOrDeleted/"+this.cabinDto.id)
+            axios.post(process.env.VUE_APP_BACKEND_URL+"cabins/canBeEditedOrDeleted/"+this.cabinDto.id)
                .then(response => {
                      if(response.data == true){
-                      axios.post("http://localhost:8081/cabins/delete",this.cabinDto)
+                      axios.post(process.env.VUE_APP_BACKEND_URL+"cabins/delete",this.cabinDto)
                       .then(response => {
                             this.$router.push('/cabinOwnerHome/'+ this.email);
                             return response;
@@ -351,10 +351,10 @@
           else
                     this.cabinDto.cancellingConditions='NOT FREE'
 
-           axios.post("http://localhost:8081/cabins/canBeEditedOrDeleted/"+this.cabinDto.id)
+           axios.post(process.env.VUE_APP_BACKEND_URL+"cabins/canBeEditedOrDeleted/"+this.cabinDto.id)
                .then(response => {
                      if(response.data == true){
-                          axios.post("http://localhost:8081/cabins/edit",this.cabinDto)
+                          axios.post(process.env.VUE_APP_BACKEND_URL+"cabins/edit",this.cabinDto)
                           .then(response => {
                                   
                                 if(this.imagesSelected==true){
@@ -400,7 +400,7 @@
                     let formData = new FormData();
                     let file =  this.imagesSelectedEvent.target.files[i];
                     formData.append('file', file);
-                       axios.post("http://localhost:8081/firebase/uploadCabinImage/"+this.cabinDto.name,formData)
+                       axios.post(process.env.VUE_APP_BACKEND_URL+"firebase/uploadCabinImage/"+this.cabinDto.name,formData)
                     .then(response => {
                       this.$swal.fire({
                        position: 'top-end',

@@ -124,7 +124,7 @@ import axios from "axios";
            this.selectedUser= user;
        },
        getAllUsers:function(){
-              axios.get("http://localhost:8081/userc/getAllUsers")
+              axios.get(process.env.VUE_APP_BACKEND_URL+"userc/getAllUsers")
             .then(response => {this.userRequestDTO = response.data
               
               })
@@ -136,7 +136,7 @@ import axios from "axios";
        deleteUser: function(){
         
              axios
-               .post("http://localhost:8081/userc/deleteUser",this.selectedUser)
+               .post(process.env.VUE_APP_BACKEND_URL+"userc/deleteUser",this.selectedUser)
                .then((response) => {
                       console.log(response)
                       this.$swal.fire({
@@ -150,15 +150,15 @@ import axios from "axios";
                    return response; 
                })
                .catch(error => {
-                 console.log(error)
-                  this.$swal.fire({
-                      position: 'top-end',
-                      icon: 'error',
-                      title: 'User has future reservations!',
-                      showConfirmButton: false,
-                      timer: 2500
-           })
+                console.log(error)
+                   this.$swal.fire({
+                  icon: "error",
+                  title: "Something went wrong!",
+                  text: error.response.data,
+          });
+            this.getAllUsers();
               });
+              
                
        }
 

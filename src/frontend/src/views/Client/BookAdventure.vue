@@ -670,7 +670,7 @@ export default {
     getComments: function () {
       axios
         .get(
-          "http://localhost:8081/evaluations/instructor/" +
+          process.env.VUE_APP_BACKEND_URL+"evaluations/instructor/" +
             this.adventureDto.fishingInstructorUsername +
             "/"
         )
@@ -744,7 +744,7 @@ export default {
         this.adventureDto.id = this.adventureIdParam;
       }
       axios
-        .post("http://localhost:8081/adventures/findById", this.adventureDto)
+        .post(process.env.VUE_APP_BACKEND_URL+"adventures/findById", this.adventureDto)
         .then((response) => {
           this.addedAdditionalServices = [];
           this.adventureDto = response.data;
@@ -830,7 +830,7 @@ export default {
 
       axios
         .post(
-          "http://localhost:8081/reservationAdventure/makeReservation",
+          process.env.VUE_APP_BACKEND_URL+"reservationAdventure/makeReservation",
           {
             id: null,
             startDate: this.formatDate(this.start),
@@ -870,7 +870,7 @@ export default {
     subscribe: function () {
       axios
         .post(
-          "http://localhost:8081/adventureSubscription/addSubscription",
+          process.env.VUE_APP_BACKEND_URL+"adventureSubscription/addSubscription",
           {
             adventureDto: this.adventureDto,
             clientUsername: this.email,
@@ -891,7 +891,7 @@ export default {
     unsubscribe: function () {
       axios
         .post(
-          "http://localhost:8081/adventureSubscription/removeSubscription",
+          process.env.VUE_APP_BACKEND_URL+"adventureSubscription/removeSubscription",
           {
             adventureDto: this.adventureDto,
             clientUsername: this.email,
@@ -912,14 +912,14 @@ export default {
     deleteAdventure: function () {
       axios
         .post(
-          "http://localhost:8081/adventures/canBeEditedOrDeleted/" +
+          process.env.VUE_APP_BACKEND_URL+"adventures/canBeEditedOrDeleted/" +
             this.adventureDto.id
         )
         .then((response) => {
           if (response.data == true) {
             axios
               .post(
-                "http://localhost:8081/adventures/deleteAdventure",
+                process.env.VUE_APP_BACKEND_URL+"adventures/deleteAdventure",
                 this.adventureDto
               )
               .then((response) => {

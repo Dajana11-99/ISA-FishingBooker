@@ -914,7 +914,7 @@ export default {
       this.adventureLoaded = false;
       axios
         .post(
-          "http://localhost:8081/reservationAdventure/searchAvailableAdventures",
+          process.env.VUE_APP_BACKEND_URL+"reservationAdventure/searchAvailableAdventures",
           {
             startDate: this.formatDate(this.start),
             endDate: this.formatDate(this.end),
@@ -1118,7 +1118,7 @@ export default {
         this.fillRulesAndFreeEquipment(this.availableAdventures);
       } else {
         axios
-          .get("http://localhost:8081/adventures/getAll")
+          .get(process.env.VUE_APP_BACKEND_URL+"adventures/getAll")
           .then((response) => {
             this.adventureDtos = response.data;
             this.adventureLoaded = true;

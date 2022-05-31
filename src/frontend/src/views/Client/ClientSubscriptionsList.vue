@@ -281,7 +281,7 @@ export default {
     getAdventureSubscriptions: function () {
       axios
         .get(
-          "http://localhost:8081/adventureSubscription/getByClientUsername/" +
+          process.env.VUE_APP_BACKEND_URL+"adventureSubscription/getByClientUsername/" +
             this.email +
             "/"
         )
@@ -293,7 +293,7 @@ export default {
     getBoatSubscriptions: function () {
       axios
         .get(
-          "http://localhost:8081/boatSubscription/getByClientUsername/" +
+          process.env.VUE_APP_BACKEND_URL+"boatSubscription/getByClientUsername/" +
             this.email +
             "/"
         )
@@ -304,7 +304,7 @@ export default {
     getCabinSubscriptions: function () {
       axios
         .get(
-          "http://localhost:8081/cabinSubscription/getByClientUsername/" +
+          process.env.VUE_APP_BACKEND_URL+"cabinSubscription/getByClientUsername/" +
             this.email +
             "/"
         )
@@ -356,7 +356,7 @@ export default {
       }
       axios
         .post(
-          "http://localhost:8081/" +
+          process.env.VUE_APP_BACKEND_URL+"" +
             this.typeOfEntityForCancelling +
             "Subscription/removeSubscription",
           dtoForPostRequest,

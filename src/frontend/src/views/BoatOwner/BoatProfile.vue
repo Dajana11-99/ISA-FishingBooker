@@ -256,7 +256,7 @@
        getBoat: function(){
                   this.boatDto.name=this.boatName
                   this.boatDto.ownersUsername=this.email
-            axios.post("http://localhost:8081/boats/findByNameAndOwnersUsername"+"/"+this.boatDto.name+"/"+this.email+"/")
+            axios.post(process.env.VUE_APP_BACKEND_URL+"boats/findByNameAndOwnersUsername"+"/"+this.boatDto.name+"/"+this.email+"/")
                   .then(response => {
                         this.boatDto=response.data
                         this.boatLoaded=true;
@@ -306,7 +306,7 @@
 
        },
        getComments: function(){
-               axios.get("http://localhost:8081/evaluations/boat/"+this.boatDto.id)
+               axios.get(process.env.VUE_APP_BACKEND_URL+"evaluations/boat/"+this.boatDto.id)
                .then(response => {
                        this.comments=response.data
                       

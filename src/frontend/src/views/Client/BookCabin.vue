@@ -679,7 +679,7 @@ export default {
     getComments: function () {
       axios
         .get(
-          "http://localhost:8081/cabinEvaluation/findByCabinId/" +
+          process.env.VUE_APP_BACKEND_URL+"cabinEvaluation/findByCabinId/" +
             this.cabinDto.id
         )
         .then((response) => {
@@ -751,7 +751,7 @@ export default {
       }
       axios
         .post(
-          "http://localhost:8081/cabins/findByNameClient",
+          process.env.VUE_APP_BACKEND_URL+"cabins/findByNameClient",
           this.cabinDto,
           {}
         )
@@ -839,7 +839,7 @@ export default {
 
       axios
         .post(
-          "http://localhost:8081/reservationCabin/makeReservation",
+          process.env.VUE_APP_BACKEND_URL+"reservationCabin/makeReservation",
           {
             id: null,
             startDate: this.formatDate(this.start),
@@ -880,7 +880,7 @@ export default {
     subscribe: function () {
       axios
         .post(
-          "http://localhost:8081/cabinSubscription/addSubscription",
+          process.env.VUE_APP_BACKEND_URL+"cabinSubscription/addSubscription",
           {
             cabinDto: this.cabinDto,
             clientUsername: this.email,
@@ -901,7 +901,7 @@ export default {
     unsubscribe: function () {
       axios
         .post(
-          "http://localhost:8081/cabinSubscription/removeSubscription",
+          process.env.VUE_APP_BACKEND_URL+"cabinSubscription/removeSubscription",
           {
             cabinDto: this.cabinDto,
             clientUsername: this.email,
@@ -923,13 +923,13 @@ export default {
     deleteCabin: function () {
       axios
         .post(
-          "http://localhost:8081/cabins/canBeEditedOrDeleted/" +
+          process.env.VUE_APP_BACKEND_URL+"cabins/canBeEditedOrDeleted/" +
             this.cabinDto.id
         )
         .then((response) => {
           if (response.data == true) {
             axios
-              .post("http://localhost:8081/cabins/delete", this.cabinDto)
+              .post(process.env.VUE_APP_BACKEND_URL+"cabins/delete", this.cabinDto)
               .then((response) => {
                 this.$swal.fire({
                   position: "top-end",

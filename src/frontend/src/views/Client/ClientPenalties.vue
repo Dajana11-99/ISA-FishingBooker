@@ -92,7 +92,7 @@ export default {
     getPenalties: function () {
       axios
         .get(
-          "http://localhost:8081/penalty/getClientPenalties/" + this.email + "/"
+          process.env.VUE_APP_BACKEND_URL+"penalty/getClientPenalties/" + this.email + "/"
         )
         .then((response) => {
           this.penalties = response.data;

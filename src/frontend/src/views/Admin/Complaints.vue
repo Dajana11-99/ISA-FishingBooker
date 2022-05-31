@@ -106,7 +106,7 @@ import axios from 'axios'
      methods: {
 
             getAllComplaints: function(){
-                    axios.get("http://localhost:8081/complaint/getAll")
+                    axios.get(process.env.VUE_APP_BACKEND_URL+"complaint/getAll")
             .then(response => {this.complaints = response.data
                // console.log("AAAAAAAA"+response.data.ownersUsername)
               
@@ -138,27 +138,36 @@ import axios from 'axios'
                     onCancel: this.onCancel,
                    });
                    console.log("AAAA"+this.comment)
-                    axios.post("http://localhost:8081/complaint/sendMailAboutComplaint/"+ this.complaintId,this.comment)
+                    axios.post(process.env.VUE_APP_BACKEND_URL+"complaint/sendMailAboutComplaint/"+ this.complaintId,this.comment)
             .then(response => {
+                 console.log(response)
                  this.$swal.fire({
                                           position: 'top-end',
                                           icon: 'success',
-                                          title: 'Email successfully send!',
+                                          title: 'Email successfully sent!',
                                           showConfirmButton: false,
                                            timer: 2500
                                        })
                                          this.loader.hide();
                                          this.loader=null
+                                         this.comment = ""
                                          this.getAllComplaints();
 
-              
-              
-                return response;
               })
              .catch(error => {
-                 this.errorMessage = error.message;
-                 console.error("There was an error!", error);
-           });
+                  console.log(error)
+                   this.$swal.fire({
+                  icon: "error",
+                  title: "Something went wrong!",
+                  text:" Complaint has already been reviewed!",
+          });
+                  this.loader.hide();
+                  this.loader=null
+                  this.comment = ""
+                  this.getAllComplaints();
+
+              });
+
         }
      
      },

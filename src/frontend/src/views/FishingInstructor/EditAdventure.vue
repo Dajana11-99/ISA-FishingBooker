@@ -320,11 +320,11 @@ import FishingInstructorNavbar from './FishingInstructorNav.vue'
                  this.adventureDto.cancelingCondition='FREE'
                else
                   this.adventureDto.cancelingCondition='NOT FREE'
-            axios.post("http://localhost:8081/adventures/canBeEditedOrDeleted/"+this.adventureDto.id)
+            axios.post(process.env.VUE_APP_BACKEND_URL+"adventures/canBeEditedOrDeleted/"+this.adventureDto.id)
                   .then(response => {
                      if(response.data == true){
 
-                        axios.post("http://localhost:8081/adventures/edit",this.adventureDto)
+                        axios.post(process.env.VUE_APP_BACKEND_URL+"adventures/edit",this.adventureDto)
                         .then(response => {
                         if(this.imagesSelected==true){
                         this.saveImages()
@@ -363,7 +363,7 @@ import FishingInstructorNavbar from './FishingInstructorNav.vue'
       
         getAdventure: function(){
                 
-             axios.post("http://localhost:8081/adventures/findByName",this.adventureDto)
+             axios.post(process.env.VUE_APP_BACKEND_URL+"adventures/findByName",this.adventureDto)
              .then(response => {
               this.tableHidden=false;
               this.adventureDto=response.data
@@ -392,7 +392,7 @@ import FishingInstructorNavbar from './FishingInstructorNav.vue'
                     let formData = new FormData();
                     let file =  this.imagesSelectedEvent.target.files[i];
                     formData.append('file', file);
-                       axios.post("http://localhost:8081/firebase/uploadAdventureImage/"+this.adventureDto.name,formData)
+                       axios.post(process.env.VUE_APP_BACKEND_URL+"firebase/uploadAdventureImage/"+this.adventureDto.name,formData)
                     .then(response => {
                        this.$swal.fire({
                        position: 'top-end',
@@ -408,10 +408,10 @@ import FishingInstructorNavbar from './FishingInstructorNav.vue'
               }                
         },
         deleteAdventure: function(){
-                 axios.post("http://localhost:8081/adventures/canBeEditedOrDeleted/"+this.adventureDto.id)
+                 axios.post(process.env.VUE_APP_BACKEND_URL+"adventures/canBeEditedOrDeleted/"+this.adventureDto.id)
                   .then(response => {
                      if(response.data == true){
-                         axios.post("http://localhost:8081/adventures/deleteAdventure",this.adventureDto)
+                         axios.post(process.env.VUE_APP_BACKEND_URL+"adventures/deleteAdventure",this.adventureDto)
                         .then(response => {
                           this.$router.push('/fishingInstructorHome/'+ this.email);
                           return response   

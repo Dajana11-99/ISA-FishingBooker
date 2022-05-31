@@ -305,7 +305,7 @@
        this.email = this.$route.params.email
        this.boatDto.ownersUsername= this.email
        this.userRequestDto.username=this.email
-       axios.post("http://localhost:8081/auth/findByEmail", this.userRequestDto)
+       axios.post(process.env.VUE_APP_BACKEND_URL+"auth/findByEmail", this.userRequestDto)
                .then(response => {
                         
                         this.ownerId=response.data.id 
@@ -400,7 +400,7 @@
                     canCancel: true,
                     onCancel: this.onCancel,
                    });
-                          axios.post("http://localhost:8081/boats/save",this.boatDto)
+                          axios.post(process.env.VUE_APP_BACKEND_URL+"boats/save",this.boatDto)
                           .then(response => {
                                   
                                     this.saveImages()
@@ -429,7 +429,7 @@
                     let formData = new FormData();
                     let file =  this.imagesSelectedEvent.target.files[i];
                     formData.append('file', file);
-                       axios.post("http://localhost:8081/firebase/uploadBoatImage/"+this.boatDto.name+"/"+this.ownerId,formData)
+                       axios.post(process.env.VUE_APP_BACKEND_URL+"firebase/uploadBoatImage/"+this.boatDto.name+"/"+this.ownerId,formData)
                        .then(response => {
                                     this.loader.hide();
                                     this.loader=null

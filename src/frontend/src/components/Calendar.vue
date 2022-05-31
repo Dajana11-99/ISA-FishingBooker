@@ -165,12 +165,12 @@ export default {
 
                
      if(this.$props.role ==='instructor'){
-             axios.get("http://localhost:8081/userc/getUsername")
+             axios.get(process.env.VUE_APP_BACKEND_URL+"userc/getUsername")
                .then(response => {
                        this.userRequestDto.username= response.data
                        this.fishingInstructorDtos.username=response.data
                        console.log("stigao   " +this.userRequestDto.username)
-                       axios.post("http://localhost:8081/instructorsPeriod/getAvailablePeriod",this.userRequestDto)
+                       axios.post(process.env.VUE_APP_BACKEND_URL+"instructorsPeriod/getAvailablePeriod",this.userRequestDto)
                         .then(response => {
                           this.availableInstructorPeriod=response.data
                            
@@ -206,7 +206,7 @@ export default {
           console.log("pre zahtevA    "+this.fishingInstructorDtos.availablePeriodDtoSet.length)
           console.log("pre zahtevA    "+this.fishingInstructorDtos.availablePeriodDtoSet[0].startDate)
                axios
-               .post("http://localhost:8081/instructorsPeriod/setAvailableInstructorPeriod",this.fishingInstructorDtos)
+               .post(process.env.VUE_APP_BACKEND_URL+"instructorsPeriod/setAvailableInstructorPeriod",this.fishingInstructorDtos)
                .then(response => {
                        
                        this.$swal.fire({

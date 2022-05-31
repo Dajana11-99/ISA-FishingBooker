@@ -817,7 +817,7 @@ export default {
       this.cabinsLoaded = false;
       axios
         .post(
-          "http://localhost:8081/reservationCabin/searchAvailableCabins",
+          process.env.VUE_APP_BACKEND_URL+"reservationCabin/searchAvailableCabins",
           {
             startDate: this.formatDate(this.start),
             endDate: this.formatDate(this.end),
@@ -1030,7 +1030,7 @@ export default {
         this.fillRulesAndServices(this.availableCabins);
       } else {
         this.user.username = this.email;
-        axios.get("http://localhost:8081/cabins/getAll").then((response) => {
+        axios.get(process.env.VUE_APP_BACKEND_URL+"cabins/getAll").then((response) => {
           this.cabinDtos = response.data;
           this.cabinsLoaded = true;
           if(!this.unidentifiedUser) this.fillRulesAndServices(response.data);

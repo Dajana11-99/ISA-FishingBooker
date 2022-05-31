@@ -363,7 +363,7 @@ export default {
       this.email = username;
       if (username != "") {
         axios
-          .get("http://localhost:8081/userc/userByUsername/" + username + "/")
+          .get(process.env.VUE_APP_BACKEND_URL+"userc/userByUsername/" + username + "/")
           .then((response) => {
             this.user = response.data;
             this.fullName = this.user.firstname + " " + this.user.lastname;
@@ -381,7 +381,7 @@ export default {
           console.log("trazim kom od cabin ownera");
           axios
             .get(
-              "http://localhost:8081/evaluations/cabinOwner/" + username + "/"
+              process.env.VUE_APP_BACKEND_URL+"evaluations/cabinOwner/" + username + "/"
             )
             .then((response) => {
               this.comments = response.data;
@@ -390,7 +390,7 @@ export default {
           console.log("trazim kom od boat ownera");
           axios
             .get(
-              "http://localhost:8081/evaluations/boatOwner/" + username + "/"
+              process.env.VUE_APP_BACKEND_URL+"evaluations/boatOwner/" + username + "/"
             )
             .then((response) => {
               this.comments = response.data;
@@ -399,7 +399,7 @@ export default {
           console.log("trazim kom od instructora");
           axios
             .get(
-              "http://localhost:8081/evaluations/instructor/" + username + "/"
+              process.env.VUE_APP_BACKEND_URL+"evaluations/instructor/" + username + "/"
             )
             .then((response) => {
               this.comments = response.data;
@@ -407,7 +407,7 @@ export default {
         } else if (role == "ROLE_CLIENT") {
           this.showComments = false;
           this.showDiscount = true;
-            axios.get("http://localhost:8081/ranks/getAll").then((response) => {
+            axios.get(process.env.VUE_APP_BACKEND_URL+"ranks/getAll").then((response) => {
               this.ranks = response.data;
             });
         }

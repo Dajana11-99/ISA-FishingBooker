@@ -284,7 +284,7 @@ export default {
       if (this.selectedEntity === "CABINS") {
         axios
           .post(
-            "http://localhost:8081/reservationCabin/getAvailableCabins",
+            process.env.VUE_APP_BACKEND_URL+"reservationCabin/getAvailableCabins",
             {
               startDate: this.formatDate(this.start),
               endDate: this.formatDate(this.end),
@@ -302,7 +302,7 @@ export default {
       } else if (this.selectedEntity === "BOATS") {
         axios
           .post(
-            "http://localhost:8081/reservationBoat/getAvailableBoats",
+            process.env.VUE_APP_BACKEND_URL+"reservationBoat/getAvailableBoats",
             {
               startDate: this.formatDate(this.start),
               endDate: this.formatDate(this.end),
@@ -319,7 +319,7 @@ export default {
       } else {
         axios
           .post(
-            "http://localhost:8081/reservationAdventure/getAvailableAdventures",
+            process.env.VUE_APP_BACKEND_URL+"reservationAdventure/getAvailableAdventures",
             {
               startDate: this.formatDate(this.start),
               endDate: this.formatDate(this.end),

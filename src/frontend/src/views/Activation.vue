@@ -47,7 +47,7 @@ export default {
     this.activationDTO.activationCode = this.$route.params.activationCode
     this.activationDTO.email = this.$route.params.email
      axios
-     .post("http://localhost:8081/account/activate",this.activationDTO)
+     .post(process.env.VUE_APP_BACKEND_URL+"account/activate",this.activationDTO)
      .then((response) => {
       return response; 
      });

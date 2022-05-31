@@ -120,7 +120,7 @@ import axios from "axios";
 
              axios
                 .get(
-                "http://localhost:8081/cabinStatisticsReport/sumTodaysProfitOfAllCabinsForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"cabinStatisticsReport/sumTodaysProfitOfAllCabinsForAdmin")
                 .then((response) => {
                        console.log("usao u then1"+response.data)
                        this.data.datasets[0].data.push(response.data)
@@ -130,7 +130,7 @@ import axios from "axios";
 
                axios
                 .get(
-                "http://localhost:8081/cabinStatisticsReport/sumWeekProfitOfAllCabinsForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"cabinStatisticsReport/sumWeekProfitOfAllCabinsForAdmin")
                 .then((response) => {
                    console.log("usao u then2 "+response.data)
                        this.data.datasets[1].data.push(response.data)
@@ -140,7 +140,7 @@ import axios from "axios";
 
                 axios
                 .get(
-                "http://localhost:8081/cabinStatisticsReport/sumMonthProfitOfAllCabinsForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"cabinStatisticsReport/sumMonthProfitOfAllCabinsForAdmin")
                 .then((response) => {
                    console.log("usao u then3"+response.data)
                        this.data.datasets[2].data.push(response.data)
@@ -150,7 +150,7 @@ import axios from "axios";
 
                 axios
                 .get(
-                "http://localhost:8081/cabinStatisticsReport/sumYearProfitOfAllCabinsForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"cabinStatisticsReport/sumYearProfitOfAllCabinsForAdmin")
                 .then((response) => {
                    console.log("usao u then4"+response.data)
                        this.data.datasets[3].data.push(response.data)
@@ -163,7 +163,7 @@ import axios from "axios";
              console.log("usao u getBoatsProfit")
              axios
                 .get(
-                "http://localhost:8081/boatStatisticsReport/sumTodaysProfitOfAllBoatsForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"boatStatisticsReport/sumTodaysProfitOfAllBoatsForAdmin")
                 .then((response) => {
                        console.log("usao u then1"+response.data)
                        this.data.datasets[0].data.push(response.data)
@@ -173,7 +173,7 @@ import axios from "axios";
 
                axios
                 .get(
-                "http://localhost:8081/boatStatisticsReport/sumWeekProfitOfAllBoatsForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"boatStatisticsReport/sumWeekProfitOfAllBoatsForAdmin")
                 .then((response) => {
                    console.log("usao u then2 "+response.data)
                        this.data.datasets[1].data.push(response.data)
@@ -183,7 +183,7 @@ import axios from "axios";
 
                 axios
                 .get(
-                "http://localhost:8081/boatStatisticsReport/sumMonthProfitOfAllBoatsForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"boatStatisticsReport/sumMonthProfitOfAllBoatsForAdmin")
                 .then((response) => {
                    console.log("usao u then3"+response.data)
                        this.data.datasets[2].data.push(response.data)
@@ -193,7 +193,7 @@ import axios from "axios";
 
                 axios
                 .get(
-                "http://localhost:8081/boatStatisticsReport/sumYearProfitOfAllBoatsForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"boatStatisticsReport/sumYearProfitOfAllBoatsForAdmin")
                 .then((response) => {
                    console.log("usao u then4"+response.data)
                        this.data.datasets[3].data.push(response.data)
@@ -206,7 +206,7 @@ import axios from "axios";
              console.log("usao u getAdventuresProfit")
              axios
                 .get(
-                "http://localhost:8081/adventureStatisticsReport/sumTodaysProfitOfAllAdventuresForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"adventureStatisticsReport/sumTodaysProfitOfAllAdventuresForAdmin")
                 .then((response) => {
                        console.log("usao u then1"+response.data)
                        this.data.datasets[0].data.push(response.data)
@@ -216,7 +216,7 @@ import axios from "axios";
 
                axios
                 .get(
-                "http://localhost:8081/adventureStatisticsReport/sumWeekProfitOfAllAdventuresForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"adventureStatisticsReport/sumWeekProfitOfAllAdventuresForAdmin")
                 .then((response) => {
                    console.log("usao u then2 "+response.data)
                        this.data.datasets[1].data.push(response.data)
@@ -226,7 +226,7 @@ import axios from "axios";
 
                 axios
                 .get(
-                "http://localhost:8081/adventureStatisticsReport/sumMonthProfitOfAllAdventuresForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"adventureStatisticsReport/sumMonthProfitOfAllAdventuresForAdmin")
                 .then((response) => {
                    console.log("usao u then3"+response.data)
                        this.data.datasets[2].data.push(response.data)
@@ -236,7 +236,7 @@ import axios from "axios";
 
                 axios
                 .get(
-                "http://localhost:8081/adventureStatisticsReport/sumYearProfitOfAllAdventuresForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"adventureStatisticsReport/sumYearProfitOfAllAdventuresForAdmin")
                 .then((response) => {
                    console.log("usao u then4"+response.data)
                        this.data.datasets[3].data.push(response.data)
@@ -250,7 +250,7 @@ import axios from "axios";
           
               axios
                 .get(
-                "http://localhost:8081/cabinStatisticsReport/sumTodaysProfitOfAllCabinsForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"cabinStatisticsReport/sumTodaysProfitOfAllCabinsForAdmin")
                 .then((response) => {
                        this.allToday+=response.data
                 
@@ -258,7 +258,7 @@ import axios from "axios";
 
                axios
                 .get(
-                "http://localhost:8081/cabinStatisticsReport/sumWeekProfitOfAllCabinsForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"cabinStatisticsReport/sumWeekProfitOfAllCabinsForAdmin")
                 .then((response) => {
                        this.allWeek+=response.data
                 
@@ -266,7 +266,7 @@ import axios from "axios";
 
                 axios
                 .get(
-                "http://localhost:8081/cabinStatisticsReport/sumMonthProfitOfAllCabinsForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"cabinStatisticsReport/sumMonthProfitOfAllCabinsForAdmin")
                 .then((response) => {
                        this.allMonth+=response.data
                    
@@ -275,14 +275,14 @@ import axios from "axios";
 
                 axios
                 .get(
-                "http://localhost:8081/cabinStatisticsReport/sumYearProfitOfAllCabinsForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"cabinStatisticsReport/sumYearProfitOfAllCabinsForAdmin")
                 .then((response) => {
                        this.allYear+=response.data
                 
                 });
                   axios
                 .get(
-                "http://localhost:8081/boatStatisticsReport/sumTodaysProfitOfAllBoatsForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"boatStatisticsReport/sumTodaysProfitOfAllBoatsForAdmin")
                 .then((response) => {
                        this.allToday+=response.data
                
@@ -291,7 +291,7 @@ import axios from "axios";
 
                axios
                 .get(
-                "http://localhost:8081/boatStatisticsReport/sumWeekProfitOfAllBoatsForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"boatStatisticsReport/sumWeekProfitOfAllBoatsForAdmin")
                 .then((response) => {
                        this.allWeek+=response.data
            
@@ -300,7 +300,7 @@ import axios from "axios";
 
                 axios
                 .get(
-                "http://localhost:8081/boatStatisticsReport/sumMonthProfitOfAllBoatsForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"boatStatisticsReport/sumMonthProfitOfAllBoatsForAdmin")
                 .then((response) => {
                        this.allMonth+=response.data
                   
@@ -309,7 +309,7 @@ import axios from "axios";
 
                 axios
                 .get(
-                "http://localhost:8081/boatStatisticsReport/sumYearProfitOfAllBoatsForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"boatStatisticsReport/sumYearProfitOfAllBoatsForAdmin")
                 .then((response) => {
                        this.allYear+=response.data
                  
@@ -317,7 +317,7 @@ import axios from "axios";
 
                axios
                 .get(
-                "http://localhost:8081/adventureStatisticsReport/sumTodaysProfitOfAllAdventuresForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"adventureStatisticsReport/sumTodaysProfitOfAllAdventuresForAdmin")
                 .then((response) => {
                        this.allToday+=response.data
                        this.data.datasets[0].data.push(this.allToday)
@@ -326,7 +326,7 @@ import axios from "axios";
 
                axios
                 .get(
-                "http://localhost:8081/adventureStatisticsReport/sumWeekProfitOfAllAdventuresForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"adventureStatisticsReport/sumWeekProfitOfAllAdventuresForAdmin")
                 .then((response) => {
                        this.allWeek+=response.data
                        this.data.datasets[1].data.push(this.allWeek)
@@ -335,7 +335,7 @@ import axios from "axios";
 
                 axios
                 .get(
-                "http://localhost:8081/adventureStatisticsReport/sumMonthProfitOfAllAdventuresForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"adventureStatisticsReport/sumMonthProfitOfAllAdventuresForAdmin")
                 .then((response) => {
                        this.allMonth+=response.data
                        this.data.datasets[2].data.push(this.allMonth)
@@ -344,7 +344,7 @@ import axios from "axios";
 
                 axios
                 .get(
-                "http://localhost:8081/adventureStatisticsReport/sumYearProfitOfAllAdventuresForAdmin")
+                process.env.VUE_APP_BACKEND_URL+"adventureStatisticsReport/sumYearProfitOfAllAdventuresForAdmin")
                 .then((response) => {
                        this.allYear+=response.data
                        console.log("usaooooo"+ this.allYear)

@@ -713,7 +713,7 @@ import BoatOwnerNav from './BoatOwnerNav.vue'
      },
      methods: {
        getBoat: function(){
-            axios.post("http://localhost:8081/boats/findByNameAndOwnersUsername/"+this.boatName+"/"+this.email+"/")
+            axios.post(process.env.VUE_APP_BACKEND_URL+"boats/findByNameAndOwnersUsername/"+this.boatName+"/"+this.email+"/")
                   .then(response => {
                         this.boatDto=response.data
                         this.boatId=this.boatDto.id
@@ -732,7 +732,7 @@ import BoatOwnerNav from './BoatOwnerNav.vue'
 
        },
        getBoatsAvailablePeriod: function(){
-               axios.post("http://localhost:8081/boatsPeriod/getAvailablePeriod",this.boatDto)
+               axios.post(process.env.VUE_APP_BACKEND_URL+"boatsPeriod/getAvailablePeriod",this.boatDto)
                .then(response => {
                   this.availableBoatPeriod=response.data
                      for( let newData of response.data ){
@@ -749,7 +749,7 @@ import BoatOwnerNav from './BoatOwnerNav.vue'
 
          },
         getBoatReservations: function(){
-                axios.get("http://localhost:8081/reservationBoat/getByBoatId/"+this.boatId)
+                axios.get(process.env.VUE_APP_BACKEND_URL+"reservationBoat/getByBoatId/"+this.boatId)
                 .then(response => {
                       for( let newData of response.data ){
                                   var start=newData.startDate
@@ -766,7 +766,7 @@ import BoatOwnerNav from './BoatOwnerNav.vue'
 
         },
         getQuickReservations: function(){
-               axios.get("http://localhost:8081/quickReservationBoat/getByBoatId/"+this.boatId)
+               axios.get(process.env.VUE_APP_BACKEND_URL+"quickReservationBoat/getByBoatId/"+this.boatId)
                .then(response => {
                      for( let newData of response.data ){
                                 var start=newData.startDate
@@ -810,7 +810,7 @@ import BoatOwnerNav from './BoatOwnerNav.vue'
               propertyId: this.boatDto.id
              }
     
-          axios.post("http://localhost:8081/boatsPeriod/setAvailableBoatsPeriod",this.availableBoatPeriod)
+          axios.post(process.env.VUE_APP_BACKEND_URL+"boatsPeriod/setAvailableBoatsPeriod",this.availableBoatPeriod)
                .then(response => {
                       this.calendarOptions.events.push({id: this.boatDto.id ,title: 'Available', start: this.start , end: this.end , color: '#6f9681' })
                       this.start='',
@@ -856,7 +856,7 @@ import BoatOwnerNav from './BoatOwnerNav.vue'
                     return
                  }
 
-                  axios.post("http://localhost:8081/boatsPeriod/editAvailableBoatsPeriod",[
+                  axios.post(process.env.VUE_APP_BACKEND_URL+"boatsPeriod/editAvailableBoatsPeriod",[
                {
                  id: null,
                 startDate: this.formatDate(this.startEdit),
@@ -926,7 +926,7 @@ import BoatOwnerNav from './BoatOwnerNav.vue'
                                  this.calculatePrice(this.startReservation,this.endReservation,this.boatDto.price)
                                 axios
                                 .post(
-                                "http://localhost:8081/reservationBoat/ownerCreates/"+ this.email +"/",
+                                process.env.VUE_APP_BACKEND_URL+"reservationBoat/ownerCreates/"+ this.email +"/",
                                 {
                                 id: null,
                                 startDate: this.formatDate(this.startReservation),
@@ -983,7 +983,7 @@ import BoatOwnerNav from './BoatOwnerNav.vue'
                                  this.calculatePrice(this.startQuickReservation,this.endQuickReservation,this.boatDto.price)
                                 axios
                                 .post(
-                                "http://localhost:8081/quickReservationBoat/ownerCreates/"+this.email+"/",
+                                process.env.VUE_APP_BACKEND_URL+"quickReservationBoat/ownerCreates/"+this.email+"/",
                                 {
                                 id: null,
                                 startDate: this.formatDate(this.startQuickReservation),
@@ -1086,7 +1086,7 @@ import BoatOwnerNav from './BoatOwnerNav.vue'
                  this.needsCaptainServices=false
             },
             deleteAvailablePeriod: function(){
-                  axios.post("http://localhost:8081/boatsPeriod/deleteAvailableBoatsPeriod",
+                  axios.post(process.env.VUE_APP_BACKEND_URL+"boatsPeriod/deleteAvailableBoatsPeriod",
                   {
                     id: null,
                     startDate: this.formatDate(this.startEdit),

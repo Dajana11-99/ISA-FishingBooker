@@ -268,7 +268,7 @@ export default {
       this.user.username = this.email;
       axios
         .get(
-          "http://localhost:8081/cabins/findCabinsByOwnersUsername/"+this.email+"/")
+          process.env.VUE_APP_BACKEND_URL+"cabins/findCabinsByOwnersUsername/"+this.email+"/")
         .then((response) => {
           this.cabinDtos = response.data;
           this.cabinsLoaded = true;

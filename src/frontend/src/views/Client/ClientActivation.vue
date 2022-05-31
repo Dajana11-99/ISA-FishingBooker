@@ -48,7 +48,7 @@ export default {
     console.log(this.activationDTO);
     axios
       .post(
-        "http://localhost:8081/auth/clientAccountActivation",
+        process.env.VUE_APP_BACKEND_URL+"auth/clientAccountActivation",
         this.activationDTO
       )
       .then((response) => {

@@ -803,7 +803,7 @@ export default {
       if (!this.upcomingReservations) {
         axios
           .post(
-            "http://localhost:8081/reservationAdventure/getReservationsHistory",
+            process.env.VUE_APP_BACKEND_URL+"reservationAdventure/getReservationsHistory",
             {
               username: this.email,
             },
@@ -816,7 +816,7 @@ export default {
           });
         axios
           .post(
-            "http://localhost:8081/quickReservationAdventure/getReservationsHistory",
+            process.env.VUE_APP_BACKEND_URL+"quickReservationAdventure/getReservationsHistory",
             {
               username: this.email,
             },
@@ -831,7 +831,7 @@ export default {
         this.user.username = this.email;
         axios
           .post(
-            "http://localhost:8081/reservationAdventure/getUpcomingReservations",
+            process.env.VUE_APP_BACKEND_URL+"reservationAdventure/getUpcomingReservations",
             {
               username: this.email,
             },
@@ -844,7 +844,7 @@ export default {
           });
         axios
           .post(
-            "http://localhost:8081/quickReservationAdventure/getUpcomingReservations",
+            process.env.VUE_APP_BACKEND_URL+"quickReservationAdventure/getUpcomingReservations",
             {
               username: this.email,
             },
@@ -860,7 +860,7 @@ export default {
     getAvailableQuickReservations: function () {
       axios
         .get(
-          "http://localhost:8081/quickReservationAdventure/getAvailableReservations",
+          process.env.VUE_APP_BACKEND_URL+"quickReservationAdventure/getAvailableReservations",
           {},
           {}
         )
@@ -953,7 +953,7 @@ export default {
       this.quickReservationAdventure.clientUsername = this.email;
       axios
         .post(
-          "http://localhost:8081/quickReservationAdventure/makeQuickReservation",
+          process.env.VUE_APP_BACKEND_URL+"quickReservationAdventure/makeQuickReservation",
           this.quickReservationAdventure,
           {}
         )
@@ -993,7 +993,7 @@ export default {
 
       axios
         .post(
-          "http://localhost:8081/" + path + "/cancelReservation",
+          process.env.VUE_APP_BACKEND_URL+"" + path + "/cancelReservation",
           this.adventureForCancellation,
           {}
         )

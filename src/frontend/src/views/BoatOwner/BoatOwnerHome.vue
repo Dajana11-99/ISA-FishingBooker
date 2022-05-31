@@ -271,7 +271,7 @@
      methods: {
        getOwnersBoats: function(){
           this.user.username=this.email
-             axios.post("http://localhost:8081/boats/findBoatsByOwnersUsername",this.user)
+             axios.post(process.env.VUE_APP_BACKEND_URL+"boats/findBoatsByOwnersUsername",this.user)
                .then(response => {
                         this.boatDtos=response.data
                         this.boatsLoaded=true

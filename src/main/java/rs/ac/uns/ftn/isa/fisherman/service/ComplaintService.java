@@ -11,7 +11,7 @@ public interface ComplaintService {
 
     List<Complaint> getAll();
 
-    void sendMailAboutComplaint(Complaint complaint,String response);
+    boolean sendMailAboutComplaint(Complaint complaint,String response);
 
     Complaint getOne(Long id);
 }

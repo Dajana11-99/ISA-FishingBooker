@@ -390,7 +390,7 @@ export default ({
            },
            getReservations: function(){
                this.reservations=[]
-                axios.get("http://localhost:8081/reservationAdventure/getByInstructorUsername/"+this.email+"/")
+                axios.get(process.env.VUE_APP_BACKEND_URL+"reservationAdventure/getByInstructorUsername/"+this.email+"/")
                 .then(response => {
                       this.reservations= response.data; 
                 })
@@ -398,7 +398,7 @@ export default ({
           },
           getPastReservations: function(){
                 this.pastReservations=[]
-                axios.get("http://localhost:8081/reservationAdventure/getPastReservations/"+this.email+"/")
+                axios.get(process.env.VUE_APP_BACKEND_URL+"reservationAdventure/getPastReservations/"+this.email+"/")
                 .then(response => {
                       this.pastReservations= response.data; 
                 })
@@ -412,7 +412,7 @@ export default ({
                    bad=true
                 if(this.selectedClientShowedUp==1)
                    success=false
-                axios.post("http://localhost:8081/reservationAdventure/ownerCreatesReview/"+this.reservation.id,
+                axios.post(process.env.VUE_APP_BACKEND_URL+"reservationAdventure/ownerCreatesReview/"+this.reservation.id,
                  {
                             id: 0,
                             success: success,

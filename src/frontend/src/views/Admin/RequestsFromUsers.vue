@@ -95,7 +95,7 @@ import axios from "axios";
       },
      methods: {
        loadData: function(){
-             axios.get("http://localhost:8081/userc/getNewUsers")
+             axios.get(process.env.VUE_APP_BACKEND_URL+"userc/getNewUsers")
             .then(response => {this.userRequestDTO = response.data
               
               })
@@ -106,7 +106,7 @@ import axios from "axios";
          
        },
        accept: function(user){
-                  axios.post("http://localhost:8081/account/acceptAccount",user)
+                  axios.post(process.env.VUE_APP_BACKEND_URL+"account/acceptAccount",user)
                   .then(response => {this.userRequestDTO = response.data
                         this.loadData();
 
@@ -118,7 +118,7 @@ import axios from "axios";
        },
        deny: function(user){
                   this.denyClick=true;
-                  axios.post("http://localhost:8081/account/denyAccount/"+this.reason,user)
+                  axios.post(process.env.VUE_APP_BACKEND_URL+"account/denyAccount/"+this.reason,user)
                   .then(response => {this.userRequestDTO = response.data
                         this.loadData();
                    })

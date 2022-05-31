@@ -323,7 +323,7 @@ import VueModality from 'vue-modality-v3'
     },
      methods: {
         getBoatReservations: function(){
-                axios.get("http://localhost:8081/reservationBoat/getByOwnerUsername/"+this.email+"/")
+                axios.get(process.env.VUE_APP_BACKEND_URL+"reservationBoat/getByOwnerUsername/"+this.email+"/")
                 .then(response => {
                       for( let newData of response.data ){
                                   if(newData.needsCaptainServices==true){
@@ -347,7 +347,7 @@ import VueModality from 'vue-modality-v3'
 
         },
         getQuickReservations: function(){
-               axios.get("http://localhost:8081/quickReservationBoat/getByOwnerUsername/"+this.email+"/")
+               axios.get(process.env.VUE_APP_BACKEND_URL+"quickReservationBoat/getByOwnerUsername/"+this.email+"/")
                .then(response => {
                      for( let newData of response.data ){
                                 if(newData.needsCaptainServices==true){

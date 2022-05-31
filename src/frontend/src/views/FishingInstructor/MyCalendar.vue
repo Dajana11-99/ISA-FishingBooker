@@ -717,7 +717,7 @@ export default {
      },
      methods: {
          getAdventure: function(){
-            axios.get("http://localhost:8081/adventures/findInstructorsAdventure/"+this.email+"/")
+            axios.get(process.env.VUE_APP_BACKEND_URL+"adventures/findInstructorsAdventure/"+this.email+"/")
                .then(response => {
                         this.adventureDto=response.data
                         if(this.adventureDto.length> 0){
@@ -752,7 +752,7 @@ export default {
               }
        },
         getAvailableInstructorsPeriod: function(){
-              axios.get("http://localhost:8081/instructorsPeriod/getAvailablePeriod/"+this.email+"/")
+              axios.get(process.env.VUE_APP_BACKEND_URL+"instructorsPeriod/getAvailablePeriod/"+this.email+"/")
                         .then(response => {
                             for( let newData of response.data ){
                                 var start=newData.startDate
@@ -765,7 +765,7 @@ export default {
               })   
         },
          getInstructorsReservation: function(){
-                axios.get("http://localhost:8081/reservationAdventure/getByInstructorUsername/"+this.email+"/")
+                axios.get(process.env.VUE_APP_BACKEND_URL+"reservationAdventure/getByInstructorUsername/"+this.email+"/")
                         .then(response => {
                             for( let newData of response.data ){
                                 var start=newData.startDate
@@ -782,7 +782,7 @@ export default {
               })   
           }  , 
            getInstructorsQuickReservation: function(){
-                axios.get("http://localhost:8081/quickReservationAdventure/getByInstructorId/"+this.email+"/")
+                axios.get(process.env.VUE_APP_BACKEND_URL+"quickReservationAdventure/getByInstructorId/"+this.email+"/")
                         .then(response => {
                             for( let newData of response.data ){
                                 var start=newData.startDate
@@ -838,7 +838,7 @@ export default {
             propertyId: null
             }
                axios
-               .post("http://localhost:8081/instructorsPeriod/setAvailableInstructorPeriod",this.availableInstructorPeriod)
+               .post(process.env.VUE_APP_BACKEND_URL+"instructorsPeriod/setAvailableInstructorPeriod",this.availableInstructorPeriod)
                .then(response => {
                        
                   this.calendarOptions.events.push({title: 'Available', start: this.start , end: this.end , color: '#6f9681' })
@@ -875,7 +875,7 @@ export default {
                                  this.calculatePrice(this.startReservation,this.endReservation,this.adventureDto[this.selected].price)
                                 axios
                                 .post(
-                                "http://localhost:8081/reservationAdventure/instructorCreates",
+                                process.env.VUE_APP_BACKEND_URL+"reservationAdventure/instructorCreates",
                                 {
                                 id: null,
                                 startDate: this.formatDate(this.startReservation),
@@ -935,7 +935,7 @@ export default {
                                   });
                                 axios
                                 .post(
-                                "http://localhost:8081/quickReservationAdventure/instructorCreates/",
+                                process.env.VUE_APP_BACKEND_URL+"quickReservationAdventure/instructorCreates/",
                                 {
                                 id: null,
                                 startDate: this.formatDate(this.startQuickReservation),
@@ -987,7 +987,7 @@ export default {
                     return
                  }
 
-                  axios.post("http://localhost:8081/instructorsPeriod/editAvailableInstructorsPeriod",[
+                  axios.post(process.env.VUE_APP_BACKEND_URL+"instructorsPeriod/editAvailableInstructorsPeriod",[
                {
                  id: null,
                 startDate: this.formatDate(this.startEdit),
@@ -1115,7 +1115,7 @@ export default {
                  this.newPrice=this.adventureDto[0].price;
             },
                  deleteAvailablePeriod: function(){
-                  axios.post("http://localhost:8081/instructorsPeriod/deleteAvailableInstructorsPeriod",
+                  axios.post(process.env.VUE_APP_BACKEND_URL+"instructorsPeriod/deleteAvailableInstructorsPeriod",
                   {
                     id: null,
                     startDate: this.formatDate(this.startEdit),

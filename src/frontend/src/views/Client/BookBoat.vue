@@ -696,7 +696,7 @@ export default {
     },
     isOwnerAvailable: function (){
       axios
-        .post("http://localhost:8081/reservationBoat/isOwnerAvailable",{
+        .post(process.env.VUE_APP_BACKEND_URL+"reservationBoat/isOwnerAvailable",{
             boatId: this.boatId,
             startDate: this.formatDate(this.start),
             endDate: this.formatDate(this.end),
@@ -721,7 +721,7 @@ export default {
     },
     getComments: function () {
       axios
-        .get("http://localhost:8081/evaluations/boat/" + this.boatDto.id)
+        .get(process.env.VUE_APP_BACKEND_URL+"evaluations/boat/" + this.boatDto.id)
         .then((response) => {
           this.comments = response.data;
         });
@@ -790,7 +790,7 @@ export default {
         this.boatDto.id = this.boatIdParam;
       }
       axios
-        .post("http://localhost:8081/boats/findById", this.boatDto, {})
+        .post(process.env.VUE_APP_BACKEND_URL+"boats/findById", this.boatDto, {})
         .then((response) => {
           this.addedAdditionalServices = [];
           this.boatDto = response.data;
@@ -875,7 +875,7 @@ export default {
       var needsCaptainServices = this.needsCaptainServices();
       axios
         .post(
-          "http://localhost:8081/reservationBoat/makeReservation",
+          process.env.VUE_APP_BACKEND_URL+"reservationBoat/makeReservation",
           {
             id: null,
             startDate: this.formatDate(this.start),
@@ -917,7 +917,7 @@ export default {
     subscribe: function () {
       axios
         .post(
-          "http://localhost:8081/boatSubscription/addSubscription",
+          process.env.VUE_APP_BACKEND_URL+"boatSubscription/addSubscription",
           {
             boatDto: this.boatDto,
             clientUsername: this.email,
@@ -938,7 +938,7 @@ export default {
     unsubscribe: function () {
       axios
         .post(
-          "http://localhost:8081/boatSubscription/removeSubscription",
+          process.env.VUE_APP_BACKEND_URL+"boatSubscription/removeSubscription",
           {
             boatDto: this.boatDto,
             clientUsername: this.email,
@@ -959,12 +959,12 @@ export default {
     deleteBoat: function () {
       axios
         .post(
-          "http://localhost:8081/boats/canBeEditedOrDeleted/" + this.boatDto.id
+          process.env.VUE_APP_BACKEND_URL+"boats/canBeEditedOrDeleted/" + this.boatDto.id
         )
         .then((response) => {
           if (response.data == true) {
             axios
-              .post("http://localhost:8081/boats/delete", this.boatDto)
+              .post(process.env.VUE_APP_BACKEND_URL+"boats/delete", this.boatDto)
               .then((response) => {
                 this.$swal.fire({
                   position: "top-end",

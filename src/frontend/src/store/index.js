@@ -22,7 +22,7 @@ const store = createStore({
 
        async logIn ({dispatch},credentials){
            try {
-            let response =  await axios.post("http://localhost:8081/auth/login",credentials)
+            let response =  await axios.post(process.env.VUE_APP_BACKEND_URL+"auth/login",credentials)
                 localStorage.clear();
                 localStorage.setItem('token',response.data.accessToken)
                 localStorage.setItem('role',response.data.userType)
@@ -59,7 +59,7 @@ const store = createStore({
        async refreshToken (){
            try{
                 
-            let response = await axios.post("http://localhost:8081/auth/refresh")
+            let response = await axios.post(process.env.VUE_APP_BACKEND_URL+"auth/refresh")
             localStorage.clear()
             localStorage.setItem('token',response.data.accessToken)
             localStorage.setItem('logged',true)

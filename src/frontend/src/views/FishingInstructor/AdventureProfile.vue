@@ -252,7 +252,7 @@ export default{
      methods: {
        getAdventure: function(){
 
-             axios.post("http://localhost:8081/adventures/findByName",this.adventureDto)
+             axios.post(process.env.VUE_APP_BACKEND_URL+"adventures/findByName",this.adventureDto)
                .then(response => {
                         this.adventureDto=response.data
                         this.adventureLoaded=true;
@@ -279,7 +279,7 @@ export default{
 
        },
           getInstructorRating: function(){
-            axios.post("http://localhost:8081/instructors/findInstructorRatingByUsername",this.fishingInstructorDto)
+            axios.post(process.env.VUE_APP_BACKEND_URL+"instructors/findInstructorRatingByUsername",this.fishingInstructorDto)
                .then(response => {
                         this.fishingInstructorDto.rating=response.data
               })
@@ -296,7 +296,7 @@ export default{
             this.$router.push('/editAdventure/'+ this.email+'/'+this.adventureDto.name);
        },
        getComments: function(){
-               axios.get("http://localhost:8081/evaluations/instructor/"+this.fishingInstructorDto.id)
+               axios.get(process.env.VUE_APP_BACKEND_URL+"evaluations/instructor/"+this.fishingInstructorDto.id)
                .then(response => {
                        this.comments=response.data
                       

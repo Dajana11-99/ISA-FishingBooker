@@ -146,7 +146,7 @@ export default {
       if (this.selectedEntity === "cabin") {
         axios
           .post(
-            "http://localhost:8081/cabinEvaluation/addEvaluation",
+            process.env.VUE_APP_BACKEND_URL+"cabinEvaluation/addEvaluation",
             {
               reservationId: this.reservationId,
               commentForTheEntity: this.commentEntity,
@@ -177,7 +177,7 @@ export default {
       } else if (this.selectedEntity === "boat") {
         axios
           .post(
-            "http://localhost:8081/boatEvaluation/addEvaluation",
+            process.env.VUE_APP_BACKEND_URL+"boatEvaluation/addEvaluation",
             {
               reservationId: this.reservationId,
               commentForTheEntity: this.commentEntity,
@@ -208,7 +208,7 @@ export default {
       } else {
         axios
           .post(
-            "http://localhost:8081/instructors/addEvaluation",
+            process.env.VUE_APP_BACKEND_URL+"instructors/addEvaluation",
             {
               reservationId: this.reservationId,
               commentForTheFishingInstructor: this.commentEntityOwner,

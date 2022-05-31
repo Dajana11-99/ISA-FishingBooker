@@ -237,7 +237,7 @@ export default ({
 
                axios
                 .get(
-                "http://localhost:8081/cabinStatisticsReport/findCabinStatistics/"+this.email+"/")
+                process.env.VUE_APP_BACKEND_URL+"cabinStatisticsReport/findCabinStatistics/"+this.email+"/")
                 .then((response) => {
                     this.stats = response.data;
                 });
@@ -247,7 +247,7 @@ export default ({
           getReservations: function(){
                 axios
                 .get(
-                "http://localhost:8081/cabinStatisticsReport/countReservations/"+this.email+"/")
+                process.env.VUE_APP_BACKEND_URL+"cabinStatisticsReport/countReservations/"+this.email+"/")
                 .then((response) => {
                     
                     for(let i=0; i< response.data.length; i++)
@@ -260,7 +260,7 @@ export default ({
           getQuickReservations: function(){
                 axios
                 .get(
-                "http://localhost:8081/cabinStatisticsReport/countQuickReservations/"+this.email+"/")
+                process.env.VUE_APP_BACKEND_URL+"cabinStatisticsReport/countQuickReservations/"+this.email+"/")
                 .then((response) => {
                        for(let i=0; i< response.data.length; i++)
                        this.data.datasets[1].data.push([response.data[i]])
@@ -297,7 +297,7 @@ export default ({
              dateRange.push(this.formatDate(this.end))
              axios
                 .post(
-                "http://localhost:8081/cabinStatisticsReport/sumProfit/"+this.email+"/", dateRange
+                process.env.VUE_APP_BACKEND_URL+"cabinStatisticsReport/sumProfit/"+this.email+"/", dateRange
                
                 )
                 .then((response) => {

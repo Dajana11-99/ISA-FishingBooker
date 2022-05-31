@@ -210,7 +210,7 @@ import axios from "axios";
                 });
 
                  axios
-               .post("http://localhost:8081/admins/signUpAdmin",this.user)
+               .post(process.env.VUE_APP_BACKEND_URL+"admins/signUpAdmin",this.user)
                .then((response) => {
                     this.loader.hide()
                     this.$router.go();
@@ -225,7 +225,7 @@ import axios from "axios";
        },
        loadData: function(){
                axios
-               .get("http://localhost:8081/admins/getAllAdmins")
+               .get(process.env.VUE_APP_BACKEND_URL+"admins/getAllAdmins")
                .then((response) => {
 
                      this.userRequestDTO=response.data

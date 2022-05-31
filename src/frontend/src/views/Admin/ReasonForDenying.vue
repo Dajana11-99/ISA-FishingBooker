@@ -75,7 +75,7 @@ export default{
        },
        deny: function(){
                   
-                  axios.post("http://localhost:8081/account/denyAccount/"+this.reason,this.user)
+                  axios.post(process.env.VUE_APP_BACKEND_URL+"account/denyAccount/"+this.reason,this.user)
                   .then(response => {
                       this.$router.push('/requests/'+this.email);
                       return response;

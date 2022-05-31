@@ -254,7 +254,7 @@
        },
        getCabin: function(){
              this.cabinDto.name=this.cabinName
-             axios.post("http://localhost:8081/cabins/findByName",this.cabinDto)
+             axios.post(process.env.VUE_APP_BACKEND_URL+"cabins/findByName",this.cabinDto)
                .then(response => {
                        
                         this.cabinDto=response.data
@@ -294,7 +294,7 @@
            this.$router.push('/cabinCalendar/'+ this.email+'/'+this.cabinName);
        },
        getComments: function(){
-               axios.get("http://localhost:8081/cabinEvaluation/findByCabinId/"+this.cabinDto.id)
+               axios.get(process.env.VUE_APP_BACKEND_URL+"cabinEvaluation/findByCabinId/"+this.cabinDto.id)
                .then(response => {
                        this.comments=response.data
                       

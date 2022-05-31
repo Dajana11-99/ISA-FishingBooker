@@ -4,6 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import rs.ac.uns.ftn.isa.fisherman.dto.NewComplaintDto;
 import rs.ac.uns.ftn.isa.fisherman.mail.ComplaintOwnersInfo;
 import rs.ac.uns.ftn.isa.fisherman.mail.EvaluationSuccesfullInfo;
@@ -68,24 +71,33 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
-    public void sendMailAboutComplaint(Complaint complaint,String response)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
+    public boolean sendMailAboutComplaint(Complaint complaint, String response)
     {
-        complaint.setResponded(true);
-        complaintRepository.save(complaint);
-        if(complaint.getComplaintType().equals("CABIN_COMPLAINT")){
-            String name= cabinComplaintRepository.getById(complaint.getId()).getCabin().getName();
-            sendMailNotificationForCabinAndBoat(complaint,name,"cabin",response);
-            sendMailNotificationForClient(complaint,name,response);
-        }else if(complaint.getComplaintType().equals("BOAT_COMPLAINT")){
-            Boat boat= boatComplaintRepository.getById(complaint.getId()).getBoat();
-            sendMailNotificationForCabinAndBoat(complaint,boat.getName(),"boat",response);
-            sendMailNotificationForClient(complaint,boat.getName(),response);
-        }else {
-            sendMailNotificationForOwners(complaint,response);
-            sendMailNotificationForClient(complaint,complaint.getOwnersUsername(),response);
+        try {
+            if(complaint.isResponded())return false;
+            complaint.setResponded(true);
+            complaintRepository.save(complaint);
+
+            if(complaint.getComplaintType().equals("CABIN_COMPLAINT")){
+                String name= cabinComplaintRepository.getById(complaint.getId()).getCabin().getName();
+                sendMailNotificationForCabinAndBoat(complaint,name,"cabin",response);
+                sendMailNotificationForClient(complaint,name,response);
+            }else if(complaint.getComplaintType().equals("BOAT_COMPLAINT")){
+                Boat boat= boatComplaintRepository.getById(complaint.getId()).getBoat();
+                sendMailNotificationForCabinAndBoat(complaint,boat.getName(),"boat",response);
+                sendMailNotificationForClient(complaint,boat.getName(),response);
+            }else {
+                sendMailNotificationForOwners(complaint,response);
+                sendMailNotificationForClient(complaint,complaint.getOwnersUsername(),response);
+            }
+            return  true;
+        }catch (Exception e){
+            return  false;
         }
 
     }
+
 
     @Override
     public Complaint getOne(Long id) {

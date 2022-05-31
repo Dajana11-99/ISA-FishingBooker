@@ -164,7 +164,7 @@ import axios from "axios";
      methods: {
      
        getAllRequests: function(){
-              axios.get("http://localhost:8081/userc/getAllRequests")
+              axios.get(process.env.VUE_APP_BACKEND_URL+"userc/getAllRequests")
                   .then(response => {
                       this.userRequestDTO=response.data
                      
@@ -178,14 +178,30 @@ import axios from "axios";
                    });
            this.mailDto.response= this.reasonDeny;
            this.mailDto.recipient= this.userRequest.username;
-             axios.post("http://localhost:8081/account/sendDenyReasonForDeletingAccount",this.mailDto)
+             axios.post(process.env.VUE_APP_BACKEND_URL+"account/sendDenyReasonForDeletingAccount",this.mailDto)
                   .then(response => {
+                      this.$swal('User has been deleted');
+                         this.$swal.fire(
+                            'Delete account!',
+                            'User has been deleted!',
+                            'success'
+                         )
                       this.loader.hide();
                       this.loader=null
                       this.getAllRequests();
                     return response;
                      
-                   })
+                   }).catch(error => {
+                 console.log(error)
+                   this.$swal.fire({
+                  icon: "error",
+                  title: "Something went wrong!",
+                  text: error.response.data,
+          });
+                 this.loader.hide();
+                 this.loader=null
+                 this.getAllRequests();
+              });
 
 
        },
@@ -203,8 +219,8 @@ import axios from "axios";
                    });
            this.mailDto.response= this.reasonAccept;
            this.mailDto.recipient= this.userRequest.username;
-            axios.post("http://localhost:8081/account/sendAcceptReasonForDeletingAccount",this.mailDto)
-                  .then(response => {
+            axios.post(process.env.VUE_APP_BACKEND_URL+"account/sendAcceptReasonForDeletingAccount",this.mailDto)
+                     .then(response => {
                         this.$swal('User has been deleted');
                          this.$swal.fire(
                             'Delete account!',
@@ -213,13 +229,22 @@ import axios from "axios";
                          )
                           this.loader.hide();
                           this.loader=null
-                           this.getAllRequests();
-
-                       
+                           this.getAllRequests()
 
                         return response
                      
-                   })
+                   })  .catch(error => {
+                 console.log(error)
+                   this.$swal.fire({
+                  icon: "error",
+                  title: "Something went wrong!",
+                  text: error.response.data,
+          });
+                 this.loader.hide();
+                 this.loader=null
+                  this.getAllRequests()
+              });
+
 
 
        }

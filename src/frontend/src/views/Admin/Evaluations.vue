@@ -88,7 +88,7 @@ import dayjs from 'dayjs';
      },
      methods: {
          getAllEvaluations: function(){
-                    axios.get("http://localhost:8081/evaluations/getAllEvaluations")
+                    axios.get(process.env.VUE_APP_BACKEND_URL+"evaluations/getAllEvaluations")
             .then(response => {this.evaluations = response.data
               
               })
@@ -112,7 +112,7 @@ import dayjs from 'dayjs';
                     canCancel: true,
                     onCancel: this.onCancel,
                    });
-                    axios.get("http://localhost:8081/evaluations/setEvaluationStatus/"+this.id)
+                    axios.get(process.env.VUE_APP_BACKEND_URL+"evaluations/setEvaluationStatus/"+this.id)
             .then(response => {
                 console.log(response)
                     this.$swal.fire({
@@ -142,7 +142,7 @@ import dayjs from 'dayjs';
                     canCancel: true,
                     onCancel: this.onCancel,
                    });
-                    axios.get("http://localhost:8081/evaluations/unapproved/"+this.id)
+                    axios.get(process.env.VUE_APP_BACKEND_URL+"evaluations/unapproved/"+this.id)
             .then(response => {
                 console.log(response)
                     this.$swal.fire({

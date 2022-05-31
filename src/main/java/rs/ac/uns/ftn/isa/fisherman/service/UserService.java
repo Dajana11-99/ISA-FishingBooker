@@ -24,15 +24,15 @@ public interface UserService {
 
     void editUser(UserRequestDTO userRequest);
 
-    boolean deleteUser(User user);
+    String deleteUser(User user);
 
     void saveDeleteAccountRequest(String username, String reasonForDeleting);
 
     List<User> getAllRequestsForDeletingAccount();
 
-    void sendDenyReason(String response, String recipient) throws MessagingException;
+    boolean sendDenyReason(String response, String recipient) throws MessagingException, Exception;
 
-    void sendAcceptReason(String response, String recipient) throws MessagingException;
+    boolean sendAcceptReason(String response, String recipient) throws MessagingException, Exception;
 
     String getUsernameFromToken(String s);
 

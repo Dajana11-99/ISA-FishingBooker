@@ -18,6 +18,8 @@ public abstract class Complaint {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_sequence_generator")
     @Column(name = "id", unique = true)
     protected Long id;
+    @Version
+    private int version;
     @Column(name="text")
     protected String text;
     @Column(name="date")
@@ -93,5 +95,13 @@ public abstract class Complaint {
 
     public  String getComplaintType() {
         return COMPLAINT_TYPE;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }

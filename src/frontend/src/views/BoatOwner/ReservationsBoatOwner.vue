@@ -399,7 +399,7 @@ export default ({
            },
            getBoatReservations: function(){
                this.reservations=[]
-                axios.get("http://localhost:8081/reservationBoat/getByOwnerUsername/"+this.email+"/")
+                axios.get(process.env.VUE_APP_BACKEND_URL+"reservationBoat/getByOwnerUsername/"+this.email+"/")
                 .then(response => {
                       this.reservations= response.data; 
                 })
@@ -407,7 +407,7 @@ export default ({
           },
           getPastReservations: function(){
                 this.pastReservations=[]
-                axios.get("http://localhost:8081/reservationBoat/getPastReservations/"+this.email+"/")
+                axios.get(process.env.VUE_APP_BACKEND_URL+"reservationBoat/getPastReservations/"+this.email+"/")
                 .then(response => {
                       this.pastReservations= response.data; 
                 })
@@ -462,7 +462,7 @@ export default ({
             /*this.reservation.successfull=success
             this.reservation.ownersReportDto.badComment= bad
             this.reservation.ownersReportDto.comment=this.comment*/
-                axios.post("http://localhost:8081/reservationBoat/ownerCreatesReview/"+this.reservation.id,
+                axios.post(process.env.VUE_APP_BACKEND_URL+"reservationBoat/ownerCreatesReview/"+this.reservation.id,
                 {
                             id: 0,
                             success: success,

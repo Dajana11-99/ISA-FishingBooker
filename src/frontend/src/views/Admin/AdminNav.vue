@@ -151,7 +151,7 @@ import axios from "axios";
        setStatus: function(){
                     
                    if(this.$props.username != ''){
-                   axios.get("http://localhost:8081/admins/isPredefined/" + this.$props.username + "/")
+                   axios.get(process.env.VUE_APP_BACKEND_URL+"admins/isPredefined/" + this.$props.username + "/")
                   .then(response => {
                       this.isPredefined=response.data
                       

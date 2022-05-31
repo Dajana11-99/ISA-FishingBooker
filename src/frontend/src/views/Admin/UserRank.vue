@@ -161,7 +161,7 @@ import axios from "axios";
      },
      methods: {
          getRank: function(){
-             axios.get("http://localhost:8081/ranks/getAll")
+             axios.get(process.env.VUE_APP_BACKEND_URL+"ranks/getAll")
                   .then(response => {
                       this.rankDto=response.data
                       return response;
@@ -169,7 +169,7 @@ import axios from "axios";
                 
          },
             getReservationPoints: function(){
-             axios.get("http://localhost:8081/reservationPoints/get")
+             axios.get(process.env.VUE_APP_BACKEND_URL+"reservationPoints/get")
                   .then(response => {
                       this.reservationPointsDto=response.data
                       return response;
@@ -188,7 +188,7 @@ import axios from "axios";
                             timer: 2500
                          })
                 }else {
-               axios.post("http://localhost:8081/ranks/updatePoints",this.rankDto)
+               axios.post(process.env.VUE_APP_BACKEND_URL+"ranks/updatePoints",this.rankDto)
                   .then(response => {
                           this.$swal.fire({
                             position: 'top-end',
@@ -205,7 +205,7 @@ import axios from "axios";
          updatePoints: function(event){
           event.preventDefault();
                   
-               axios.post("http://localhost:8081/reservationPoints/update",this.reservationPointsDto)
+               axios.post(process.env.VUE_APP_BACKEND_URL+"reservationPoints/update",this.reservationPointsDto)
                   .then(response => {
                           this.$swal.fire({
                             position: 'top-end',

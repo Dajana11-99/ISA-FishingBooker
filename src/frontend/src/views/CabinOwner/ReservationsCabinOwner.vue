@@ -398,7 +398,7 @@ export default ({
            },
            getReservations: function(){
                this.reservations=[]
-                axios.get("http://localhost:8081/reservationCabin/getByOwnerUsername/"+this.email+"/")
+                axios.get(process.env.VUE_APP_BACKEND_URL+"reservationCabin/getByOwnerUsername/"+this.email+"/")
                 .then(response => {
                       this.reservations= response.data; 
                 })
@@ -406,7 +406,7 @@ export default ({
           },
           getPastReservations: function(){
                 this.pastReservations=[]
-                axios.get("http://localhost:8081/reservationCabin/getPastReservations/"+this.email+"/")
+                axios.get(process.env.VUE_APP_BACKEND_URL+"reservationCabin/getPastReservations/"+this.email+"/")
                 .then(response => {
                       this.pastReservations= response.data; 
                 })
@@ -461,7 +461,7 @@ export default ({
             /*this.reservation.successfull=success
             this.reservation.ownersReportDto.badComment= bad
             this.reservation.ownersReportDto.comment=this.comment*/
-                axios.post("http://localhost:8081/reservationCabin/ownerCreatesReview/"+this.reservation.id,
+                axios.post(process.env.VUE_APP_BACKEND_URL+"reservationCabin/ownerCreatesReview/"+this.reservation.id,
                  {
                             id: 0,
                             success: success,

@@ -923,7 +923,7 @@ export default {
       this.boatsLoaded = false;
       axios
         .post(
-          "http://localhost:8081/reservationBoat/searchAvailableBoats",
+          process.env.VUE_APP_BACKEND_URL+"reservationBoat/searchAvailableBoats",
           {
             startDate: this.formatDate(this.start),
             endDate: this.formatDate(this.end),
@@ -1125,7 +1125,7 @@ export default {
         this.fillRulesAndFreeEquipment(this.availableBoats);
       } else {
         this.user.username = this.email;
-        axios.get("http://localhost:8081/boats/getAll").then((response) => {
+        axios.get(process.env.VUE_APP_BACKEND_URL+"boats/getAll").then((response) => {
           this.boatDtos = response.data;
           this.boatsLoaded = true;
           if(!this.unidentifiedUser) this.fillRulesAndFreeEquipment(response.data);

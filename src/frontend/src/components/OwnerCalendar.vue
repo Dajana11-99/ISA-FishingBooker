@@ -215,7 +215,7 @@ import axios from "axios";
             this.start='',
             this.end=''
                axios
-               .post("http://localhost:8081/boatsPeriod/setAvailableBoatOwnersPeriod",this.availablePeriodDto)
+               .post(process.env.VUE_APP_BACKEND_URL+"boatsPeriod/setAvailableBoatOwnersPeriod",this.availablePeriodDto)
                .then(response => {
                        
                        this.$swal.fire({
@@ -244,7 +244,7 @@ import axios from "axios";
     },
     getDates: function(){
             console.log("AAAAAAAAAAAAAAAAAAAAAAaa"+this.$props.email)
-           axios.get("http://localhost:8081/boatsPeriod/getAvailablePeriodOwner/bo@gmail.com/")
+           axios.get(process.env.VUE_APP_BACKEND_URL+"boatsPeriod/getAvailablePeriodOwner/bo@gmail.com/")
                         .then(response => {
                           this.availableInstructorPeriodShow=response.data
                            

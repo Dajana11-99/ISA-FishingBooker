@@ -99,7 +99,7 @@ export default {
 
       axios
         .post(
-          "http://localhost:8081/complaint/addComplaint",
+          process.env.VUE_APP_BACKEND_URL+"complaint/addComplaint",
           {
             text: this.text,
             clientUsername: this.email,

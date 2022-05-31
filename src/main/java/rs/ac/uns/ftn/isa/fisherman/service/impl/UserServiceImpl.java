@@ -10,6 +10,9 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import rs.ac.uns.ftn.isa.fisherman.dto.UserRequestDTO;
 import rs.ac.uns.ftn.isa.fisherman.service.*;
 import rs.ac.uns.ftn.isa.fisherman.mail.*;
@@ -174,12 +177,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean deleteUser(User user) {
-        if(checkIfCanDeletingUser(user)){
-            userRepository.delete(user);
-            return  true;
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
+    public String deleteUser(User user)   {
+        try {
+
+            if (checkIfCanDeletingUser(user)) {
+                userRepository.delete(user);
+                return "TRUE";
+            }
+            return "FALSE";
+        }catch (Exception e){
+            return "Exception"  ;
         }
-          return  false;
     }
 
 
@@ -197,18 +206,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void sendDenyReason(String response, String recipient) throws MessagingException {
-        mailService.sendMail(recipient,response,new AccountDeletingDenied());
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
+    public boolean sendDenyReason(String response, String recipient) throws Exception {
         User user=userRepository.findByUsername(recipient);
+        if(user.getReasonForDeleting() == null)return false;
+        if(user== null)
+            return false;
         user.setReasonForDeleting("");
         userRepository.save(user);
+        mailService.sendMail(recipient,response,new AccountDeletingDenied());
+
+        return  true;
     }
 
     @Override
-    public void sendAcceptReason(String response, String recipient) throws MessagingException {
-        mailService.sendMail(recipient,response,new AccountDeletingAccepted());
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
+    public boolean sendAcceptReason(String response, String recipient) throws Exception {
         User user=userRepository.findByUsername(recipient);
+        if(user.getReasonForDeleting().equals(""))return false;
+        if(user== null)
+            return false;
         userRepository.delete(user);
+        mailService.sendMail(recipient,response,new AccountDeletingAccepted());
+        return  true;
     }
 
     @Override

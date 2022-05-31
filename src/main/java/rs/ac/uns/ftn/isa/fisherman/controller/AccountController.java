@@ -60,17 +60,30 @@ public class AccountController {
 
     @PostMapping("/sendDenyReasonForDeletingAccount")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> sendDenyReasonForDeletingAccount(@RequestBody MailDto mailDto) throws MessagingException {
-        userService.sendDenyReason(mailDto.getResponse(),mailDto.getRecipient());
+    public ResponseEntity<String> sendDenyReasonForDeletingAccount(@RequestBody MailDto mailDto) throws Exception {
+
+        try {
+            if (!userService.sendDenyReason(mailDto.getResponse(), mailDto.getRecipient()))
+                return new ResponseEntity<>("Reason has already  been responded!", HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Reason has already  been responded!", HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+
     }
 
     @PostMapping("/sendAcceptReasonForDeletingAccount")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> sendAcceptReasonForDeletingAccount(@RequestBody MailDto mailDto) throws MessagingException {
-       System.out.println("AAA"+mailDto.getRecipient()+"*"+mailDto.getResponse());
-        userService.sendAcceptReason(mailDto.getResponse(),mailDto.getRecipient());
-        return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+        try {
+            if(!userService.sendAcceptReason(mailDto.getResponse(),mailDto.getRecipient())){
+                return new ResponseEntity<>("Someone already responded to this request!", HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Someone already responded to this request!", HttpStatus.BAD_REQUEST);
+
+        }
     }
 
 
