@@ -4,9 +4,7 @@ import rs.ac.uns.ftn.isa.fisherman.dto.AddNewEvaluationDto;
 import rs.ac.uns.ftn.isa.fisherman.model.BoatEvaluation;
 
 public interface BoatEvaluationService {
-
     void addEvaluation(AddNewEvaluationDto addNewEvaluationDto);
-
-    BoatEvaluation findById(Long Id);
+    BoatEvaluation findById(Long id);
 
 }

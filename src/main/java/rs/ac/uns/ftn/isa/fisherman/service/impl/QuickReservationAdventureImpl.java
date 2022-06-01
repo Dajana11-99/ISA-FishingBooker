@@ -29,7 +29,7 @@ import java.util.Set;
 @Service
 public class QuickReservationAdventureImpl implements QuickReservationAdventureService {
 
-    private final Logger logger= LoggerFactory.getLogger(FirebaseServiceImpl.class);
+    private final Logger logger= LoggerFactory.getLogger(QuickReservationAdventureImpl.class);
     @Autowired
     private QuickReservationAdventureRepository quickReservationAdventureRepository;
     @Autowired
@@ -117,11 +117,9 @@ public class QuickReservationAdventureImpl implements QuickReservationAdventureS
         quickReservationAdventure.setPaymentInformation(paymentInformation);
         reservationPaymentService.updateUserRankAfterReservation(quickReservationAdventure.getClient(),quickReservationAdventure.getFishingInstructor());
         quickReservationAdventureRepository.save(quickReservationAdventure);
-        SendReservationMailToClient(quickReservationAdventureDto);
+        sendReservationMailToClient(quickReservationAdventureDto);
         return true;
     }
-
-
 
     @Override
     public boolean fishingInstructorNotFree(String instructorUsername, LocalDateTime startDate, LocalDateTime endDate) {
@@ -198,7 +196,7 @@ public class QuickReservationAdventureImpl implements QuickReservationAdventureS
         return quickReservationAdventureRepository.instructorHasTakenReservationInPeriod(instructorUsername, startDate, endDate);
     }
 
-    private void SendReservationMailToClient(QuickReservationAdventureDto quickReservationAdventureDto) {
+    private void sendReservationMailToClient(QuickReservationAdventureDto quickReservationAdventureDto) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm:ss");
             String message = quickReservationAdventureDto.getAdventureDto().getName() + " is booked from " + quickReservationAdventureDto.getStartDate().format(formatter) + " to " + quickReservationAdventureDto.getEndDate().format(formatter) + " .";
@@ -246,9 +244,6 @@ public class QuickReservationAdventureImpl implements QuickReservationAdventureS
         LocalDateTime start = Collections.max(Arrays.asList(startReport, startReservation));
         LocalDateTime end = Collections.min(Arrays.asList(endReport, endReservation));
         numberOfOverlappingHours = ChronoUnit.MINUTES.between(start, end);
-
-        System.out.println("Minuta izmedju  "+numberOfOverlappingHours);
-        System.out.println("Sati izmedju  "+numberOfOverlappingHours/60d);
         return numberOfOverlappingHours/60d;
     }
 

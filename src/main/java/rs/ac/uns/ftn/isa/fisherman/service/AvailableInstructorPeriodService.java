@@ -1,7 +1,6 @@
 package rs.ac.uns.ftn.isa.fisherman.service;
 
 import rs.ac.uns.ftn.isa.fisherman.model.AvailableInstructorPeriod;
-import rs.ac.uns.ftn.isa.fisherman.model.FishingInstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;

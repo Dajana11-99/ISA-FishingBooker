@@ -60,9 +60,7 @@ public class AvailableCabinPeriodController {
     @PreAuthorize("hasRole('CABINOWNER')")
     public ResponseEntity<String> deleteAvailableCabinsPeriod (@RequestBody AvailablePeriodDto availablePeriodDto) {
         CabinOwner cabinOwner= cabinOwnerService.findByUsername(availablePeriodDto.getUsername());
-        System.out.println("owner je  "+cabinOwner.getUsername());
         Cabin cabin = cabinService.findById(availablePeriodDto.getPropertyId());
-        System.out.println("cabin je  "+cabin.getName());
         if(availableCabinPeriodService.deleteAvailableCabinsPeriod
                 (availableCabinPeriodMapper.availablePeriodDtoToAvailableCabinPeriod(availablePeriodDto,cabinOwner,cabin)))
             return new ResponseEntity<>(SUCCESS, HttpStatus.OK);

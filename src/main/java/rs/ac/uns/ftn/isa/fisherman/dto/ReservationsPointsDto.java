@@ -1,10 +1,11 @@
 package rs.ac.uns.ftn.isa.fisherman.dto;
+
 public class ReservationsPointsDto {
     protected Long id;
     private Integer clientPoints;
     private Integer ownerPoints;
     private Integer appProfitPercentage;
-    private Integer cancelationFeePercentage;;
+    private Integer cancelationFeePercentage;
 
     public ReservationsPointsDto(Long id, Integer clientPoints, Integer ownerPoints, Integer appProfitPercentage, Integer cancelationFeePercentage ) {
         this.id = id;

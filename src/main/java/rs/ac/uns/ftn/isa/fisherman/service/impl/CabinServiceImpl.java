@@ -32,7 +32,7 @@ public class CabinServiceImpl implements CabinService {
     @Autowired
     private ImageService imageService;
     @Autowired
-    private ReservationCabinService reservationCabinService;
+    private CabinReservationService cabinReservationService;
     @Autowired
     private QuickReservationCabinService quickReservationCabinService;
     public Cabin findById(Long id){
@@ -106,17 +106,17 @@ public class CabinServiceImpl implements CabinService {
 
     @Override
     public void updateCabinGrade(Long cabinId){
-        Set<Integer> reservations_ids = cabinReservationRepository.getCabinReservationsHistory(cabinId, LocalDateTime.now());
-        if(reservations_ids.size()==0)
+        Set<Integer> reservationsIds = cabinReservationRepository.getCabinReservationsHistory(cabinId, LocalDateTime.now());
+        if(reservationsIds.isEmpty())
             return;
-        Set<Double> approved_cabin_grades = cabinEvaluationRepository.getAllApprovedCabinEvaluationsByCabinReservationIds(reservations_ids);
-        if(approved_cabin_grades.size()==0)
+        Set<Double> approvedCabinGrades = cabinEvaluationRepository.getAllApprovedCabinEvaluationsByCabinReservationIds(reservationsIds);
+        if(approvedCabinGrades.isEmpty())
             return;
         double sum = 0;
-        for(Double number : approved_cabin_grades)
+        for(Double number : approvedCabinGrades)
             sum += number;
         Cabin cabin=this.cabinRepository.findById(cabinId);
-        double rating = sum/approved_cabin_grades.size();
+        double rating = sum/approvedCabinGrades.size();
         cabin.setRating(rating);
         cabinRepository.save(cabin);
     }
@@ -124,7 +124,7 @@ public class CabinServiceImpl implements CabinService {
     @Override
     public boolean canBeEditedOrDeleted(Long id) {
         LocalDateTime currentDate=LocalDateTime.now();
-        if(reservationCabinService.futureReservationsExist(currentDate,id)) return false;
+        if(cabinReservationService.futureReservationsExist(currentDate,id)) return false;
         if(quickReservationCabinService.futureQuickReservationsExist(currentDate,id)) return false;
         return true;
     }

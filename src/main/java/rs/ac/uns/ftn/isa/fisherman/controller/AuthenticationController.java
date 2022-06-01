@@ -1,7 +1,5 @@
 package rs.ac.uns.ftn.isa.fisherman.controller;
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -10,11 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.isa.fisherman.dto.ChangePasswordDto;
 import rs.ac.uns.ftn.isa.fisherman.dto.LogInDto;
 import rs.ac.uns.ftn.isa.fisherman.dto.VerificationDTO;
-
 import rs.ac.uns.ftn.isa.fisherman.model.Client;
 import rs.ac.uns.ftn.isa.fisherman.service.LoginService;
 import rs.ac.uns.ftn.isa.fisherman.service.UserService;
-
 import rs.ac.uns.ftn.isa.fisherman.model.User;
 import rs.ac.uns.ftn.isa.fisherman.model.UserTokenState;
 import rs.ac.uns.ftn.isa.fisherman.mapper.*;
@@ -36,6 +32,7 @@ public class AuthenticationController {
     private TokenUtils tokenUtils;
 
     private LoginService loginService;
+
     @Autowired
     public  AuthenticationController(LoginService logInService){
       this.loginService = logInService;
@@ -117,7 +114,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signUpClient")
-    public ResponseEntity<String> registerClient( @RequestBody UserRequestDTO userRequest) throws MessagingException {
+    public ResponseEntity<String> registerClient( @RequestBody UserRequestDTO userRequest){
         User existUser = this.userService.findByUsername(userRequest.getUsername());
         if (existUser != null) {
             return new ResponseEntity<>(EMAIL_ALREADY_IN_USE, HttpStatus.BAD_REQUEST);

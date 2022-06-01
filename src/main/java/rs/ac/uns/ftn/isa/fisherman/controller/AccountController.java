@@ -58,7 +58,7 @@ public class AccountController {
         return new ResponseEntity<>(passwordStatus, HttpStatus.OK);
     }
 
-    @PostMapping("/sendDenyReasonForDeletingAccount")
+    @PostMapping("/sendDenyReason")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> sendDenyReasonForDeletingAccount(@RequestBody MailDto mailDto) throws Exception {
 
@@ -72,7 +72,7 @@ public class AccountController {
 
     }
 
-    @PostMapping("/sendAcceptReasonForDeletingAccount")
+    @PostMapping("/sendAcceptReason")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> sendAcceptReasonForDeletingAccount(@RequestBody MailDto mailDto) throws MessagingException {
         try {

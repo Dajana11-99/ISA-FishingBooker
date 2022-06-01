@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.isa.fisherman.dto.UserRequestDTO;
 import rs.ac.uns.ftn.isa.fisherman.mapper.*;
 import rs.ac.uns.ftn.isa.fisherman.model.User;
-import rs.ac.uns.ftn.isa.fisherman.service.QuickReservationCabinService;
-import rs.ac.uns.ftn.isa.fisherman.service.ReservationCabinService;
 import rs.ac.uns.ftn.isa.fisherman.service.UserService;
 import java.util.ArrayList;
 import java.util.List;

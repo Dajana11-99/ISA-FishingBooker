@@ -9,8 +9,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import rs.ac.uns.ftn.isa.fisherman.dto.NewComplaintDto;
 import rs.ac.uns.ftn.isa.fisherman.mail.ComplaintOwnersInfo;
-import rs.ac.uns.ftn.isa.fisherman.mail.EvaluationSuccesfullInfo;
-import rs.ac.uns.ftn.isa.fisherman.mail.EvaluationUnapprovedInfo;
 import rs.ac.uns.ftn.isa.fisherman.mail.MailService;
 import rs.ac.uns.ftn.isa.fisherman.repository.*;
 import rs.ac.uns.ftn.isa.fisherman.service.CabinOwnerService;
@@ -24,9 +22,7 @@ import java.util.List;
 
 @Service
 public class ComplaintServiceImpl implements ComplaintService {
-
-
-    private final Logger logger= LoggerFactory.getLogger(FirebaseServiceImpl.class);
+    private final Logger logger= LoggerFactory.getLogger(ComplaintServiceImpl.class);
     @Autowired
     private CabinReservationRepository cabinReservationRepository;
     @Autowired
@@ -72,7 +68,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
-    public boolean sendMailAboutComplaint(Complaint complaint, String response)
+    public boolean answerComplaint(Complaint complaint, String response)
     {
         try {
             if(complaint.isResponded())return false;

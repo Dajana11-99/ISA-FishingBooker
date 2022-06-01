@@ -1,6 +1,4 @@
 package rs.ac.uns.ftn.isa.fisherman.mapper;
-
-import com.google.api.services.storage.model.Bucket;
 import rs.ac.uns.ftn.isa.fisherman.dto.AdditionalServicesDto;
 import rs.ac.uns.ftn.isa.fisherman.dto.QuickReservationCabinDto;
 import rs.ac.uns.ftn.isa.fisherman.model.AdditionalServices;
@@ -13,7 +11,6 @@ public class QuickReservationCabinMapper {
     private final CabinMapper cabinMapper=new CabinMapper();
     private final AdditionalServiceMapper additionalServiceMapper=new AdditionalServiceMapper();
     private final PaymentInformationMapper paymentInformationMapper= new PaymentInformationMapper();
-    private final OwnersReportMapper ownersReportMapper=new OwnersReportMapper();
     public QuickReservationCabin dtoToQuickReservation(QuickReservationCabinDto quickReservationCabinDto) {
         Set<AdditionalServices> additionalServicesSet=new HashSet<>();
         if(quickReservationCabinDto.getAddedAdditionalServices()!=null)

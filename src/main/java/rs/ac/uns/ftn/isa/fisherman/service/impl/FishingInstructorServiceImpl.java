@@ -6,7 +6,6 @@ import rs.ac.uns.ftn.isa.fisherman.service.FishingInstructorService;
 import rs.ac.uns.ftn.isa.fisherman.model.FishingInstructor;
 import rs.ac.uns.ftn.isa.fisherman.repository.FishingInstructorRepository;
 
-import java.util.List;
 
 @Service
 public class FishingInstructorServiceImpl implements FishingInstructorService {

@@ -4,24 +4,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import rs.ac.uns.ftn.isa.fisherman.mail.BoatReservationSuccessfullInfo;
 import rs.ac.uns.ftn.isa.fisherman.mail.EvaluationSuccesfullInfo;
 import rs.ac.uns.ftn.isa.fisherman.mail.EvaluationUnapprovedInfo;
 import rs.ac.uns.ftn.isa.fisherman.mail.MailService;
 import rs.ac.uns.ftn.isa.fisherman.model.Boat;
-import rs.ac.uns.ftn.isa.fisherman.model.BoatReservation;
 import rs.ac.uns.ftn.isa.fisherman.model.Cabin;
 import rs.ac.uns.ftn.isa.fisherman.model.Evaluation;
 import rs.ac.uns.ftn.isa.fisherman.repository.EvaluationRepository;
 import rs.ac.uns.ftn.isa.fisherman.service.*;
-
 import javax.mail.MessagingException;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 @Service
 public class EvaluationServiceImpl implements EvaluationService {
 
-    private final Logger logger= LoggerFactory.getLogger(FirebaseServiceImpl.class);
+    private final Logger logger= LoggerFactory.getLogger(EvaluationServiceImpl.class);
     @Autowired
     private EvaluationRepository evaluationRepository;
 

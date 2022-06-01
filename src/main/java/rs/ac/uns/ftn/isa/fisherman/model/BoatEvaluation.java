@@ -31,7 +31,7 @@ public class BoatEvaluation extends Evaluation {
         this.boat = boat;
     }
 
-    public  String getTYPE() {
+    public  String getType() {
         return TYPE;
     }
 }

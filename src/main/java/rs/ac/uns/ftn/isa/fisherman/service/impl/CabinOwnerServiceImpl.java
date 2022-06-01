@@ -5,7 +5,6 @@ import rs.ac.uns.ftn.isa.fisherman.service.CabinOwnerService;
 import rs.ac.uns.ftn.isa.fisherman.model.CabinOwner;
 import rs.ac.uns.ftn.isa.fisherman.repository.CabinOwnerRepository;
 
-import java.util.List;
 
 @Service
 public class CabinOwnerServiceImpl implements CabinOwnerService {
@@ -14,8 +13,6 @@ public class CabinOwnerServiceImpl implements CabinOwnerService {
     public CabinOwnerServiceImpl(CabinOwnerRepository cabinOwnerRepository) {
         this.cabinOwnerRepository = cabinOwnerRepository;
     }
-
-
     @Override
     public CabinOwner findByUsername(String username) {
         return cabinOwnerRepository.findByUsername(username);

@@ -22,7 +22,7 @@ public class AdditionalServicesServiceImpl implements AdditionalServicesService 
 
     @Override
     public void delete (Set<AdditionalServices> oldAdditionalServices) {
-        if(oldAdditionalServices.size()>0) {
+        if(!oldAdditionalServices.isEmpty()) {
             for (AdditionalServices additionalService : oldAdditionalServices)
                 additionalServicesRepository.delete(additionalService);
         }
@@ -32,12 +32,13 @@ public class AdditionalServicesServiceImpl implements AdditionalServicesService 
     public Set<AdditionalServices> findDeletedAdditionalServices(Set<AdditionalServices> oldServices,Set<AdditionalServices> newServices){
         Set<AdditionalServices> deletedServices=new HashSet<>();
         boolean exits=false;
-        System.out.println("SIZE OD NOVE "+oldServices.size());
-        System.out.println("SIZE OD stare "+newServices.size());
         for(AdditionalServices oldAdditionalService: oldServices) {
             for(AdditionalServices newAdditionalService: newServices){
-                if (newAdditionalService.getId().equals(oldAdditionalService.getId()))
+                if (newAdditionalService.getId().equals(oldAdditionalService.getId())){
                     exits = true;
+                    break;
+                }
+
             }
             if(!exits)
                 deletedServices.add(oldAdditionalService);

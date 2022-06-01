@@ -11,26 +11,26 @@ public class Rank {
     @Column(name = "id", unique = true)
     protected Long id;
     @Enumerated(EnumType.ORDINAL)
-    private RankType rank;
+    private RankType rankType;
     private Integer points;
     private Integer discountPercentage;
 
 
-    public Rank(Long id, RankType rank, Integer points, Integer discountPercentage) {
+    public Rank(Long id, RankType rankType, Integer points, Integer discountPercentage) {
         this.id = id;
-        this.rank = rank;
+        this.rankType = rankType;
         this.points = points;
         this.discountPercentage = discountPercentage;
     }
 
     public Rank() {}
 
-    public RankType getRank() {
-        return rank;
+    public RankType getRankType() {
+        return rankType;
     }
 
-    public void setRank(RankType rank) {
-        this.rank = rank;
+    public void setRankType(RankType rank) {
+        this.rankType = rank;
     }
 
     public Integer getPoints() {

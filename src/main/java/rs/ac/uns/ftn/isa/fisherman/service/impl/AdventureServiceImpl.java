@@ -18,9 +18,6 @@ public class AdventureServiceImpl implements AdventureService {
 
     @Autowired
     private AdventureRepository adventureRepository;
-
-    @Autowired
-    private FishingInstructorService fishingInstructorService;
     @Autowired
     private AdventureReservationService adventureReservationService;
     @Autowired

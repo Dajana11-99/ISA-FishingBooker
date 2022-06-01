@@ -28,7 +28,7 @@ import java.util.*;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
-public class ReservationCabinServiceImpl implements ReservationCabinService {
+public class CabinReservationServiceImpl implements CabinReservationService {
     private final Logger logger= LoggerFactory.getLogger(FirebaseServiceImpl.class);
     @Autowired
     private ClientService clientService;

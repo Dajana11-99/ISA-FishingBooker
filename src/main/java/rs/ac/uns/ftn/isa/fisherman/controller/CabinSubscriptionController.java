@@ -21,7 +21,7 @@ public class CabinSubscriptionController {
     @Autowired
     CabinSubscriptionService cabinSubscriptionService;
 
-    final private CabinSubscriptionMapper cabinSubscriptionMapper = new CabinSubscriptionMapper();
+    private final CabinSubscriptionMapper cabinSubscriptionMapper = new CabinSubscriptionMapper();
 
     @PostMapping("/addSubscription")
     @PreAuthorize("hasRole('CLIENT')")

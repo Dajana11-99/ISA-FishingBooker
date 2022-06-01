@@ -27,7 +27,7 @@ import java.util.*;
 
 @Service
 public class AdventureReservationServiceImpl implements AdventureReservationService {
-    private final Logger logger= LoggerFactory.getLogger(FirebaseServiceImpl.class);
+    private final Logger logger= LoggerFactory.getLogger(AdventureReservationServiceImpl.class);
     @Autowired
     private AdventureReservationRepository adventureReservationRepository;
     @Autowired
@@ -49,7 +49,7 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
     @Autowired
     private AdventureReservationCancellationRepository adventureReservationCancellationRepository;
 
-    private AdventureReservationMapper adventureReservationMapper = new AdventureReservationMapper();
+    private final AdventureReservationMapper adventureReservationMapper = new AdventureReservationMapper();
     private final AdditionalServiceMapper additionalServiceMapper = new AdditionalServiceMapper();
 
 
@@ -66,10 +66,7 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
         PaymentInformation paymentInformation = reservationPaymentService.setTotalPaymentAmount(successfullReservation,successfullReservation.getFishingInstructor());
         successfullReservation.setPaymentInformation(paymentInformation);
         reservationPaymentService.updateUserRankAfterReservation(client,successfullReservation.getFishingInstructor());
-
         adventureReservationRepository.save(successfullReservation);
-
-
         if(adventureReservation.getAddedAdditionalServices()!=null){
             successfullReservation.setAddedAdditionalServices(adventureReservation.getAddedAdditionalServices());
             adventureReservationRepository.save(successfullReservation);
@@ -105,7 +102,7 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
         if(client==null) return false;
 
         if(adventureReservationRepository.clientHasReservation(adventureReservation.getOwnersUsername()
-                ,client.getId(),currentDate).size()==0) return false;
+                ,client.getId(),currentDate).isEmpty()) return false;
 
         if(!availableInstructorPeriodService.instructorIsAvailable(adventureReservation.getFishingInstructor()
                 .getId(),adventureReservation.getStartDate(),adventureReservation.getEndDate())) return false;
@@ -135,7 +132,7 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
     }
 
     @Override
-    public double sumProfitOfPricesCalucatedByHours(List<AdventureReservation> reservations, LocalDateTime start, LocalDateTime end){
+    public double sumProfitOfPricesCalculatedByHours(List<AdventureReservation> reservations, LocalDateTime start, LocalDateTime end){
         double profit=0.0;
         double numOfHoursForReportReservation= 0.0;
         double reservationHours=0.0;
@@ -170,7 +167,7 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
     public Set<Adventure> getAvailableAdventures(SearchAvailablePeriodsBoatAndAdventureDto searchAvailablePeriodsAdventureDto) {
         List<Long> availableInstructorsIds = getAvailableInstructors(clientService.findByUsername(searchAvailablePeriodsAdventureDto.getUsername()).getId(), searchAvailablePeriodsAdventureDto.getStartDate(), searchAvailablePeriodsAdventureDto.getEndDate());
         Set<Adventure> availableAdventures = new HashSet<>();
-        if(availableInstructorsIds.size()==0)
+        if(availableInstructorsIds.isEmpty())
             return  availableAdventures;
         for(Adventure adventure:adventureService.findAdventuresByInstructorIds(availableInstructorsIds)){
             if(searchAvailablePeriodsAdventureDto.getPrice()!=0){
@@ -215,7 +212,7 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
             adventureReservation.setAddedAdditionalServices(additionalServiceMapper.additionalServicesDtoToAdditionalServices(adventureReservationDto.getAddedAdditionalServices()));
             adventureReservationRepository.save(adventureReservation);
         }
-        SendReservationMailToClient(adventureReservationDto);
+        sendReservationMailToClient(adventureReservationDto);
         return true;
     }
 
@@ -318,7 +315,7 @@ public class AdventureReservationServiceImpl implements AdventureReservationServ
         adventureReservationRepository.save(adventureReservation);
     }
 
-    private void SendReservationMailToClient(AdventureReservationDto adventureReservationDto) {
+    private void sendReservationMailToClient(AdventureReservationDto adventureReservationDto) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm:ss");
             String message = adventureReservationDto.getAdventureDto().getName() + " is booked from " + adventureReservationDto.getStartDate().format(formatter) + " to " + adventureReservationDto.getEndDate().format(formatter) + " .";

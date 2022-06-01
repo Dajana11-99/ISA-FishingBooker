@@ -10,7 +10,6 @@ import rs.ac.uns.ftn.isa.fisherman.dto.AdventureSubscriptionDto;
 import rs.ac.uns.ftn.isa.fisherman.mapper.AdventureSubscriptionMapper;
 import rs.ac.uns.ftn.isa.fisherman.model.AdventureSubscription;
 import rs.ac.uns.ftn.isa.fisherman.service.AdventureSubscriptionService;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,7 +20,7 @@ public class AdventureSubscriptionController {
     @Autowired
     AdventureSubscriptionService adventureSubscriptionService;
 
-    final private AdventureSubscriptionMapper adventureSubscriptionMapper = new AdventureSubscriptionMapper();
+    private final AdventureSubscriptionMapper adventureSubscriptionMapper = new AdventureSubscriptionMapper();
 
     @PostMapping("/addSubscription")
     @PreAuthorize("hasRole('CLIENT')")

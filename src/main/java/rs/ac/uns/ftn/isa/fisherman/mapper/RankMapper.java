@@ -9,6 +9,6 @@ public class RankMapper {
         return  new Rank(rankDto.getId(),rankDto.getRank(),rankDto.getPoints(),rankDto.getDiscountPercentage());
     }
     public RankDto rankToDto(Rank rank){
-        return new RankDto(rank.getId(),rank.getRank(),rank.getPoints(),rank.getDiscountPercentage());
+        return new RankDto(rank.getId(),rank.getRankType(),rank.getPoints(),rank.getDiscountPercentage());
     }
 }

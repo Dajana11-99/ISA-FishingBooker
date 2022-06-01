@@ -22,8 +22,6 @@ public class QuickReservationCabinController {
     @Autowired
     private QuickReservationCabinService quickReservationCabinService;
     @Autowired
-    private CabinOwnerService cabinOwnerService;
-    @Autowired
     private CabinOwnersQuickReservationReportService cabinOwnersQuickReservationReportService;
     @Autowired
     private PenaltyService penaltyService;

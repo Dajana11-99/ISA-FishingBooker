@@ -12,7 +12,7 @@ public class CabinReservationMapper {
     private final CabinMapper cabinMapper = new CabinMapper();
     private final AdditionalServiceMapper additionalServicesMapper=new AdditionalServiceMapper();
     private final PaymentInformationMapper paymentInformationMapper= new PaymentInformationMapper();
-    private final OwnersReportMapper ownersReportMapper=new OwnersReportMapper();
+
     public CabinReservation cabinReservationDtoToCabinReservation(CabinReservationDto cabinReservationDto){
         Cabin cabin = cabinMapper.cabinDtoToCabin(cabinReservationDto.getCabinDto());
         return new CabinReservation(cabinReservationDto.getId(),

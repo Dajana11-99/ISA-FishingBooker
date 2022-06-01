@@ -19,7 +19,7 @@ public class RankController {
 
     @Autowired
     private RankService rankService;
-    private RankMapper rankMapper=new RankMapper();
+    private final RankMapper rankMapper=new RankMapper();
 
    @PostMapping("/updatePoints")
     @PreAuthorize("hasRole('ADMIN')")

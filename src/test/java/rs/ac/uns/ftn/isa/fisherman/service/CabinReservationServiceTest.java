@@ -10,7 +10,7 @@ import rs.ac.uns.ftn.isa.fisherman.mapper.CabinReservationMapper;
 import rs.ac.uns.ftn.isa.fisherman.model.*;
 import rs.ac.uns.ftn.isa.fisherman.repository.CabinReservationCancellationRepository;
 import rs.ac.uns.ftn.isa.fisherman.repository.CabinReservationRepository;
-import rs.ac.uns.ftn.isa.fisherman.service.impl.ReservationCabinServiceImpl;
+import rs.ac.uns.ftn.isa.fisherman.service.impl.CabinReservationServiceImpl;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -39,7 +39,7 @@ public class CabinReservationServiceTest {
     private final CabinReservationMapper cabinReservationMapper = new CabinReservationMapper();
 
     @InjectMocks
-    private ReservationCabinServiceImpl reservationCabinService;
+    private CabinReservationServiceImpl reservationCabinService;
 
     @Test
     public void testSumOwnersProfitByDays() {

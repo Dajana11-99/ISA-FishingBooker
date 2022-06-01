@@ -12,7 +12,6 @@ public class QuickReservationBoatMapper {
     private final BoatMapper boatMapper=new BoatMapper();
     private final AdditionalServiceMapper additionalServiceMapper=new AdditionalServiceMapper();
     private final PaymentInformationMapper paymentInformationMapper=new PaymentInformationMapper();
-    private final OwnersReportMapper ownersReportMapper=new OwnersReportMapper();
     public QuickReservationBoat dtoToBoatQuickReservation(QuickReservationBoatDto quickReservationBoatDto) {
         Set<AdditionalServices> additionalServicesSet=new HashSet<>();
         if(quickReservationBoatDto.getAddedAdditionalServices()!=null)

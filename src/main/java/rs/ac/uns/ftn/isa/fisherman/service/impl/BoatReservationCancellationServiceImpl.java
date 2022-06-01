@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.isa.fisherman.dto.BoatReservationDto;
 import rs.ac.uns.ftn.isa.fisherman.dto.QuickReservationBoatDto;
 import rs.ac.uns.ftn.isa.fisherman.model.*;
-import rs.ac.uns.ftn.isa.fisherman.repository.AdventureReservationRepository;
 import rs.ac.uns.ftn.isa.fisherman.repository.BoatReservationCancellationRepository;
 import rs.ac.uns.ftn.isa.fisherman.repository.BoatReservationRepository;
 import rs.ac.uns.ftn.isa.fisherman.repository.QuickReservationBoatRepository;
@@ -19,8 +18,6 @@ public class BoatReservationCancellationServiceImpl implements BoatReservationCa
 
     @Autowired
     private BoatReservationCancellationRepository boatReservationCancellationRepository;
-    @Autowired
-    private BoatService boatService;
     @Autowired
     private ClientService clientService;
     @Autowired

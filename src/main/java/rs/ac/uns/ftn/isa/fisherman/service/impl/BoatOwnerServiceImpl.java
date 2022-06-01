@@ -5,7 +5,6 @@ import rs.ac.uns.ftn.isa.fisherman.service.BoatOwnerService;
 import rs.ac.uns.ftn.isa.fisherman.model.BoatOwner;
 import rs.ac.uns.ftn.isa.fisherman.repository.BoatOwnerRepository;
 
-import java.util.List;
 
 @Service
 public class BoatOwnerServiceImpl implements BoatOwnerService {

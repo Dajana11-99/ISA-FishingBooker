@@ -48,7 +48,7 @@ public class BoatReservationServiceTest {
                 false,"bo@gmail.com",null,null,false);
 
         List<BoatReservation> reservations = Arrays.asList(firstReservation,secondReservation);
-        double profit= boatReservationService.sumProfitOfPricesCalucatedByHours(reservations,LocalDateTime.now().plusHours(5),LocalDateTime.now().plusHours(10));
+        double profit= boatReservationService.sumProfitOfPricesCalculatedByHours(reservations,LocalDateTime.now().plusHours(5),LocalDateTime.now().plusHours(10));
         assertEquals(100.00,profit,0.001);
     }
     @Test

@@ -32,7 +32,7 @@ public class QuickReservationCabinServiceImpl implements QuickReservationCabinSe
     @Autowired
     private AvailableCabinPeriodService availableCabinPeriodService;
     @Autowired
-    private ReservationCabinService reservationCabinService;
+    private CabinReservationService cabinReservationService;
     @Autowired
     private QuickReservationCabinRepository quickReservationCabinRepository;
     @Autowired
@@ -43,7 +43,7 @@ public class QuickReservationCabinServiceImpl implements QuickReservationCabinSe
     private MailService mailService;
     @Autowired
     private ClientService clientService;
-    private final Logger logger= LoggerFactory.getLogger(FirebaseServiceImpl.class);
+    private final Logger logger= LoggerFactory.getLogger(QuickReservationCabinServiceImpl.class);
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
@@ -160,7 +160,7 @@ public class QuickReservationCabinServiceImpl implements QuickReservationCabinSe
     @Override
     public boolean makeQuickReservation(QuickReservationCabinDto quickReservationCabinDto) {
         QuickReservationCabin quickReservationCabin = quickReservationCabinRepository.getById(quickReservationCabinDto.getId());
-        if(reservationCabinService.cabinNotFreeForQuickReservationInPeriod(quickReservationCabin.getCabin().getId(), quickReservationCabin.getStartDate(), quickReservationCabin.getEndDate()))
+        if(cabinReservationService.cabinNotFreeForQuickReservationInPeriod(quickReservationCabin.getCabin().getId(), quickReservationCabin.getStartDate(), quickReservationCabin.getEndDate()))
             return false;
         quickReservationCabin.setClient(clientService.findByUsername(quickReservationCabinDto.getClientUsername()));
         quickReservationCabinRepository.save(quickReservationCabin);
@@ -168,11 +168,11 @@ public class QuickReservationCabinServiceImpl implements QuickReservationCabinSe
         quickReservationCabin.setPaymentInformation(paymentInformation);
         reservationPaymentService.updateUserRankAfterReservation(quickReservationCabin.getClient(),quickReservationCabin.getCabin().getCabinOwner());
         quickReservationCabinRepository.save(quickReservationCabin);
-        SendReservationMailToClient(quickReservationCabinDto);
+        sendReservationMailToClient(quickReservationCabinDto);
         return true;
     }
 
-    private void SendReservationMailToClient(QuickReservationCabinDto quickReservationCabinDto) {
+    private void sendReservationMailToClient(QuickReservationCabinDto quickReservationCabinDto) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm:ss");
             String message = quickReservationCabinDto.getCabinDto().getName() + " is booked from " + quickReservationCabinDto.getStartDate().format(formatter) + " to " + quickReservationCabinDto.getEndDate().format(formatter) + " .";
@@ -198,7 +198,7 @@ public class QuickReservationCabinServiceImpl implements QuickReservationCabinSe
     }
 
     @Override
-    public List<QuickReservationCabin> findAllQucikReservationsForAdminProfit(LocalDateTime start, LocalDateTime end) {
+    public List<QuickReservationCabin> findAllQuickReservationsForAdminProfit(LocalDateTime start, LocalDateTime end) {
         return quickReservationCabinRepository.findAllQuickReservationsForAdminProfit(start,end);
     }
 
@@ -222,14 +222,14 @@ public class QuickReservationCabinServiceImpl implements QuickReservationCabinSe
 
     @Override
     public boolean quickReservationExists(Long id, LocalDateTime startDate, LocalDateTime endDate) {
-        if(quickReservationCabinRepository.quickReservationExists(id,startDate,endDate).size()>0)
+        if(!quickReservationCabinRepository.quickReservationExists(id,startDate,endDate).isEmpty())
             return true;
         return false;
     }
 
     @Override
     public boolean futureQuickReservationsExist(LocalDateTime currentDate, Long id) {
-        if(quickReservationCabinRepository.futureQuickReservationsExist(currentDate,id).size()>0) return true;
+        if(!quickReservationCabinRepository.futureQuickReservationsExist(currentDate,id).isEmpty()) return true;
         return false;
     }
 
@@ -261,21 +261,17 @@ public class QuickReservationCabinServiceImpl implements QuickReservationCabinSe
     private boolean validateForReservation(QuickReservationCabin cabinQuickReservation){
         if(!availableCabinPeriodService.cabinIsAvailable(cabinQuickReservation.getCabin()
                 .getId(),cabinQuickReservation.getStartDate(),cabinQuickReservation.getEndDate())) {
-            System.out.println("NEMAM SLOBODAN PERIOD");
             return false;
         }
 
 
-        if(reservationCabinService.reservationExists(cabinQuickReservation.getCabin()
+        if(cabinReservationService.reservationExists(cabinQuickReservation.getCabin()
                 .getId(),cabinQuickReservation.getStartDate(),cabinQuickReservation.getEndDate())) {
-
-            System.out.println("imam rezervacije");
             return false;
         }
 
         if(quickReservationCabinRepository.quickReservationExists(cabinQuickReservation.getCabin()
                 .getId(),cabinQuickReservation.getStartDate(),cabinQuickReservation.getEndDate()).size()>0) {
-            System.out.println("imam quick rezervacije");
             return false;
         }
 

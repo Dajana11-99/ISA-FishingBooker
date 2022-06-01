@@ -1,7 +1,5 @@
 package rs.ac.uns.ftn.isa.fisherman.dto;
 
-import java.time.LocalDateTime;
-
 public class NewComplaintDto {
     private String text;
     private String clientUsername;

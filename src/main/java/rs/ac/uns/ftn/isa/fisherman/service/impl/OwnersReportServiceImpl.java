@@ -13,36 +13,30 @@ import rs.ac.uns.ftn.isa.fisherman.service.OwnersReportService;
 import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class OwnersReportServiceImpl implements OwnersReportService {
-
     @Autowired
     private MailService mailService;
+    private final Logger logger= LoggerFactory.getLogger(OwnersReportServiceImpl.class);
 
-    private final Logger logger= LoggerFactory.getLogger(FirebaseServiceImpl.class);
- @Autowired
- private OwnersReportRepository ownersReportRepository;
-    @Override
-    public List<OwnersReport> getAllUnApprovedReports() {
-        List<OwnersReport> unapproved= new ArrayList<>();
-        for(OwnersReport ownersReport: ownersReportRepository.findAll()){
-
-            if(ownersReport.isApproved()== false && ownersReport.isBadComment()==true)
-                unapproved.add(ownersReport);
-        }
-        return unapproved;
+    @Autowired
+    private OwnersReportRepository ownersReportRepository;
+        @Override
+        public List<OwnersReport> getAllUnApprovedReports() {
+            List<OwnersReport> unapproved= new ArrayList<>();
+            for(OwnersReport ownersReport: ownersReportRepository.findAll()){
+                if(!ownersReport.isApproved() && ownersReport.isBadComment())
+                    unapproved.add(ownersReport);
+            }
+            return unapproved;
     }
-
-
 
     @Override
     public void sendReviewResponse(String clientUsername, String ownersUsername, String comment) {
         sendMailNotification(clientUsername,comment);
         sendMailNotification(ownersUsername,comment);
     }
-
 
     @Override
     public OwnersReport setReviewStatus(Long id){
@@ -63,14 +57,11 @@ public class OwnersReportServiceImpl implements OwnersReportService {
    }
 
     private void sendMailNotification(String username,String adminMessage) {
-        {
-            try {
-                String message = adminMessage;
-                mailService.sendMail(username, message, new AdminReviewResponse());
-            } catch (MessagingException e) {
-                logger.error(e.toString());
-            }
-
-        }
+       try {
+           String message = adminMessage;
+           mailService.sendMail(username, message, new AdminReviewResponse());
+       } catch (MessagingException e) {
+           logger.error(e.toString());
+       }
     }
 }

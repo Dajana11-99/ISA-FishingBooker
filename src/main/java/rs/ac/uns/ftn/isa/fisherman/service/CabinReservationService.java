@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
-public interface ReservationCabinService {
+public interface CabinReservationService {
 
     Set<Cabin> getAvailableCabins(SearchAvailablePeriodsCabinDto searchAvailablePeriodsCabinDto);
     boolean makeReservation(CabinReservationDto cabinReservationDto) throws Exception;

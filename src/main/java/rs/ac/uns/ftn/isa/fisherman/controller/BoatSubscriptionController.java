@@ -40,10 +40,10 @@ public class BoatSubscriptionController {
     @GetMapping("/getByClientUsername/{username:.+}/")
     @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<Set<BoatSubscriptionDto>> getByClientUsername (@PathVariable("username") String username) {
-        Set<BoatSubscriptionDto> boatSubscriptionDtos=new HashSet<>();
+        Set<BoatSubscriptionDto> boatSubscriptions=new HashSet<>();
         for(BoatSubscription boatSubscription: boatSubscriptionService.findSubscriptionsByClientUsername(username)){
-            boatSubscriptionDtos.add(boatSubscriptionMapper.boatSubscriptionToBoatSubscriptionDto(boatSubscription));
+            boatSubscriptions.add(boatSubscriptionMapper.boatSubscriptionToBoatSubscriptionDto(boatSubscription));
         }
-        return new ResponseEntity<>(boatSubscriptionDtos,HttpStatus.OK);
+        return new ResponseEntity<>(boatSubscriptions,HttpStatus.OK);
     }
 }

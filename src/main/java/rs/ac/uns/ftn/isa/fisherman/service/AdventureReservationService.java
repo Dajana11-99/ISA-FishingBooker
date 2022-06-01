@@ -15,7 +15,7 @@ public interface AdventureReservationService {
     boolean futureReservationsExist(LocalDateTime currentDate, Long id);
     Set<AdventureReservation>  getPastReservations(String username);
     Integer countReservationsInPeriod(LocalDateTime start, LocalDateTime end, String username);
-    double sumProfitOfPricesCalucatedByHours(List<AdventureReservation> reservations, LocalDateTime start, LocalDateTime end);
+    double sumProfitOfPricesCalculatedByHours(List<AdventureReservation> reservations, LocalDateTime start, LocalDateTime end);
     AdventureReservation findById(Long id);
     void save (AdventureReservation adventureReservation);
     Set<Adventure> getAvailableAdventures(SearchAvailablePeriodsBoatAndAdventureDto searchAvailablePeriodsAdventureDto);

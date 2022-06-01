@@ -5,9 +5,9 @@ import rs.ac.uns.ftn.isa.fisherman.model.Adventure;
 
 public class AdventureMapper {
 
-    AddressMapper addressMapper = new AddressMapper();
-    ImageMapper imageMapper=new ImageMapper();
-    AdditionalServiceMapper additionalServiceMapper = new AdditionalServiceMapper();
+    private final AddressMapper addressMapper = new AddressMapper();
+    private final ImageMapper imageMapper=new ImageMapper();
+    private final AdditionalServiceMapper additionalServiceMapper = new AdditionalServiceMapper();
     public Adventure adventureDtoToAdventure(AdventureDto adventure){
 
         return  new Adventure(adventure.getId(),adventure.getName(),addressMapper.dtoToAddress(adventure.getAddress()),

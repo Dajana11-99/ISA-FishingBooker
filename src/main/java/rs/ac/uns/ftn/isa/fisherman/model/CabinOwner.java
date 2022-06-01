@@ -17,7 +17,7 @@ public class CabinOwner extends User{
     private Set<AvailableCabinPeriod> availableCabinPeriods;
 
     public CabinOwner(){}
-    public CabinOwner(Long id, String name, String lastName, String username, String password, String phoneNum, Address address,String registrationReason,Double rating) {
+    public CabinOwner(Long id, String name, String lastName, String username, String password, String phoneNum, Address address,String registrationReason) {
         super(id, name, lastName, username, password, phoneNum, address,registrationReason);
         this.availableCabinPeriods= new HashSet<>();
     }

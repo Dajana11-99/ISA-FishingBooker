@@ -1,7 +1,6 @@
 package rs.ac.uns.ftn.isa.fisherman.mapper;
 
 import rs.ac.uns.ftn.isa.fisherman.dto.ComplaintDto;
-import rs.ac.uns.ftn.isa.fisherman.model.Client;
 import rs.ac.uns.ftn.isa.fisherman.model.Complaint;
 
 public class ComplaintMapper {

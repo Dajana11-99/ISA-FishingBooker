@@ -24,7 +24,7 @@ public class CabinOwnerEvaluationServiceImpl implements CabinOwnerEvaluationServ
     @Autowired
     CabinService cabinService;
     @Autowired
-    ReservationCabinService cabinReservationService;
+    CabinReservationService cabinReservationService;
     @Autowired
     QuickReservationCabinService quickReservationCabinService;
 

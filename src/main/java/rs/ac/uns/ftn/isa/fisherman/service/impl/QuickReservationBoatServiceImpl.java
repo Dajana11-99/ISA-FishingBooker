@@ -25,7 +25,7 @@ import java.util.*;
 
 @Service
 public class QuickReservationBoatServiceImpl implements QuickReservationBoatService {
-    private final Logger logger= LoggerFactory.getLogger(FirebaseServiceImpl.class);
+    private final Logger logger= LoggerFactory.getLogger(QuickReservationBoatServiceImpl.class);
     @Autowired
     private AvailableBoatPeriodService availableBoatPeriodService;
     @Autowired
@@ -78,7 +78,7 @@ public class QuickReservationBoatServiceImpl implements QuickReservationBoatServ
         return  false;
     }
     @Override
-    public boolean ownerIsNotAvailableQuickResrvation(String ownerUsername, LocalDateTime start, LocalDateTime end){
+    public boolean ownerIsNotAvailableQuickReservation(String ownerUsername, LocalDateTime start, LocalDateTime end){
         return quickReservationBoatRepository.ownerIsNotAvailable(ownerUsername, start, end);
     }
 
@@ -129,11 +129,11 @@ public class QuickReservationBoatServiceImpl implements QuickReservationBoatServ
         quickReservationBoat.setPaymentInformation(paymentInformation);
         reservationPaymentService.updateUserRankAfterReservation(quickReservationBoat.getClient(),quickReservationBoat.getBoat().getBoatOwner());
         quickReservationBoatRepository.save(quickReservationBoat);
-        SendReservationMailToClient(quickReservationBoatDto);
+        sendReservationMailToClient(quickReservationBoatDto);
         return true;
     }
 
-    private void SendReservationMailToClient(QuickReservationBoatDto quickReservationBoatDto) {
+    private void sendReservationMailToClient(QuickReservationBoatDto quickReservationBoatDto) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm:ss");
             String message = quickReservationBoatDto.getBoatDto().getName() + " is booked from " + quickReservationBoatDto.getStartDate().format(formatter) + " to " + quickReservationBoatDto.getEndDate().format(formatter) + " .";
@@ -166,7 +166,7 @@ public class QuickReservationBoatServiceImpl implements QuickReservationBoatServ
     }
 
     @Override
-    public List<QuickReservationBoat> findAllQucikReservationsForAdminProfit(LocalDateTime start, LocalDateTime end) {
+    public List<QuickReservationBoat> findAllQuickReservationsForAdminProfit(LocalDateTime start, LocalDateTime end) {
         return quickReservationBoatRepository.findAllQuickReservationsForAdminProfit(start,end);
     }
 
@@ -229,7 +229,7 @@ public class QuickReservationBoatServiceImpl implements QuickReservationBoatServ
 
     @Override
     public boolean quickReservationExists(Long id, LocalDateTime startDate, LocalDateTime endDate) {
-        if(quickReservationBoatRepository.quickReservationExists(id,startDate,endDate).size()>0) return false;
+        if(!quickReservationBoatRepository.quickReservationExists(id,startDate,endDate).isEmpty()) return false;
         return true;
     }
 
@@ -248,11 +248,6 @@ public class QuickReservationBoatServiceImpl implements QuickReservationBoatServ
     @Override
     public boolean futureQuickReservationsExist(LocalDateTime currentDate,Long boatId){
         return quickReservationBoatRepository.futureQuickReservationsExist(currentDate,boatId);
-    }
-    @Override
-    public double findReservationsAndSumProfit(String ownerUsername, LocalDateTime start, LocalDateTime end) {
-
-        return sumProfitOfPricesCalculatedByHours(quickReservationBoatRepository.findReservationsInPeriodToSumProfit(ownerUsername,start,end),start,end);
     }
     @Override
     public double sumProfitOfPricesCalculatedByHours(List<QuickReservationBoat> reservations, LocalDateTime start, LocalDateTime end){
@@ -285,7 +280,6 @@ public class QuickReservationBoatServiceImpl implements QuickReservationBoatServ
 
     private void sendMailNotificationToSubscribedUsers(Long boatId,String boatName){
         Set<String> subscriptionEmails=boatSubscriptionService.findBoatSubscribers(boatId);
-        subscriptionEmails.add("dajanazlokapa1@gmail.com");
         for(String email: subscriptionEmails) {
             try {
                 String message = boatName;
@@ -295,6 +289,4 @@ public class QuickReservationBoatServiceImpl implements QuickReservationBoatServ
             }
         }
     }
-
-
 }

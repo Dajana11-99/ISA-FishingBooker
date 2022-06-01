@@ -7,14 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.isa.fisherman.dto.*;
-
 import rs.ac.uns.ftn.isa.fisherman.mapper.AvailableBoatPeriodMapper;
 import rs.ac.uns.ftn.isa.fisherman.model.*;
-
 import rs.ac.uns.ftn.isa.fisherman.service.AvailableBoatPeriodService;
 import rs.ac.uns.ftn.isa.fisherman.service.BoatOwnerService;
 import rs.ac.uns.ftn.isa.fisherman.service.BoatService;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

@@ -6,7 +6,7 @@ import rs.ac.uns.ftn.isa.fisherman.repository.AvailableCabinPeriodRepository;
 import rs.ac.uns.ftn.isa.fisherman.service.AvailableCabinPeriodService;
 import rs.ac.uns.ftn.isa.fisherman.service.AvailablePeriodService;
 import rs.ac.uns.ftn.isa.fisherman.service.QuickReservationCabinService;
-import rs.ac.uns.ftn.isa.fisherman.service.ReservationCabinService;
+import rs.ac.uns.ftn.isa.fisherman.service.CabinReservationService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,7 +17,7 @@ public class AvailableCabinPeriodServiceImpl implements AvailableCabinPeriodServ
     private AvailableCabinPeriodRepository availableCabinPeriodRepository;
 
     @Autowired
-    private ReservationCabinService reservationCabinService;
+    private CabinReservationService cabinReservationService;
 
     @Autowired
     private QuickReservationCabinService quickReservationCabinService;
@@ -45,7 +45,7 @@ public class AvailableCabinPeriodServiceImpl implements AvailableCabinPeriodServ
 
     @Override
     public boolean cabinIsAvailable(Long cabinId, LocalDateTime start, LocalDateTime end) {
-        if(availableCabinPeriodRepository.cabinIsAvailable(cabinId,start,end).size()>0)
+        if(!availableCabinPeriodRepository.cabinIsAvailable(cabinId,start,end).isEmpty())
             return true;
         return false;
     }
@@ -73,23 +73,6 @@ public class AvailableCabinPeriodServiceImpl implements AvailableCabinPeriodServ
             return false;
         }
         setEditedAvailablePeriod(availableCabinPeriodToEdit, newPeriod);
-       /* LocalDateTime startOld=oldPeriod.getStartDate();
-        LocalDateTime endOld=oldPeriod.getEndDate();
-
-        LocalDateTime startNew=newPeriod.getStartDate();
-        LocalDateTime endNew=newPeriod.getEndDate();
-
-        if(startOld.equals(startNew)){
-            availableCabinPeriodToEdit.setStartDate(endNew.plusMinutes(1));
-        }else if(endOld.equals(endNew)){
-            availableCabinPeriodToEdit.setEndDate(startNew.minusMinutes(1));
-        }else {
-            availableCabinPeriodToEdit.setEndDate(startNew.minusMinutes(1));
-            newPeriod.setEndDate(endOld);
-            newPeriod.setStartDate(endNew.plusMinutes(1));
-            availableCabinPeriodRepository.save(newPeriod);
-        }*/
-        //availableCabinPeriodRepository.save(edited);
         return true;
     }
 
@@ -114,7 +97,7 @@ public class AvailableCabinPeriodServiceImpl implements AvailableCabinPeriodServ
     }
 
     private boolean reservationsDontExistInPeriod(AvailableCabinPeriod availablePeriod){
-        if(reservationCabinService.reservationExists(availablePeriod.getCabin().getId()
+        if(cabinReservationService.reservationExists(availablePeriod.getCabin().getId()
                 ,availablePeriod.getStartDate(),availablePeriod.getEndDate())) return false;
 
 

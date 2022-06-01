@@ -27,7 +27,7 @@ import java.util.*;
 
 @Service
 public class BoatReservationServiceImpl implements BoatReservationService {
-    private final Logger logger= LoggerFactory.getLogger(FirebaseServiceImpl.class);
+    private final Logger logger= LoggerFactory.getLogger(BoatReservationServiceImpl.class);
     @Autowired
     private BoatReservationRepository boatReservationRepository;
     @Autowired
@@ -94,7 +94,7 @@ public class BoatReservationServiceImpl implements BoatReservationService {
     @Override
     public boolean ownerIsNotAvailable(String ownersUsername, LocalDateTime start, LocalDateTime end){
         if(boatReservationRepository.ownerIsNotAvailable(ownersUsername, start, end)) return true;
-        if(quickReservationBoatService.ownerIsNotAvailableQuickResrvation(ownersUsername, start, end)) return true;
+        if(quickReservationBoatService.ownerIsNotAvailableQuickReservation(ownersUsername, start, end)) return true;
         return false;
     }
 
@@ -112,18 +112,15 @@ public class BoatReservationServiceImpl implements BoatReservationService {
 */
         if(!availableBoatPeriodService.boatIsAvailable(boatReservation.getBoat()
                 .getId(),boatReservation.getStartDate(),boatReservation.getEndDate())) {
-            System.out.println("nemam slobodan period");
             return false;
         };
 
-        if(boatReservationRepository.reservationExists(boatReservation.getBoat()
-                .getId(),boatReservation.getStartDate(),boatReservation.getEndDate()).size()>0) {
-            System.out.println("imam rez");
+        if(!boatReservationRepository.reservationExists(boatReservation.getBoat()
+                .getId(),boatReservation.getStartDate(),boatReservation.getEndDate()).isEmpty()) {
             return false;
         }
         if(quickReservationBoatService.quickReservationExists(boatReservation.getBoat().getId(),
                 boatReservation.getStartDate(),boatReservation.getEndDate())) {
-            System.out.println("imam q rez");
             return false;
         }
         return true;
@@ -131,7 +128,7 @@ public class BoatReservationServiceImpl implements BoatReservationService {
 
     @Override
     public boolean reservationExists(Long boatId, LocalDateTime startDate, LocalDateTime endDate){
-        if(boatReservationRepository.reservationExists(boatId,startDate,endDate).size()>0) return true;
+        if(!boatReservationRepository.reservationExists(boatId,startDate,endDate).isEmpty()) return true;
         return  false;
     }
 
@@ -171,7 +168,7 @@ public class BoatReservationServiceImpl implements BoatReservationService {
         return boatReservationRepository.findReservationsInPeriodToSumProfit(ownerUsername,start,end);
     }
     @Override
-    public double sumProfitOfPricesCalucatedByHours(List<BoatReservation> reservations, LocalDateTime start, LocalDateTime end){
+    public double sumProfitOfPricesCalculatedByHours(List<BoatReservation> reservations, LocalDateTime start, LocalDateTime end){
         double profit=0.0;
         double numOfHoursForReportReservation= 0.0;
         double reservationHours=0.0;
@@ -253,7 +250,7 @@ public class BoatReservationServiceImpl implements BoatReservationService {
             boatReservationRepository.save(boatReservation);
 
         }
-        SendReservationMailToClient(boatReservationDto);
+        sendReservationMailToClient(boatReservationDto);
         return true;
     }
 
@@ -345,7 +342,7 @@ public class BoatReservationServiceImpl implements BoatReservationService {
         boatReservationRepository.save(boatReservation);
     }
 
-    private void SendReservationMailToClient(BoatReservationDto boatReservationDto) {
+    private void sendReservationMailToClient(BoatReservationDto boatReservationDto) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. HH:mm:ss");
             String message = boatReservationDto.getBoatDto().getName() + " is booked from " + boatReservationDto.getStartDate().format(formatter) + " to " + boatReservationDto.getEndDate().format(formatter) + " .";

@@ -35,7 +35,7 @@ public class BoatEvaluationServiceImpl implements BoatEvaluationService {
     }
 
     @Override
-    public BoatEvaluation findById(Long Id) {
-        return boatEvaluationRepository.getById(Id);
+    public BoatEvaluation findById(Long id) {
+        return boatEvaluationRepository.getById(id);
     }
 }

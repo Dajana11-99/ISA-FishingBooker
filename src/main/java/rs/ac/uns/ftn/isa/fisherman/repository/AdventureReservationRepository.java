@@ -1,20 +1,16 @@
 package rs.ac.uns.ftn.isa.fisherman.repository;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import rs.ac.uns.ftn.isa.fisherman.model.AdventureReservation;
-import rs.ac.uns.ftn.isa.fisherman.model.BoatReservation;
-import rs.ac.uns.ftn.isa.fisherman.model.QuickReservationCabin;
-
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
 public interface AdventureReservationRepository extends JpaRepository<AdventureReservation,Long> {
-   @Query(value="SELECT * FROM adventure_reservation c where users_id=:usersId and owners_username=:username and ((:currentDate between start_date and end_date))",nativeQuery = true)
+    @Query(value="SELECT * FROM adventure_reservation c where users_id=:usersId and owners_username=:username and ((:currentDate between start_date and end_date))",nativeQuery = true)
     List<AdventureReservation>clientHasReservation(@Param("username") String username,@Param("usersId")Long usersId, @Param("currentDate") LocalDateTime currentDate);
 
     @Query(value="SELECT CASE WHEN  COUNT(c) > 0 THEN true ELSE false END FROM adventure_reservation c where owners_username=:username and ((:startDate between start_date and end_date) or (:endDate  between start_date and end_date) or (start_date  between :startDate and :endDate) or (end_date  between :startDate and :endDate)) ",nativeQuery = true)
@@ -24,7 +20,7 @@ public interface AdventureReservationRepository extends JpaRepository<AdventureR
     Set<AdventureReservation> getPresentByInstructorId(@Param("username") String username, @Param("currentDate")LocalDateTime currentDate);
 
     @Query(value="SELECT CASE WHEN  COUNT(c) > 0 THEN true ELSE false END FROM adventure_reservation c where adventure_id=:adventure_id and (:currentDate <= end_date) ",nativeQuery = true)
-    boolean futureReservationsExist(@Param("currentDate")LocalDateTime currentDate,@Param("adventure_id") Long adventure_id);
+    boolean futureReservationsExist(@Param("currentDate")LocalDateTime currentDate,@Param("adventure_id") Long adventureId);
 
     @Query(value="SELECT * FROM adventure_reservation where owners_username=:username and (:currentDate > end_date) ",nativeQuery = true)
     Set<AdventureReservation> getPastReservations(@Param("username") String username, @Param("currentDate")LocalDateTime currentDate);

@@ -29,8 +29,8 @@ public class AvailableBoatPeriodServiceImpl implements AvailableBoatPeriodServic
 
     @Override
     public boolean setAvailableBoatPeriod(AvailableBoatPeriod availablePeriod) {
-        if(availableBoatPeriodRepository.availablePeriodAlreadyExists(availablePeriod.getBoat().getId(),
-                availablePeriod.getStartDate(),availablePeriod.getEndDate()).size()>0) return false;
+        if(!availableBoatPeriodRepository.availablePeriodAlreadyExists(availablePeriod.getBoat().getId(),
+                availablePeriod.getStartDate(),availablePeriod.getEndDate()).isEmpty()) return false;
 
         availableBoatPeriodRepository.save(availablePeriod);
         return true;
@@ -83,13 +83,12 @@ public class AvailableBoatPeriodServiceImpl implements AvailableBoatPeriodServic
     }
 
     public boolean boatIsAvailable(Long boatId, LocalDateTime start,  LocalDateTime end){
-        if(availableBoatPeriodRepository.boatIsAvailable(boatId,start,end).size()>0) return true;
+        if(!availableBoatPeriodRepository.boatIsAvailable(boatId,start,end).isEmpty()) return true;
         return false;
     }
     private boolean reservationsDontExistInPeriod(AvailableBoatPeriod availablePeriod){
         if(boatReservationService.reservationExists(availablePeriod.getBoat().getId()
                 ,availablePeriod.getStartDate(),availablePeriod.getEndDate())) return false;
-
 
         if(quickReservationBoatService.quickReservationExists(availablePeriod.getBoat().getId(),
                 availablePeriod.getStartDate(),availablePeriod.getEndDate())) return false;

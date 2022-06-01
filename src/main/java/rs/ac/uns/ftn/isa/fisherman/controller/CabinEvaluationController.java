@@ -20,7 +20,7 @@ import java.util.Set;
 public class CabinEvaluationController {
 
     @Autowired
-    private ReservationCabinService cabinReservationService;
+    private CabinReservationService cabinReservationService;
     @Autowired
     private CabinEvaluationService cabinEvaluationService;
     @Autowired

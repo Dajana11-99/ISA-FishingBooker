@@ -15,7 +15,7 @@ import rs.ac.uns.ftn.isa.fisherman.service.ReservationPointsService;
 public class ReservationsPointsController {
     @Autowired
     private ReservationPointsService reservationPointsService;
-    private ReservationPointsMapper reservationPointsMapper= new ReservationPointsMapper();
+    private final ReservationPointsMapper reservationPointsMapper= new ReservationPointsMapper();
 
     @GetMapping("/get")
     @PreAuthorize("hasRole('ADMIN')")

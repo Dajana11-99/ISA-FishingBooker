@@ -4,10 +4,9 @@ import rs.ac.uns.ftn.isa.fisherman.dto.AdventureReservationDto;
 import rs.ac.uns.ftn.isa.fisherman.model.*;
 
 public class AdventureReservationMapper {
-    private AdventureMapper adventureMapper= new AdventureMapper();
-    private AdditionalServiceMapper additionalServiceMapper = new AdditionalServiceMapper();
-    private PaymentInformationMapper paymentInformationMapper=new PaymentInformationMapper();
-    private OwnersReportMapper ownersReportMapper=new OwnersReportMapper();
+    private final AdventureMapper adventureMapper= new AdventureMapper();
+    private final AdditionalServiceMapper additionalServiceMapper = new AdditionalServiceMapper();
+    private final PaymentInformationMapper paymentInformationMapper=new PaymentInformationMapper();
     public AdventureReservation adventureReservationDtoToAdventureReservation(AdventureReservationDto adventureReservationDto,FishingInstructor fishingInstructor){
        Adventure adventure = adventureMapper.adventureDtoToAdventure(adventureReservationDto.getAdventureDto());
         return new AdventureReservation(adventureReservationDto.getId(),adventureReservationDto.getStartDate(),

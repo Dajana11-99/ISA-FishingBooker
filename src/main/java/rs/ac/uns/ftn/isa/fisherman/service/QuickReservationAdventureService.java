@@ -1,7 +1,6 @@
 package rs.ac.uns.ftn.isa.fisherman.service;
 import rs.ac.uns.ftn.isa.fisherman.dto.QuickReservationAdventureDto;
 import rs.ac.uns.ftn.isa.fisherman.model.QuickReservationAdventure;
-import rs.ac.uns.ftn.isa.fisherman.model.QuickReservationBoat;
 
 import java.time.LocalDateTime;
 import java.util.List;

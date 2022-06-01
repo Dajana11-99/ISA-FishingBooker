@@ -23,12 +23,4 @@ public class AvailableInstructorPeriodMapper {
     public  AvailableInstructorPeriod availablePeriodDtoToAvailableInstructorPeriod(AvailablePeriodDto availablePeriodDto, FishingInstructor fishingInstructor){
         return  new AvailableInstructorPeriod(availablePeriodDto.getId(), availablePeriodDto.getStartDate(), availablePeriodDto.getEndDate(),fishingInstructor);
     }
-    public Set<AvailableInstructorPeriod> availableDtoSToAvailableInstructorPeriods(Set<AvailablePeriodDto> availablePeriodDtoSet, FishingInstructor fishingInstructor){
-        Set<AvailableInstructorPeriod> availableInstructorPeriods = new HashSet<>();
-
-        for(AvailablePeriodDto availablePeriodDto : availablePeriodDtoSet){
-            availableInstructorPeriods.add(availablePeriodDtoToAvailableInstructorPeriod(availablePeriodDto,fishingInstructor));
-        }
-        return availableInstructorPeriods;
-    }
 }

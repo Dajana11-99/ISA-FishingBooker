@@ -23,7 +23,7 @@ public class ReportsController {
     private OwnersReportService ownersReportService;
     @Autowired
     private PenaltyService penaltyService;
-    private OwnersReportMapper ownersReportMapper= new OwnersReportMapper();
+    private final OwnersReportMapper ownersReportMapper= new OwnersReportMapper();
     @GetMapping("/getAllReports")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Set<OwnersReportDto>> getAllReports () {

@@ -10,7 +10,6 @@ import rs.ac.uns.ftn.isa.fisherman.mapper.AdventureMapper;
 import rs.ac.uns.ftn.isa.fisherman.mapper.AdventureReservationMapper;
 import rs.ac.uns.ftn.isa.fisherman.model.*;
 import rs.ac.uns.ftn.isa.fisherman.service.*;
-
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,6 +17,7 @@ import java.util.Set;
 @RestController
 @RequestMapping(value = "/reservationAdventure", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdventureReservationController {
+    private static final String SUCCESS ="Success";
  @Autowired
  private AdventureReservationService adventureReservationService;
  @Autowired
@@ -28,17 +28,17 @@ public class AdventureReservationController {
  private PenaltyService penaltyService;
  @Autowired
  private AdventureReservationCancellationService adventureReservationCancellationService;
- private AdventureReservationMapper adventureReservationMapper= new AdventureReservationMapper();
+ private final AdventureReservationMapper adventureReservationMapper= new AdventureReservationMapper();
  private final AdventureMapper adventureMapper = new AdventureMapper();
 
     @PostMapping("/instructorCreates")
     @PreAuthorize("hasRole('FISHING_INSTRUCTOR')")
-    public ResponseEntity<String> instructorCreates (@RequestBody AdventureReservationDto adventureReservationDto) throws Exception {
+    public ResponseEntity<String> instructorCreates (@RequestBody AdventureReservationDto adventureReservationDto) {
         FishingInstructor fishingInstructor= fishingInstructorService.findByUsername(adventureReservationDto.getAdventureDto().getFishingInstructorUsername());
         AdventureReservation adventureReservation = adventureReservationMapper.adventureReservationDtoToAdventureReservation(adventureReservationDto,fishingInstructor);
         try {
             if (adventureReservationService.instructorCreates(adventureReservation, adventureReservationDto.getClientUsername()))
-                return new ResponseEntity<>("Success.", HttpStatus.OK);
+                return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
             else
                 return new ResponseEntity<>("Unsuccessfull reservation.", HttpStatus.BAD_REQUEST);
         }catch (Exception e){
@@ -50,8 +50,9 @@ public class AdventureReservationController {
     @PreAuthorize("hasRole('FISHING_INSTRUCTOR')")
     public ResponseEntity<Set<AdventureReservationDto>> getPresentByInstructorId(@PathVariable("username")String username) {
         Set<AdventureReservationDto> adventureReservations= new HashSet<>();
-        for(AdventureReservation adventureReservation: adventureReservationService.getPresentByInstructorId(username))
-        adventureReservations.add(adventureReservationMapper.adventureReservationToAdventureReservationDto(adventureReservation));
+        for(AdventureReservation adventureReservation: adventureReservationService.getPresentByInstructorId(username)){
+            adventureReservations.add(adventureReservationMapper.adventureReservationToAdventureReservationDto(adventureReservation));
+        }
         return new ResponseEntity<>(adventureReservations,HttpStatus.OK);
     }
 
@@ -79,7 +80,7 @@ public class AdventureReservationController {
         reservation.setSuccessfull(ownersReportDto.isSuccess());
         reservation.setOwnerWroteAReport(true);
         adventureReservationService.save(reservation);
-        return new ResponseEntity<>("Success.", HttpStatus.OK);
+        return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
     }
 
     @PostMapping("/getAvailableAdventures")

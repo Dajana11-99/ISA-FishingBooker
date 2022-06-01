@@ -3,68 +3,38 @@ import rs.ac.uns.ftn.isa.fisherman.dto.BoatReservationDto;
 import rs.ac.uns.ftn.isa.fisherman.dto.SearchAvailablePeriodsBoatAndAdventureDto;
 import rs.ac.uns.ftn.isa.fisherman.model.Boat;
 import rs.ac.uns.ftn.isa.fisherman.model.BoatReservation;
-import rs.ac.uns.ftn.isa.fisherman.model.CabinReservation;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
 public interface BoatReservationService {
     boolean ownerCreates(BoatReservation boatReservation, String clientUsername) throws Exception;
-
     Set<BoatReservation> getPresentByCabinId(Long boatId);
-
     boolean reservationExists(Long boatId, LocalDateTime startDate, LocalDateTime endDate);
-
     boolean ownerIsNotAvailableReservation(String ownerId, LocalDateTime start, LocalDateTime end);
-
     Set<BoatReservation> findReservationsByOwnerUsername(String username);
-
     boolean futureReservationsExist(LocalDateTime currentDate, Long boatId);
-
     List<BoatReservation> getPastReservations(String ownersUsername);
-
     Integer countReservationsInPeriod(LocalDateTime start, LocalDateTime end, String ownerUsername);
-
     List<BoatReservation> findReservationsToSumProfit(String ownerUsername, LocalDateTime start, LocalDateTime end);
-
-    double sumProfitOfPricesCalucatedByHours(List<BoatReservation> reservations, LocalDateTime start, LocalDateTime end);
-
+    double sumProfitOfPricesCalculatedByHours(List<BoatReservation> reservations, LocalDateTime start, LocalDateTime end);
     BoatReservation getById(Long reservationId);
-
     void save(BoatReservation reservation);
-
     Set<Boat> getAvailableBoats(SearchAvailablePeriodsBoatAndAdventureDto searchAvailablePeriodsBoatDto);
-
     boolean makeReservation(BoatReservationDto boatReservationDto) throws Exception;
-
     Set<BoatReservation> getUpcomingClientReservationsByUsername(String clientUsername);
-
     Set<BoatReservation> getClientReservationHistoryByUsername(String clientUsername);
-
     boolean reservationExists(Long id);
-
     boolean checkIfOwnerHasFutureReservations(String username);
-
     boolean checkIfClientHasFutureReservations(Long userId);
-
     boolean checkIfReservationIsEvaluated(Long reservationId);
-
     void markThatReservationIsEvaluated(Long reservationId);
-
     boolean boatNotFreeInPeriod(Long boatId, LocalDateTime startDate, LocalDateTime endDate);
-
     List<BoatReservation> findAllReservationsForAdminProfit(LocalDateTime start, LocalDateTime end);
-
     double sumProfitForAdminOfPricesCalculatedByHours(List<BoatReservation> reservations, LocalDateTime start, LocalDateTime end);
-
     Integer countReservationsByBoatInPeriod(LocalDateTime localDateTime, LocalDateTime localDateTime1, Long id);
-
     List<BoatReservation> findReservationsByBoatToSumProfit(Long id, LocalDateTime start, LocalDateTime end);
-
     Set<Boat> searchAvailableBoats(SearchAvailablePeriodsBoatAndAdventureDto searchAvailablePeriodsBoatDto);
-
     boolean ownerIsNotAvailable(String ownersUsername, LocalDateTime start, LocalDateTime end);
-
     boolean boatNotFreeForQuickReservation(Long id, LocalDateTime startDate, LocalDateTime endDate);
 }

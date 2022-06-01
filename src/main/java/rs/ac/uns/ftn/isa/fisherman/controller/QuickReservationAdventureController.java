@@ -29,7 +29,7 @@ public class QuickReservationAdventureController {
     private PenaltyService penaltyService;
     @Autowired
     private AdventureReservationCancellationService adventureReservationCancellationService;
-    private QuickReservationAdventureMapper quickReservationAdventureMapper = new QuickReservationAdventureMapper();
+    private final QuickReservationAdventureMapper quickReservationAdventureMapper = new QuickReservationAdventureMapper();
     @PostMapping("/instructorCreates")
     @PreAuthorize("hasRole('FISHING_INSTRUCTOR')")
     public ResponseEntity<String> instructorCreates (@RequestBody QuickReservationAdventureDto quickReservationAdventureDto) {

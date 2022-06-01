@@ -5,10 +5,10 @@ import rs.ac.uns.ftn.isa.fisherman.model.*;
 
 
 public class BoatReservationMapper {
-    private  BoatMapper boatMapper=new BoatMapper();
-    private AdditionalServiceMapper additionalServiceMapper=new AdditionalServiceMapper();
-    private PaymentInformationMapper paymentInformationMapper=new PaymentInformationMapper();
-    private OwnersReportMapper ownersReportMapper = new OwnersReportMapper();
+    private final BoatMapper boatMapper=new BoatMapper();
+    private final AdditionalServiceMapper additionalServiceMapper=new AdditionalServiceMapper();
+    private final PaymentInformationMapper paymentInformationMapper=new PaymentInformationMapper();
+
     public BoatReservation boatReservationOwnerDtoToBoatReservation(BoatReservationDto boatReservationDto){
         Boat boat=boatMapper.boatDtoToBoat(boatReservationDto.getBoatDto());
         return new BoatReservation(boatReservationDto.getId(),boatReservationDto.getStartDate(),

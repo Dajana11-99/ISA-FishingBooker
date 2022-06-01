@@ -107,7 +107,7 @@ public class UserServiceTest {
                 "Novi Sad","Novosadska 1"),"reason","CABINOWNER",3.4,"",0);
         User user=new CabinOwner(1L,"Milica","Petrovic","milica@gmail.com",
                 "123","011/345-345",new Address(20.457273,44.787197,"Serbia",
-                "Beograd","Beogradska 1"),"reason",3.4);
+                "Beograd","Beogradska 1"),"reason");
 
         when(userRepositoryMock.getAll()).thenReturn(Arrays.asList(user));
         when(userRepositoryMock.findByUsername(userRequestDTO.getUsername())).thenReturn(user);

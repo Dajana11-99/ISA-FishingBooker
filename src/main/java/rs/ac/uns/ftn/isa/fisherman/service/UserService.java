@@ -12,33 +12,19 @@ public interface UserService {
     User registerCabinOwner(CabinOwner cabinOwner);
     User registerBoatOwner(BoatOwner boatOwner);
     User registerClient(Client client);
-
     User registerAdmin(Admin admin);
     User registerFishingInstructor(FishingInstructor fishingInstructor);
-
-
     User activateAccount(String email, String code);
-
     void acceptAccount(User user);
     void denyAccount(User user,String reason);
-
     void editUser(UserRequestDTO userRequest);
-
     String deleteUser(User user);
-
     void saveDeleteAccountRequest(String username, String reasonForDeleting);
-
     List<User> getAllRequestsForDeletingAccount();
-
     boolean sendDenyReason(String response, String recipient) throws MessagingException, Exception;
-
     boolean sendAcceptReason(String response, String recipient) throws MessagingException, Exception;
-
     String getUsernameFromToken(String s);
-
     void save(User user);
-
     Double findRatingByUsername(String username);
-
     void updateOwnersRating(String username,Double grade);
 }

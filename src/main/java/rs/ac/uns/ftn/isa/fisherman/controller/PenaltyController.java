@@ -21,7 +21,7 @@ public class PenaltyController {
 
     @Autowired
     private PenaltyService penaltyService;
-    private PenaltyMapper penaltyMapper = new PenaltyMapper();
+    private final PenaltyMapper penaltyMapper = new PenaltyMapper();
 
     @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/getClientPenalties/{username}")

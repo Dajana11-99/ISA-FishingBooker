@@ -20,6 +20,7 @@ import java.util.Set;
 @RestController
 @RequestMapping(value = "/reservationBoat", produces = MediaType.APPLICATION_JSON_VALUE)
 public class BoatReservationController {
+    private static final String SUCCESS ="Success";
     @Autowired
     private BoatReservationService boatReservationService;
     @Autowired
@@ -43,7 +44,7 @@ public class BoatReservationController {
         boatReservation.getBoat().setBoatOwner(boatOwner);
         try {
             if (boatReservationService.ownerCreates(boatReservation, boatReservationDto.getClientUsername())) {
-                return new ResponseEntity<>("Success.", HttpStatus.OK);
+                return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Unsuccessfull reservation.", HttpStatus.BAD_REQUEST);
             }
@@ -95,7 +96,7 @@ public class BoatReservationController {
         reservation.setSuccessfull(ownersReportDto.isSuccess());
         reservation.setOwnerWroteAReport(true);
         boatReservationService.save(reservation);
-        return new ResponseEntity<>("Success.", HttpStatus.OK);
+        return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
     }
 
     @PostMapping("/getAvailableBoats")
@@ -121,7 +122,7 @@ public class BoatReservationController {
             return new ResponseEntity<>("Captain service is not available!", HttpStatus.BAD_REQUEST);
         try {
         if(boatReservationService.makeReservation(boatReservationDto))
-            return new ResponseEntity<>("Success.", HttpStatus.OK);
+            return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
         else
             return new ResponseEntity<>("Boat already reserved in period!", HttpStatus.BAD_REQUEST);
         } catch (Exception e) {

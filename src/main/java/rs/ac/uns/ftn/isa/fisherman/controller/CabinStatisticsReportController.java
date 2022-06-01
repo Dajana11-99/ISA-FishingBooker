@@ -26,7 +26,7 @@ public class CabinStatisticsReportController {
     @Autowired
     private CabinService cabinService;
     @Autowired
-    private ReservationCabinService reservationCabinService;
+    private CabinReservationService cabinReservationService;
     @Autowired
     private QuickReservationCabinService quickReservationCabinService;
     @Autowired
@@ -61,14 +61,13 @@ public class CabinStatisticsReportController {
     public ResponseEntity<List<Integer>> countReservations(@PathVariable("username") String username) {
         List<Integer> reservationCount=new ArrayList<>();
         List<LocalDateTime> thisWeek=dateService.findWeek();
-        reservationCount.add(reservationCabinService.countReservationsInPeriod(thisWeek.get(0),thisWeek.get(1),username));
+        reservationCount.add(cabinReservationService.countReservationsInPeriod(thisWeek.get(0),thisWeek.get(1),username));
         List<LocalDateTime> thisMonth=dateService.findMonth();
-        reservationCount.add(reservationCabinService.countReservationsInPeriod(thisMonth.get(0),thisMonth.get(1),username));
+        reservationCount.add(cabinReservationService.countReservationsInPeriod(thisMonth.get(0),thisMonth.get(1),username));
         List<LocalDateTime> thisYear=dateService.findYear();
-        reservationCount.add(reservationCabinService.countReservationsInPeriod(thisYear.get(0),thisYear.get(1),username));
+        reservationCount.add(cabinReservationService.countReservationsInPeriod(thisYear.get(0),thisYear.get(1),username));
         return new ResponseEntity<>(reservationCount, HttpStatus.OK);
     }
-   ///////////////////////////////////
     @GetMapping("/countQuickReservationsByCabin/{cabinName}")
     @PreAuthorize("hasRole('CABINOWNER')")
     public ResponseEntity<List<Integer>> countQuickReservationsById (@PathVariable("cabinName") String cabinName) {
@@ -89,19 +88,19 @@ public class CabinStatisticsReportController {
         List<Integer> reservationCount=new ArrayList<>();
         List<LocalDateTime> thisWeek=dateService.findWeek();
         Long id=cabinService.findByName(cabinName).getId();
-        reservationCount.add(reservationCabinService.countReservationsInPeriodByCabinId(thisWeek.get(0),thisWeek.get(1),id));
+        reservationCount.add(cabinReservationService.countReservationsInPeriodByCabinId(thisWeek.get(0),thisWeek.get(1),id));
         List<LocalDateTime> thisMonth=dateService.findMonth();
-        reservationCount.add(reservationCabinService.countReservationsInPeriodByCabinId(thisMonth.get(0),thisMonth.get(1),id));
+        reservationCount.add(cabinReservationService.countReservationsInPeriodByCabinId(thisMonth.get(0),thisMonth.get(1),id));
         List<LocalDateTime> thisYear=dateService.findYear();
-        reservationCount.add(reservationCabinService.countReservationsInPeriodByCabinId(thisYear.get(0),thisYear.get(1),id));
+        reservationCount.add(cabinReservationService.countReservationsInPeriodByCabinId(thisYear.get(0),thisYear.get(1),id));
         return new ResponseEntity<>(reservationCount, HttpStatus.OK);
     }
     @PostMapping("/sumProfit/{username:.+}/")
     @PreAuthorize("hasRole('CABINOWNER')")
     public ResponseEntity<List<Double>> sumProfit(@PathVariable("username") String username,@RequestBody List<LocalDateTime> dateRange) {
         List<Double> profit=new ArrayList<>();
-        profit.add(reservationCabinService.sumProfitOfPricesCalculatedByDays(
-                reservationCabinService.findReservationsToSumProfit(username,dateRange.get(0),dateRange.get(1)),dateRange.get(0),dateRange.get(1)
+        profit.add(cabinReservationService.sumProfitOfPricesCalculatedByDays(
+                cabinReservationService.findReservationsToSumProfit(username,dateRange.get(0),dateRange.get(1)),dateRange.get(0),dateRange.get(1)
                 ));
         profit.add(
                 quickReservationCabinService.sumProfitOfPricesCalculatedByDays(
@@ -117,8 +116,8 @@ public class CabinStatisticsReportController {
     public ResponseEntity<List<Double>> sumProfitByCabin(@PathVariable("cabinName") String cabinName,@RequestBody List<LocalDateTime> dateRange) {
         List<Double> profit=new ArrayList<>();
         Long id=cabinService.findByName(cabinName).getId();
-        profit.add(reservationCabinService.sumProfitOfPricesCalculatedByDays(
-                reservationCabinService.findReservationsByCabinToSumProfit(id,dateRange.get(0),dateRange.get(1)),dateRange.get(0),dateRange.get(1)
+        profit.add(cabinReservationService.sumProfitOfPricesCalculatedByDays(
+                cabinReservationService.findReservationsByCabinToSumProfit(id,dateRange.get(0),dateRange.get(1)),dateRange.get(0),dateRange.get(1)
         ));
         profit.add(
                 quickReservationCabinService.sumProfitOfPricesCalculatedByDays(
@@ -136,11 +135,11 @@ public class CabinStatisticsReportController {
     public ResponseEntity<Double> sumWeekProfit() {
         double profit=0.0;
         List<LocalDateTime> thisWeek=dateService.findWeek();
-        profit+=reservationCabinService.sumProfitForAdminOfPricesCalculatedByDays(
-                reservationCabinService.findAllReservationsForAdminProfit(thisWeek.get(0),thisWeek.get(1)),thisWeek.get(0),thisWeek.get(1)
+        profit+= cabinReservationService.sumProfitForAdminOfPricesCalculatedByDays(
+                cabinReservationService.findAllReservationsForAdminProfit(thisWeek.get(0),thisWeek.get(1)),thisWeek.get(0),thisWeek.get(1)
         );
         profit+=quickReservationCabinService.sumProfitOfPricesCalculatedByDaysForAdmin(
-                quickReservationCabinService.findAllQucikReservationsForAdminProfit(thisWeek.get(0),thisWeek.get(1)),
+                quickReservationCabinService.findAllQuickReservationsForAdminProfit(thisWeek.get(0),thisWeek.get(1)),
                 thisWeek.get(0),thisWeek.get(1)
         );
         return new ResponseEntity<>(profit, HttpStatus.OK);
@@ -149,16 +148,15 @@ public class CabinStatisticsReportController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Double> sumTodaysProfit() {
         double profit=0.0;
-        List<LocalDateTime> today=new ArrayList<>();
         LocalDate date= LocalDate.now();
         LocalDateTime start= LocalTime.MIN.atDate(date);
         LocalDateTime end= LocalTime.MAX.atDate(date);
 
-        profit+=reservationCabinService.sumProfitForAdminOfPricesCalculatedByDays(
-                reservationCabinService.findAllReservationsForAdminProfit(start,end),start,end
+        profit+= cabinReservationService.sumProfitForAdminOfPricesCalculatedByDays(
+                cabinReservationService.findAllReservationsForAdminProfit(start,end),start,end
         );
         profit+=quickReservationCabinService.sumProfitOfPricesCalculatedByDaysForAdmin(
-                quickReservationCabinService.findAllQucikReservationsForAdminProfit(start,end),
+                quickReservationCabinService.findAllQuickReservationsForAdminProfit(start,end),
                 start,end
         );
         return new ResponseEntity<>(profit, HttpStatus.OK);
@@ -168,11 +166,11 @@ public class CabinStatisticsReportController {
     public ResponseEntity<Double> sumMothProfit() {
         double profit=0.0;
         List<LocalDateTime> thisMonth=dateService.findMonth();
-        profit+=reservationCabinService.sumProfitForAdminOfPricesCalculatedByDays(
-                reservationCabinService.findAllReservationsForAdminProfit(thisMonth.get(0),thisMonth.get(1)),thisMonth.get(0),thisMonth.get(1)
+        profit+= cabinReservationService.sumProfitForAdminOfPricesCalculatedByDays(
+                cabinReservationService.findAllReservationsForAdminProfit(thisMonth.get(0),thisMonth.get(1)),thisMonth.get(0),thisMonth.get(1)
         );
         profit+=quickReservationCabinService.sumProfitOfPricesCalculatedByDaysForAdmin(
-                quickReservationCabinService.findAllQucikReservationsForAdminProfit(thisMonth.get(0),thisMonth.get(1)),
+                quickReservationCabinService.findAllQuickReservationsForAdminProfit(thisMonth.get(0),thisMonth.get(1)),
                 thisMonth.get(0),thisMonth.get(1)
         );
         return new ResponseEntity<>(profit, HttpStatus.OK);
@@ -182,11 +180,11 @@ public class CabinStatisticsReportController {
     public ResponseEntity<Double> sumYearProfit() {
         double profit=0.0;
         List<LocalDateTime> thisYear=dateService.findYear();
-        profit+=reservationCabinService.sumProfitForAdminOfPricesCalculatedByDays(
-                reservationCabinService.findAllReservationsForAdminProfit(thisYear.get(0),thisYear.get(1)),thisYear.get(0),thisYear.get(1)
+        profit+= cabinReservationService.sumProfitForAdminOfPricesCalculatedByDays(
+                cabinReservationService.findAllReservationsForAdminProfit(thisYear.get(0),thisYear.get(1)),thisYear.get(0),thisYear.get(1)
         );
         profit+=quickReservationCabinService.sumProfitOfPricesCalculatedByDaysForAdmin(
-                quickReservationCabinService.findAllQucikReservationsForAdminProfit(thisYear.get(0),thisYear.get(1)),
+                quickReservationCabinService.findAllQuickReservationsForAdminProfit(thisYear.get(0),thisYear.get(1)),
                 thisYear.get(0),thisYear.get(1)
         );
         return new ResponseEntity<>(profit, HttpStatus.OK);

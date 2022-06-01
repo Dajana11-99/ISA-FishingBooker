@@ -1,16 +1,12 @@
 package rs.ac.uns.ftn.isa.fisherman.mapper;
-import com.google.api.services.storage.model.Bucket;
 import rs.ac.uns.ftn.isa.fisherman.dto.QuickReservationAdventureDto;
 import rs.ac.uns.ftn.isa.fisherman.model.FishingInstructor;
 import rs.ac.uns.ftn.isa.fisherman.model.QuickReservationAdventure;
 
-import javax.crypto.spec.OAEPParameterSpec;
-
 public class QuickReservationAdventureMapper {
-    private AdditionalServiceMapper additionalServiceMapper = new AdditionalServiceMapper();
-    private AdventureMapper adventureMapper = new AdventureMapper();
-    private PaymentInformationMapper paymentInformationMapper=new PaymentInformationMapper();
-    private OwnersReportMapper ownersReportMapper=new OwnersReportMapper();
+    private final AdditionalServiceMapper additionalServiceMapper = new AdditionalServiceMapper();
+    private final AdventureMapper adventureMapper = new AdventureMapper();
+    private final PaymentInformationMapper paymentInformationMapper=new PaymentInformationMapper();
     public QuickReservationAdventure dtoToQuickReservationAdventure(QuickReservationAdventureDto quickReservationAdventureDto, FishingInstructor fishingInstructor){
         return new QuickReservationAdventure(quickReservationAdventureDto.getId(),quickReservationAdventureDto.getStartDate(),quickReservationAdventureDto.getEndDate(),null,
                 paymentInformationMapper.dtoToPaymentInformation(quickReservationAdventureDto.getPaymentInformationDto()),quickReservationAdventureDto.isOwnerWroteAReport(),quickReservationAdventureDto.getOwnersUsername()
@@ -31,6 +27,6 @@ public class QuickReservationAdventureMapper {
                  quickReservationAdventure.isOwnerWroteAReport(),quickReservationAdventure.getOwnersUsername(),
                 adventureMapper.adventureToAdventureDto(quickReservationAdventure.getAdventure()),additionalServiceMapper
                 .additionalServicesToAdditionalServiceDtoS(quickReservationAdventure.getAddedAdditionalServices())
-,quickReservationAdventure.getDiscount(), quickReservationAdventure.isEvaluated());
+                ,quickReservationAdventure.getDiscount(), quickReservationAdventure.isEvaluated());
     }
 }

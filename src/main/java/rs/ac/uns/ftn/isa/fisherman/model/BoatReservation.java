@@ -2,7 +2,6 @@ package rs.ac.uns.ftn.isa.fisherman.model;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import rs.ac.uns.ftn.isa.fisherman.dto.OwnersReportDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -23,7 +22,7 @@ public class BoatReservation extends Reservation{
 
     protected  boolean needsCaptainService;
 
-    public BoatReservation(){};
+    public BoatReservation(){}
 
     public BoatReservation(Long id, LocalDateTime startDate, LocalDateTime endDate, Client client, PaymentInformation paymentInformation,boolean ownerWroteAReport, String ownersUsername,Boat boat, Set<AdditionalServices> addedAdditionalServices, boolean needsCaptainService) {
         super(id, startDate, endDate, client, paymentInformation,ownerWroteAReport,ownersUsername, false);

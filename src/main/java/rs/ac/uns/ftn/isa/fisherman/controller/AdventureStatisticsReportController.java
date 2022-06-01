@@ -12,7 +12,6 @@ import rs.ac.uns.ftn.isa.fisherman.model.AdventureReservation;
 import rs.ac.uns.ftn.isa.fisherman.model.QuickReservationAdventure;
 import rs.ac.uns.ftn.isa.fisherman.model.ReservationPoints;
 import rs.ac.uns.ftn.isa.fisherman.service.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -73,7 +72,7 @@ public class AdventureStatisticsReportController {
     @PreAuthorize("hasRole('FISHING_INSTRUCTOR')")
     public ResponseEntity<List<Double>> sumProfit(@PathVariable("username") String username,@RequestBody List<LocalDateTime> dateRange) {
         List<Double> profit=new ArrayList<>();
-        profit.add(adventureReservationService.sumProfitOfPricesCalucatedByHours(adventureReservationService.findReservationsByOwnerToSumProfit(username,dateRange.get(0),dateRange.get(1)),dateRange.get(0),dateRange.get(1)));
+        profit.add(adventureReservationService.sumProfitOfPricesCalculatedByHours(adventureReservationService.findReservationsByOwnerToSumProfit(username,dateRange.get(0),dateRange.get(1)),dateRange.get(0),dateRange.get(1)));
         profit.add(quickReservationAdventureService.sumProfitOfPricesCalucatedByHours(quickReservationAdventureService.findReservationsByOwnerToSumProfit(username,dateRange.get(0),dateRange.get(1)),dateRange.get(0),dateRange.get(1)));
         return new ResponseEntity<>(profit, HttpStatus.OK);
     }
@@ -110,7 +109,7 @@ public class AdventureStatisticsReportController {
         Long id= adventureService.findAdventureByName(adventureName,userService.findByUsername(username).getId()).getId();
         List<AdventureReservation> reservations=adventureReservationService.findReservationsByAdventureToSumProfit(id,dateRange.get(0),dateRange.get(1));
         List< QuickReservationAdventure > quickReservations=quickReservationAdventureService.findReservationsByAdventureToSumProfit(id,dateRange.get(0),dateRange.get(1));
-        profit.add(adventureReservationService.sumProfitOfPricesCalucatedByHours(reservations,dateRange.get(0),dateRange.get(1)));
+        profit.add(adventureReservationService.sumProfitOfPricesCalculatedByHours(reservations,dateRange.get(0),dateRange.get(1)));
         profit.add(quickReservationAdventureService.sumProfitOfPricesCalucatedByHours(quickReservations,dateRange.get(0),dateRange.get(1)));
         return new ResponseEntity<>(profit, HttpStatus.OK);
     }
