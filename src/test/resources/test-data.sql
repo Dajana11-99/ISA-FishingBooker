@@ -19,9 +19,9 @@ INSERT INTO AUTHORITY (id ,name) VALUES (2, 'ROLE_CABINOWNER');
 INSERT INTO AUTHORITY (id ,name) VALUES (3, 'ROLE_BOATOWNER');
 INSERT INTO AUTHORITY (id ,name) VALUES (4, 'ROLE_FISHING_INSTRUCTOR');
 INSERT INTO AUTHORITY (id ,name) VALUES (6, 'ROLE_CLIENT');
-INSERT INTO RANK (id ,discount_percentage,points,rank) VALUES (1, 0,0,0);
-INSERT INTO RANK (id ,discount_percentage,points,rank) VALUES (2, 10,100,1);
-INSERT INTO RANK (id ,discount_percentage,points,rank) VALUES (3, 20,250,2);
+INSERT INTO RANK (id ,discount_percentage,points,rank_type) VALUES (1, 0,0,0);
+INSERT INTO RANK (id ,discount_percentage,points,rank_type) VALUES (2, 10,100,1);
+INSERT INTO RANK (id ,discount_percentage,points,rank_type) VALUES (3, 20,250,2);
 
 INSERT INTO RESERVATION_POINTS (id ,app_profit_percentage,cancelation_fee_percentage,client_points,owner_points) VALUES (1, 3,2,1,1);
 

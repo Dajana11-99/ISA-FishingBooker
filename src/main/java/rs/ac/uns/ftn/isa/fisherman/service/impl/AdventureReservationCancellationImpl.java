@@ -46,10 +46,11 @@ public class AdventureReservationCancellationImpl implements AdventureReservatio
         return true;
     }
     private LocalDateTime getDateWithoutTime(LocalDateTime dateTime) {
-        dateTime.minusHours(dateTime.getHour());
-        dateTime.minusMinutes(dateTime.getMinute());
-        dateTime.minusSeconds(dateTime.getSecond());
-        return dateTime;
+        LocalDateTime output= dateTime;
+        output.minusHours(dateTime.getHour());
+        output.minusMinutes(dateTime.getMinute());
+        output.minusSeconds(dateTime.getSecond());
+        return output;
     }
 
     @Override

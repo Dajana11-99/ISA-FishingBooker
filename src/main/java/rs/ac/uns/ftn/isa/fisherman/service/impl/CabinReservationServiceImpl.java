@@ -263,14 +263,14 @@ public class CabinReservationServiceImpl implements CabinReservationService {
         if(!availableCabinPeriodService.cabinIsAvailable(cabinReservation.getCabin()
                 .getId(),cabinReservation.getStartDate(),cabinReservation.getEndDate())) return false;
 
-        if(cabinReservationRepository.reservationExists(cabinReservation.getCabin()
-                .getId(),cabinReservation.getStartDate(),cabinReservation.getEndDate()).size()>0) return false;
+        if(!cabinReservationRepository.reservationExists(cabinReservation.getCabin()
+                .getId(),cabinReservation.getStartDate(),cabinReservation.getEndDate()).isEmpty()) return false;
         if(quickReservationCabinService.quickReservationExists(cabinReservation.getCabin().getId(),
                 cabinReservation.getStartDate(),cabinReservation.getEndDate())) return false;
         return true;
     }
     public boolean reservationExists(Long cabinId, LocalDateTime startDate, LocalDateTime endDate){
-        return cabinReservationRepository.reservationExists(cabinId, startDate, endDate).size() > 0;
+        return !cabinReservationRepository.reservationExists(cabinId, startDate, endDate).isEmpty();
     }
 
     public void sendMailNotification(CabinReservation cabinReservation,String email){

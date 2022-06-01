@@ -131,11 +131,9 @@ public class AdventureStatisticsReportController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Double> sumTodaysProfit() {
         double profit=0.0;
-        List<LocalDateTime> today=new ArrayList<>();
         LocalDate date= LocalDate.now();
         LocalDateTime start= LocalTime.MIN.atDate(date);
         LocalDateTime end= LocalTime.MAX.atDate(date);
-
         profit+=adventureReservationService.sumProfitForAdminOfPricesCalculatedByHours(
                 adventureReservationService.findAllReservationsForAdminProfit(start,end),start,end
         );

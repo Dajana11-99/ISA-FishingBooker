@@ -46,6 +46,5 @@ public abstract class AvailablePeriod {
         this.endDate = endDate;
     }
 
-    public AvailablePeriod() {
-    }
+    public AvailablePeriod() {}
 }

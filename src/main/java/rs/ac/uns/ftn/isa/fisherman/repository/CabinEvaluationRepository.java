@@ -10,10 +10,10 @@ import java.util.Set;
 public interface CabinEvaluationRepository extends JpaRepository<CabinEvaluation, Long> {
 
     @Query(value="SELECT CASE WHEN  COUNT(c) > 0 THEN true ELSE false END FROM evaluations c where cabin_reservation_id=:cabin_reservation_id",nativeQuery = true)
-    boolean reservationHasEvaluation(@Param("cabin_reservation_id")Long cabin_reservation_id);
+    boolean reservationHasEvaluation(@Param("cabin_reservation_id")Long cabinReservationids);
 
     @Query(value="SELECT grade  FROM evaluations c where cabin_id in :cabin_reservation_ids and approved=true",nativeQuery = true)
-    Set<Double> getAllApprovedCabinEvaluationsByCabinReservationIds(@Param("cabin_reservation_ids") Set<Integer> cabin_reservation_ids);
+    Set<Double> getAllApprovedCabinEvaluationsByCabinReservationIds(@Param("cabin_reservation_ids") Set<Integer> cabinReservationids);
 
 
     @Query(value="SELECT *  FROM evaluations c where id=:id",nativeQuery = true)

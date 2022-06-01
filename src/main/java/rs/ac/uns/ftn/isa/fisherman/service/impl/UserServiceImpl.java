@@ -204,8 +204,6 @@ public class UserServiceImpl implements UserService {
     public boolean sendDenyReason(String response, String recipient) throws Exception {
         User user=userRepository.findByUsername(recipient);
         if(user.getReasonForDeleting() == null)return false;
-        if(user== null)
-            return false;
         user.setReasonForDeleting("");
         userRepository.save(user);
         mailService.sendMail(recipient,response,new AccountDeletingDenied());
@@ -218,8 +216,6 @@ public class UserServiceImpl implements UserService {
     public boolean sendAcceptReason(String response, String recipient) throws Exception {
         User user=userRepository.findByUsername(recipient);
         if(user.getReasonForDeleting().equals(""))return false;
-        if(user== null)
-            return false;
         userRepository.delete(user);
         mailService.sendMail(recipient,response,new AccountDeletingAccepted());
         return  true;

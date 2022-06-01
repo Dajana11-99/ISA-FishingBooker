@@ -4,10 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import rs.ac.uns.ftn.isa.fisherman.model.AdventureReservation;
-import rs.ac.uns.ftn.isa.fisherman.model.Boat;
 import rs.ac.uns.ftn.isa.fisherman.model.BoatReservation;
-import rs.ac.uns.ftn.isa.fisherman.model.CabinReservation;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -67,7 +64,7 @@ public interface BoatReservationRepository extends JpaRepository<BoatReservation
     boolean clientHasReservationInBoat(@Param("boat_id")Long boatId,@Param("users_id")Long usersId);
 
     @Query(value="SELECT CASE WHEN  COUNT(b) > 0 THEN true ELSE false END FROM boat_reservation b where boat_id in :owners_boats and users_id=:users_id",nativeQuery = true)
-    boolean clientHasReservationInOwnersBoat(@Param("owners_boats")Set<Integer> owners_boats, @Param("users_id")Long id);
+    boolean clientHasReservationInOwnersBoat(@Param("owners_boats")Set<Integer> ownersBoats, @Param("users_id")Long id);
 
     @Query(value="select * from boat_reservation cr where ((cr.start_date between :start and :end) or (cr.end_date between :start and :end))",nativeQuery = true)
     List<BoatReservation> findAllReservationsForAdminProfit(@Param("start")LocalDateTime start, @Param("end") LocalDateTime end);

@@ -21,8 +21,8 @@ public interface UserService {
     String deleteUser(User user);
     void saveDeleteAccountRequest(String username, String reasonForDeleting);
     List<User> getAllRequestsForDeletingAccount();
-    boolean sendDenyReason(String response, String recipient) throws MessagingException, Exception;
-    boolean sendAcceptReason(String response, String recipient) throws MessagingException, Exception;
+    boolean sendDenyReason(String response, String recipient) throws Exception;
+    boolean sendAcceptReason(String response, String recipient) throws Exception;
     String getUsernameFromToken(String s);
     void save(User user);
     Double findRatingByUsername(String username);

@@ -1,5 +1,4 @@
 package rs.ac.uns.ftn.isa.fisherman.service;
-import org.springframework.cache.annotation.Cacheable;
 import rs.ac.uns.ftn.isa.fisherman.model.AdditionalServices;
 import rs.ac.uns.ftn.isa.fisherman.model.Boat;
 import rs.ac.uns.ftn.isa.fisherman.model.Image;

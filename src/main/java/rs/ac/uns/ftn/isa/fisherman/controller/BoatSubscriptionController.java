@@ -21,7 +21,7 @@ public class BoatSubscriptionController {
     @Autowired
     BoatSubscriptionService boatSubscriptionService;
 
-    final private BoatSubscriptionMapper boatSubscriptionMapper = new BoatSubscriptionMapper();
+    private final BoatSubscriptionMapper boatSubscriptionMapper = new BoatSubscriptionMapper();
 
     @PostMapping("/addSubscription")
     @PreAuthorize("hasRole('CLIENT')")

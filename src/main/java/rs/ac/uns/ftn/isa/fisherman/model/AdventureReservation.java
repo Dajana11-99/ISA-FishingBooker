@@ -1,8 +1,6 @@
 package rs.ac.uns.ftn.isa.fisherman.model;
-
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
