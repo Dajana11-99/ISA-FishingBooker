@@ -106,9 +106,8 @@ import axios from 'axios'
      methods: {
 
             getAllComplaints: function(){
-                    axios.get(process.env.VUE_APP_BACKEND_URL+"complaint/getAll")
+                    axios.get(process.env.VUE_APP_BACKEND_URL+"complaints/getAll")
             .then(response => {this.complaints = response.data
-               // console.log("AAAAAAAA"+response.data.ownersUsername)
               
               })
              .catch(error => {
@@ -138,7 +137,7 @@ import axios from 'axios'
                     onCancel: this.onCancel,
                    });
                    console.log("AAAA"+this.comment)
-                    axios.post(process.env.VUE_APP_BACKEND_URL+"complaint/sendMailAboutComplaint/"+ this.complaintId,this.comment)
+                    axios.post(process.env.VUE_APP_BACKEND_URL+"complaints/answerComplaint/"+ this.complaintId,this.comment)
             .then(response => {
                  console.log(response)
                  this.$swal.fire({

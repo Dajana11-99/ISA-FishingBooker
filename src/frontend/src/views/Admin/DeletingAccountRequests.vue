@@ -178,7 +178,7 @@ import axios from "axios";
                    });
            this.mailDto.response= this.reasonDeny;
            this.mailDto.recipient= this.userRequest.username;
-             axios.post(process.env.VUE_APP_BACKEND_URL+"account/sendDenyReasonForDeletingAccount",this.mailDto)
+             axios.post(process.env.VUE_APP_BACKEND_URL+"account/sendDenyReason",this.mailDto)
                   .then(response => {
                       this.$swal('User has been deleted');
                          this.$swal.fire(
@@ -219,7 +219,7 @@ import axios from "axios";
                    });
            this.mailDto.response= this.reasonAccept;
            this.mailDto.recipient= this.userRequest.username;
-            axios.post(process.env.VUE_APP_BACKEND_URL+"account/sendAcceptReasonForDeletingAccount",this.mailDto)
+            axios.post(process.env.VUE_APP_BACKEND_URL+"account/sendAcceptReason",this.mailDto)
                      .then(response => {
                         this.$swal('User has been deleted');
                          this.$swal.fire(
