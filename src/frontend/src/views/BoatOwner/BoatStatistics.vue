@@ -139,6 +139,9 @@ export default ({
        mounted() {
              this.email = this.$route.params.email
              this.boatName= this.$route.params.boatName
+             console.log("ruta ime od broda "+this.$route.params.boatName)
+            
+
              this.getReservations()
              this.getQuickReservations()
                
@@ -199,7 +202,7 @@ export default ({
              dateRange.push(this.formatDate(this.end))
              axios
                 .post(
-                process.env.VUE_APP_BACKEND_URL+"boatStatisticsReport/sumProfitByBoat/"+this.email+"/", dateRange
+                process.env.VUE_APP_BACKEND_URL+"boatStatisticsReport/sumProfitByBoat/"+this.email+"/"+this.boatName, dateRange
                
                 )
                 .then((response) => {

@@ -31,10 +31,10 @@ public interface QuickReservationCabinRepository extends JpaRepository<QuickRese
     @Query(value = "SELECT * FROM quick_reservation_cabin where successfull=true and bad_comment=true and comment!='' ", nativeQuery = true)
     Set<QuickReservationCabin> getAllReports();
 
-    @Query(value="select count(cr.cabin_id) from quick_reservation_cabin cr where cr.owners_username=:ownersUsername and ((cr.start_date between :start and :end) or (cr.end_date between :start and :end))",nativeQuery = true)
+    @Query(value="select count(cr.cabin_id) from quick_reservation_cabin cr  where cr.users_id!=null and cr.owners_username=:ownersUsername and ((cr.start_date between :start and :end) or (cr.end_date between :start and :end))",nativeQuery = true)
     Integer countReservationsOfThisWeek(@Param("start")LocalDateTime startWeek,@Param("end") LocalDateTime endWeek,@Param("ownersUsername")String ownersUsername);
 
-    @Query(value="select * from quick_reservation_cabin cr where cr.owners_username=:ownersUsername and ((cr.start_date between :start and :end) or (cr.end_date between :start and :end) or ((:start between cr.start_date and cr.end_date) and (:end between cr.start_date and cr.end_date)))",nativeQuery = true)
+    @Query(value="select * from quick_reservation_cabin cr where cr.users_id!=null and cr.owners_username=:ownersUsername and ((cr.start_date between :start and :end) or (cr.end_date between :start and :end) or ((:start between cr.start_date and cr.end_date) and (:end between cr.start_date and cr.end_date)))",nativeQuery = true)
     List<QuickReservationCabin> findReservationsInPeriodToSumProfit(@Param("ownersUsername")String ownersUsername, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
     @Query(value="select * from quick_reservation_cabin r where :currentDate <= r.start_date and r.users_id IS NULL ",nativeQuery = true)
@@ -52,7 +52,7 @@ public interface QuickReservationCabinRepository extends JpaRepository<QuickRese
     @Query(value="select * from quick_reservation_cabin cr where cr.users_id != null and((cr.start_date between :start and :end) or (cr.end_date between :start and :end))",nativeQuery = true)
     List<QuickReservationCabin> findAllQuickReservationsForAdminProfit(@Param("start")LocalDateTime start, @Param("end") LocalDateTime end);
 
-    @Query(value="select count(cr.cabin_id) from quick_reservation_cabin cr where cr.cabin_id=:id and ((cr.start_date between :start and :end) or (cr.end_date between :start and :end))",nativeQuery = true)
+    @Query(value="select count(cr.cabin_id) from quick_reservation_cabin cr where cr.users_id!=null and cr.cabin_id=:id and ((cr.start_date between :start and :end) or (cr.end_date between :start and :end))",nativeQuery = true)
     Integer countReservationsInPeriodByCabinId(@Param("start")LocalDateTime start,@Param("end") LocalDateTime end,@Param("id")Long id);
 
     @Query(value="select * from quick_reservation_cabin cr where cr.cabin_id=:id and cr.users_id!=null and ((cr.start_date between :start and :end) or (cr.end_date between :start and :end) or ((:start between cr.start_date and cr.end_date) and (:end between cr.start_date and cr.end_date)))",nativeQuery = true)

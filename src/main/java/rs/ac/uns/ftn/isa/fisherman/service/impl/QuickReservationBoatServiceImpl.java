@@ -229,8 +229,8 @@ public class QuickReservationBoatServiceImpl implements QuickReservationBoatServ
 
     @Override
     public boolean quickReservationExists(Long id, LocalDateTime startDate, LocalDateTime endDate) {
-        if(!quickReservationBoatRepository.quickReservationExists(id,startDate,endDate).isEmpty()) return false;
-        return true;
+        if(!quickReservationBoatRepository.quickReservationExists(id,startDate,endDate).isEmpty()) return true;
+        return false;
     }
 
     private boolean validateForReservation(QuickReservationBoat quickReservationBoat){

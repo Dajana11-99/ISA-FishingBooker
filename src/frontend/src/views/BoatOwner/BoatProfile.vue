@@ -139,7 +139,7 @@
    <br>
 
   <div  style="text-align: left; padding-left: 3%; padding-right: 11%;">
-    <h1>Comments about cabin</h1>
+    <h1>Comments about boat</h1>
     <hr>
       <div v-for="(comment,index) in comments" :key="index" class="row">
             <div class="col-sm-1">

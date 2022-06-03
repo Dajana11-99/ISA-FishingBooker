@@ -30,10 +30,10 @@ public interface QuickReservationBoatRepository extends JpaRepository<QuickReser
     @Query(value="SELECT * FROM quick_reservation_boat where id=:id",nativeQuery = true)
     QuickReservationBoat getById(@Param("id")Long id);
 
-    @Query(value="select count(cr.id) from quick_reservation_boat cr where cr.owners_username=:ownersUsername and ((cr.start_date between :start and :end) or (cr.end_date between :start and :end))",nativeQuery = true)
+    @Query(value="select count(cr.id) from quick_reservation_boat cr where cr.users_id!=null and cr.owners_username=:ownersUsername and ((cr.start_date between :start and :end) or (cr.end_date between :start and :end))",nativeQuery = true)
     Integer countReservationsInPeriod(@Param("start")LocalDateTime startWeek, @Param("end") LocalDateTime endWeek, @Param("ownersUsername") String ownersUsername);
 
-    @Query(value="select * from quick_reservation_boat cr where cr.owners_username=:ownersUsername and ((cr.start_date between :start and :end) or (cr.end_date between :start and :end) or ((:start between cr.start_date and cr.end_date) and (:end between cr.start_date and cr.end_date)))",nativeQuery = true)
+    @Query(value="select * from quick_reservation_boat cr where cr.users_id!=null and cr.owners_username=:ownersUsername and ((cr.start_date between :start and :end) or (cr.end_date between :start and :end) or ((:start between cr.start_date and cr.end_date) and (:end between cr.start_date and cr.end_date)))",nativeQuery = true)
     List<QuickReservationBoat> findReservationsInPeriodToSumProfit(@Param("ownersUsername")String ownersUsername , @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
     @Query(value="select * from quick_reservation_boat r where :currentDate <= r.start_date and r.users_id IS NULL ",nativeQuery = true)
@@ -51,10 +51,10 @@ public interface QuickReservationBoatRepository extends JpaRepository<QuickReser
     @Query(value="select * from quick_reservation_boat cr where cr.users_id != null and((cr.start_date between :start and :end) or (cr.end_date between :start and :end))",nativeQuery = true)
     List<QuickReservationBoat> findAllQuickReservationsForAdminProfit(@Param("start")LocalDateTime start, @Param("end") LocalDateTime end);
 
-    @Query(value="select count(cr.boat_id) from quick_reservation_boat cr where cr.boat_id=:id and ((cr.start_date between :start and :end) or (cr.end_date between :start and :end))",nativeQuery = true)
+    @Query(value="select count(cr.boat_id) from quick_reservation_boat cr where cr.users_id!=null and cr.boat_id=:id and ((cr.start_date between :start and :end) or (cr.end_date between :start and :end))",nativeQuery = true)
     Integer countReservationsByBoatInPeriod(@Param("start")LocalDateTime start,@Param("end") LocalDateTime end,@Param("id")Long id);
 
-    @Query(value="select * from quick_reservation_boat cr where cr.boat_id=:id and cr.users_id!=null and ((cr.start_date between :start and :end) or (cr.end_date between :start and :end) or ((:start between cr.start_date and cr.end_date) and (:end between cr.start_date and cr.end_date)))",nativeQuery = true)
+    @Query(value="select * from quick_reservation_boat cr where cr.users_id!=null and cr.boat_id=:id and cr.users_id!=null and ((cr.start_date between :start and :end) or (cr.end_date between :start and :end) or ((:start between cr.start_date and cr.end_date) and (:end between cr.start_date and cr.end_date)))",nativeQuery = true)
     List<QuickReservationBoat> findReservationsInPeriodByBoatToSumProfit(@Param("id")Long id,@Param("start") LocalDateTime start,@Param("end") LocalDateTime end);
 
     @Query(value="SELECT CASE WHEN  COUNT(*) > 0 THEN true ELSE false END FROM quick_reservation_boat where owners_username=:username and (:currentDate <= start_date) ",nativeQuery = true)

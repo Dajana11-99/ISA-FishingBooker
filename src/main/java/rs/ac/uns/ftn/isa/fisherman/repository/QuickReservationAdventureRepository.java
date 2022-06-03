@@ -26,10 +26,10 @@ public interface QuickReservationAdventureRepository extends JpaRepository<Quick
     @Query(value = "SELECT * FROM quick_reservation_adventure where id=:id ", nativeQuery = true)
     QuickReservationAdventure getById(@Param("id") Long id);
 
-    @Query(value="select * from quick_reservation_adventure cr where cr.owners_username=:username and ((cr.start_date between :start and :end) or (cr.end_date between :start and :end) or ((:start between cr.start_date and cr.end_date) and (:end between cr.start_date and cr.end_date)))",nativeQuery = true)
+    @Query(value="select * from quick_reservation_adventure cr where cr.users_id!=null and cr.owners_username=:username and ((cr.start_date between :start and :end) or (cr.end_date between :start and :end) or ((:start between cr.start_date and cr.end_date) and (:end between cr.start_date and cr.end_date)))",nativeQuery = true)
     List<QuickReservationAdventure> findReservationsInPeriodToSumProfit(@Param("username") String username, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
-    @Query(value="select count(cr.instructors_id) from quick_reservation_adventure cr where cr.owners_username=:username and ((cr.start_date between :start and :end) or (cr.end_date between :start and :end))",nativeQuery = true)
+    @Query(value="select count(cr.instructors_id) from quick_reservation_adventure cr  where cr.users_id!=null and cr.owners_username=:username and ((cr.start_date between :start and :end) or (cr.end_date between :start and :end))",nativeQuery = true)
     Integer countReservationsInPeriod(@Param("start")LocalDateTime startWeek, @Param("end") LocalDateTime endWeek, @Param("username") String username);
 
     @Query(value="select * from quick_reservation_adventure r where :currentDate <= r.start_date and r.users_id IS NULL ",nativeQuery = true)
@@ -44,9 +44,9 @@ public interface QuickReservationAdventureRepository extends JpaRepository<Quick
     @Query(value="SELECT * FROM quick_reservation_adventure where users_id=:user_id and (:currentDate > start_date) ",nativeQuery = true)
     Set<QuickReservationAdventure> getClientQuickReservationsHistory(@Param("user_id")Long userId,@Param("currentDate")LocalDateTime currentDate);
 
-    @Query(value="select * from quick_reservation_adventure cr where cr.users_id != null and((cr.start_date between :start and :end) or (cr.end_date between :start and :end))",nativeQuery = true)
+    @Query(value="select * from quick_reservation_adventure cr where cr.users_id!=null and cr.users_id != null and((cr.start_date between :start and :end) or (cr.end_date between :start and :end))",nativeQuery = true)
     List<QuickReservationAdventure> findAllQuickReservationsForAdminProfit(@Param("start")LocalDateTime start, @Param("end") LocalDateTime end);
-    @Query(value="select count(cr.adventure_id) from quick_reservation_adventure cr where cr.adventure_id=:id and cr.users_id!=null and ((cr.start_date between :start and :end) or (cr.end_date between :start and :end))",nativeQuery = true)
+    @Query(value="select count(cr.adventure_id) from quick_reservation_adventure cr where cr.users_id!=null and cr.adventure_id=:id and cr.users_id!=null and ((cr.start_date between :start and :end) or (cr.end_date between :start and :end))",nativeQuery = true)
     Integer countReservationsInPeriodByAdventureId(@Param("start")LocalDateTime start,@Param("end") LocalDateTime end,@Param("id")Long id);
 
     @Query(value="select * from quick_reservation_adventure cr where cr.adventure_id=:id and cr.users_id!=null and ((cr.start_date between :start and :end) or (cr.end_date between :start and :end) or ((:start between cr.start_date and cr.end_date) and (:end between cr.start_date and cr.end_date)))",nativeQuery = true)

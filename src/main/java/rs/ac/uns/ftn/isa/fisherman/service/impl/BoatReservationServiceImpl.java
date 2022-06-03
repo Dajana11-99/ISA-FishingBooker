@@ -121,6 +121,7 @@ public class BoatReservationServiceImpl implements BoatReservationService {
         }
         if(quickReservationBoatService.quickReservationExists(boatReservation.getBoat().getId(),
                 boatReservation.getStartDate(),boatReservation.getEndDate())) {
+
             return false;
         }
         return true;

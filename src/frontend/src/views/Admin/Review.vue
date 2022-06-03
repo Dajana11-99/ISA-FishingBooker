@@ -176,7 +176,7 @@ import VueModality from 'vue-modality-v3'
                        this.$swal.fire({
                                           position: 'top-end',
                                           icon: 'success',
-                                          title: 'Email has been successfully send to client and owner!',
+                                          title: 'Email has been successfully sent to client and owner!',
                                           showConfirmButton: false,
                                            timer: 2500
                                            
