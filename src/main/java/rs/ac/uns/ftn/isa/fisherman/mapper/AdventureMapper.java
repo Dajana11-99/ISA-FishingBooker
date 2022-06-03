@@ -25,7 +25,7 @@ public class AdventureMapper {
 
     public Adventure adventureDtoToEditAdventure(AdventureDto adventureDto){
             return new Adventure(adventureDto.getId(),adventureDto.getName(),addressMapper.dtoToAddress(adventureDto.getAddress()),
-                    adventureDto.getDescription(),adventureDto.getInstructorsBiography(),imageMapper.imageDtoSToImages(adventureDto.getImages()),
+                    adventureDto.getDescription(),adventureDto.getInstructorsBiography(),null,
                     adventureDto.getMaxPeople(),adventureDto.getPrice(),adventureDto.getRules(),adventureDto.getEquipment(),additionalServiceMapper.additionalServicesDtoToAdditionalServices(adventureDto.getAdditionalServices()),
                     adventureDto.getCancelingCondition());
     }

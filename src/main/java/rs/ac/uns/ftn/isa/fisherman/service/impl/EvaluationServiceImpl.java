@@ -28,6 +28,8 @@ public class EvaluationServiceImpl implements EvaluationService {
     @Autowired
     private CabinService cabinService;
     @Autowired
+    private BoatService boatService;
+    @Autowired
     private MailService mailService;
 
     @Autowired
@@ -48,7 +50,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             sendMailNotificationForCabinAndBoat(evaluation,cabin.getName(),"cabin",false);
         }else if(evaluation.getType().equals("BOAT EVALUATION")){
             Boat boat= boatEvaluationService.findById(evaluation.getId()).getBoat();
-            cabinService.updateCabinGrade(boat.getId());
+            boatService.updateBoatGrade(boat.getId());
             sendMailNotificationForCabinAndBoat(evaluation,boat.getName(),"boat",false);
         }else {
             userService.updateOwnersRating(evaluation.getOwnersUsername(),evaluation.getGrade());

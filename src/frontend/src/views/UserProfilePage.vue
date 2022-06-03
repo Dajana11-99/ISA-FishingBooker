@@ -83,7 +83,7 @@
                       f-16
                     "
                   ></i>
-                  <p style="color: orange">
+                  <p v-if="userRole != 'ROLE_CLIENT'" style="color: orange">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       style="color: orange"
@@ -310,12 +310,14 @@ export default {
         phoneNum: "",
         address: "",
         rating: "",
+        role: "",
       },
       fullName: "",
       comments: [],
       ranks: [],
       showComments: true,
       showDiscount: false,
+      userRole: ""
     };
   },
   props: {
@@ -367,7 +369,8 @@ export default {
           .then((response) => {
             this.user = response.data;
             this.fullName = this.user.firstname + " " + this.user.lastname;
-
+            console.log("rolee od useraaa  "+ this.user.role)
+            this.userRole=this.user.role
             this.getComments(username);
           });
       }
@@ -431,9 +434,16 @@ export default {
       console.log("ovo ispisujemmmm  " + username);
       this.$props.personsProfile = username;
       console.log("izmenio sammmmm   " + this.$props.personsProfile);
-      this.$router.push(
-        "/cabinOwner/viewProfile/" + this.$props.emailProp + "/" + username
-      );
+      if(this.userRole=="ROLE_CABINOWNER"){
+      this.$router.push("/cabinOwner/viewProfile/" + this.$props.emailProp + "/" + username);
+
+      }else if(this.userRole=="ROLE_BOATOWNER"){
+      this.$router.push("/boatOwner/viewProfile/" + this.$props.emailProp + "/" + username);
+
+      }else if(this.userRole=="ROLE_FISHING_INSTRUCTOR"){
+      this.$router.push("/instructor/viewProfile/" + this.$props.emailProp + "/" + username);
+
+      }
       this.getUser(username);
     },
   },

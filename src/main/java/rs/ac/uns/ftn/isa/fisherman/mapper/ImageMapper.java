@@ -14,6 +14,7 @@ public class ImageMapper {
 
     public Set<Image> imageDtoSToImages(Set<ImageDto> imageDtoS){
         Set<Image> images = new HashSet<>();
+        if(imageDtoS==null) System.out.println("slike su nulll");
         for(ImageDto imageDto: imageDtoS)
             images.add(imageDtoToImage(imageDto));
         return images;

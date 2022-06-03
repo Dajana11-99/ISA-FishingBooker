@@ -9,9 +9,7 @@ import rs.ac.uns.ftn.isa.fisherman.dto.AdventureDto;
 import rs.ac.uns.ftn.isa.fisherman.dto.FishingInstructorDto;
 import rs.ac.uns.ftn.isa.fisherman.mapper.AdditionalServiceMapper;
 import rs.ac.uns.ftn.isa.fisherman.mapper.AdventureMapper;
-import rs.ac.uns.ftn.isa.fisherman.model.AdditionalServices;
-import rs.ac.uns.ftn.isa.fisherman.model.Adventure;
-import rs.ac.uns.ftn.isa.fisherman.model.FishingInstructor;
+import rs.ac.uns.ftn.isa.fisherman.model.*;
 import rs.ac.uns.ftn.isa.fisherman.service.AdventureService;
 import rs.ac.uns.ftn.isa.fisherman.service.AdventureSubscriptionService;
 import rs.ac.uns.ftn.isa.fisherman.service.FishingInstructorService;
@@ -99,8 +97,10 @@ public class AdventureController {
     public ResponseEntity<String> editAdventure(@RequestBody AdventureDto adventureDto) {
         FishingInstructor fishingInstructor = fishingInstructorService.findByUsername(adventureDto.getFishingInstructorUsername());
         Adventure adventure = adventureMapper.adventureDtoToEditAdventure(adventureDto);
+        adventure.setFishingInstructor(fishingInstructor);
+        boolean deleteOldImages= adventureDto.getImages() == null;
         try {
-            if (adventureService.edit(adventure, fishingInstructor.getId()))
+            if (adventureService.edit(adventure, fishingInstructor.getId(),deleteOldImages))
                 return new ResponseEntity<>(SUCCESS, HttpStatus.OK);
             else
                 return new ResponseEntity<>("You can't edit this adventure because reservations in future exist !", HttpStatus.BAD_REQUEST);

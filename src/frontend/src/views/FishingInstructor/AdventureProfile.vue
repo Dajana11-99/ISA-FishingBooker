@@ -120,6 +120,7 @@
 
        <div  class="col" style="margin-top: 3%;">
            <button @click="editProfile()" style="background-color: #1d7ac9; width: 100%; " type="button" class="btn text-light rounded-pill">EDIT PROFILE</button>
+           <br><br>
            <button @click="statistics()" style="background-color: #1d7ac9; width: 100%; " type="button" class="btn text-light rounded-pill">SEE STATISTICS</button>
        </div>
 

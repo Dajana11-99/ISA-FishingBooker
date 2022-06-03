@@ -100,6 +100,7 @@
         </div> 
         <hr style="color: white;">
         <div class="form-group" align="center" vertical-align="center" style=" width: 100%; height: 400px">
+                <label id="label">Pick new location </label>
               <PickLocationMap :coordinates=[boatDto.addressDto.latitude,boatDto.addressDto.longitude] />
         </div>
 
